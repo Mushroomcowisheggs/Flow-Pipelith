@@ -1,0 +1,70 @@
+{
+  "name": "gpgv",
+  "display_name": "gpgv",
+  "description": "Verify OpenPGP signatures against an explicitly named keyring, without the full GnuPG key management",
+  "category": "system",
+  "author": "GnuPG Project",
+  "license": "GPL-3.0",
+  "homepage": "https://gnupg.org",
+  "tags": ["signature", "verification", "OpenPGP"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "option",
+      "tokens": ["--keyring", "<file>"],
+      "label": "--keyring",
+      "description": "Keyring to trust for this check; without it gpgv has no keys and every signature fails",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["<signature-file>"],
+      "label": "signature-file",
+      "description": "The file to verify: a detached signature (.sig, .asc) or a clearsigned document",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--verbose"],
+      "label": "--verbose",
+      "description": "Print the key ids and the details of the signature that was checked"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--quiet"],
+      "label": "--quiet",
+      "description": "Quiet mode: fewer messages on stderr"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--homedir", "<dir>"],
+      "label": "--homedir",
+      "description": "Use this directory instead of the default GnuPG home directory",
+      "takes": "directory"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--status-fd", "<n>"],
+      "label": "--status-fd",
+      "description": "Write machine readable status lines to this file descriptor, which is what scripts read",
+      "takes": "number"
+    },
+    {
+      "kind": "note",
+      "label": "--keyring is required",
+      "description": "gpgv never looks at the normal GnuPG keyring: name the keyring that holds the signing key with --keyring, or the check ends with no public key"
+    },
+    {
+      "kind": "note",
+      "label": "Detached signatures need the data",
+      "description": "A clearsigned document is verified on its own; for a detached signature the signed data is looked up next to the signature file or passed as the last argument"
+    },
+    {
+      "kind": "note",
+      "label": "The exit status is the result",
+      "description": "gpgv reports the outcome through its exit status: 0 means the signature is good, 1 means it is bad, and 2 means the check could not be run at all"
+    }
+  ]
+}

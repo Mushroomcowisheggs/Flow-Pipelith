@@ -1,0 +1,63 @@
+{
+  "name": "launchctl",
+  "display_name": "Launch Control",
+  "description": "Load, start and inspect launchd services and agents",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["launchd", "services", "daemon", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process", "filesystem"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["list"],
+      "label": "list",
+      "description": "Show the loaded services with their process id and last exit status",
+      "children": [
+        { "kind": "option", "tokens": ["<label>"], "label": "label", "description": "Show only this service, for example com.example.backup", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["load"],
+      "label": "load",
+      "description": "Load the service described by a property list",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "The property list to load, for example ~/Library/LaunchAgents/com.example.backup.plist", "takes": "file" },
+        { "kind": "option", "tokens": ["-w"], "label": "-w", "description": "Also write the disabled state into the property list, overriding its Disabled key" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["unload"],
+      "label": "unload",
+      "description": "Unload a service that was loaded before",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "The property list to unload", "takes": "file" },
+        { "kind": "option", "tokens": ["-w"], "label": "-w", "description": "Also write the disabled state into the property list" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["start"],
+      "label": "start",
+      "description": "Start the service with this label now",
+      "children": [
+        { "kind": "option", "tokens": ["<label>"], "label": "label", "description": "The service label to start, for example com.example.backup", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["stop"],
+      "label": "stop",
+      "description": "Stop the running service with this label",
+      "children": [
+        { "kind": "option", "tokens": ["<label>"], "label": "label", "description": "The service label to stop, for example com.example.backup", "takes": "text" }
+      ]
+    },
+    { "kind": "note", "label": "Modern replacements", "description": "Recent macOS versions prefer bootstrap and bootout instead of load and unload, and kickstart instead of start and stop" },
+    { "kind": "note", "label": "Where agents live", "description": "User agents live in ~/Library/LaunchAgents and system daemons in /Library/LaunchDaemons; changing the system side needs administrator rights" },
+    { "kind": "note", "label": "Labels", "description": "A service label is a reverse domain name such as com.example.backup, and it is the file name of the property list without the plist extension" }
+  ]
+}

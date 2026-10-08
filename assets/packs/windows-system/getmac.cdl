@@ -1,0 +1,29 @@
+{
+  "name": "getmac",
+  "display_name": "GetMac",
+  "description": "Show the MAC address and the list of network adapters of a computer",
+  "category": "network",
+  "tags": ["network", "MAC", "hardware", "inventory"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/v"], "label": "/v", "description": "Show verbose output, including the adapter connection name" },
+    {
+      "kind": "option",
+      "tokens": ["/fo", "<format>"],
+      "label": "/fo",
+      "description": "Choose the output format",
+      "takes": "enum",
+      "options": ["table", "list", "csv"]
+    },
+    { "kind": "option", "tokens": ["/nh"], "label": "/nh", "description": "Hide the column headers in table and csv output" },
+    { "kind": "option", "tokens": ["/s", "<system>"], "label": "/s", "description": "Query this remote computer instead of the local one", "takes": "text" },
+    { "kind": "option", "tokens": ["/u", "<domain\\user>"], "label": "/u", "description": "Run the command as this user on the remote computer", "takes": "text" },
+    { "kind": "option", "tokens": ["/p", "<password>"], "label": "/p", "description": "Password of the user given with /u", "takes": "text" },
+    { "kind": "note", "label": "Format order", "description": "/fo and /nh go before /s and /u on the command line" },
+    { "kind": "note", "label": "Default format", "description": "Without /fo, getmac prints a plain table with one transport name per line" },
+    { "kind": "note", "label": "Remote use", "description": "/s requires that file and printer sharing is reachable on the remote computer" },
+    { "kind": "note", "label": "Disabled adapters", "description": "An adapter that is disabled has no transport listed; /v shows the names of the adapters that are listed" }
+  ]
+}

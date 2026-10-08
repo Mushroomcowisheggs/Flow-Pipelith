@@ -1,0 +1,48 @@
+{
+  "name": "npx",
+  "display_name": "npx",
+  "description": "Run a command from a package, preferring one already installed in the project and downloading it otherwise",
+  "category": "development",
+  "author": "npm, Inc. (GitHub)",
+  "license": "Artistic-2.0",
+  "homepage": "https://docs.npmjs.com/cli/v11/commands/npx",
+  "tags": ["node", "javascript", "runner", "registry"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<package>"], "label": "package or command", "description": "The package, or the binary it provides, to run; when it is not installed locally it is fetched into the npm cache for this run", "takes": "text" },
+    { "kind": "option", "tokens": ["--yes"], "label": "--yes", "description": "Skip the prompt that asks for confirmation before installing a missing package (short form -y)" },
+    { "kind": "option", "tokens": ["--package=<name>"], "label": "--package", "description": "Expose the binaries of this package on PATH while the command runs; can be given more than once (short form -p)", "takes": "text" },
+    { "kind": "option", "tokens": ["--call", "<command>"], "label": "--call", "description": "Run this whole command line with the extra packages on PATH", "takes": "text" },
+    { "kind": "option", "tokens": ["-c", "<command>"], "label": "-c", "description": "Short form of --call", "takes": "text" },
+    { "kind": "option", "tokens": ["--prefix", "<directory>"], "label": "--prefix", "description": "Look for the package in this directory's node_modules instead of the current project", "takes": "directory" },
+    { "kind": "option", "tokens": ["--registry=<url>"], "label": "--registry", "description": "Fetch the package from this registry instead of the configured one", "takes": "text" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the version of the npm CLI that provides npx" },
+    { "kind": "note", "label": "npx versus pnpm dlx", "description": "npx first looks for a binary already installed in the project and only downloads when it is missing; pnpm dlx always fetches the package into the pnpm store and runs it from there, so it never depends on the project" },
+    { "kind": "note", "label": "Arguments for the command", "description": "Everything after the package name goes to that command: npx cowsay hello. Put -- before arguments that would otherwise be read as options of npx itself" }
+  ],
+  "actions": [
+    {
+      "name": "run_package",
+      "label": "Run a package",
+      "description": "Fetch a package if needed and run it, optionally with arguments",
+      "executable": "npx",
+      "args": [
+        { "value": "--yes", "when": "assume_yes" },
+        { "value": "{package}" },
+        { "value": "{arguments}", "when": "has_arguments" }
+      ],
+      "variables": [
+        { "name": "package", "type": "text", "label": "Package", "required": true, "placeholder": "cowsay@latest" },
+        { "name": "arguments", "type": "text", "label": "Arguments", "default": "" },
+        { "name": "has_arguments", "type": "boolean", "label": "Pass arguments to the command", "default": false },
+        { "name": "assume_yes", "type": "boolean", "label": "Install without asking", "default": true }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

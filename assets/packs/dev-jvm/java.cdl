@@ -1,0 +1,56 @@
+{
+  "name": "java",
+  "display_name": "Java Launcher",
+  "description": "Run compiled Java classes and packaged JAR files on the JVM",
+  "version": "21",
+  "cdl_version": "0.2",
+  "category": "development",
+  "author": "Eclipse Adoptium",
+  "license": "GPL-2.0-with-classpath-exception",
+  "homepage": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html",
+  "tags": ["jvm", "jdk", "runtime", "launcher"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-version"], "label": "-version", "description": "Print the Java version and exit" },
+    { "kind": "option", "tokens": ["-jar", "<file>"], "label": "-jar", "description": "Run the executable JAR, using its manifest for the main class and class path", "takes": "file" },
+    { "kind": "option", "tokens": ["-cp", "<path>"], "label": "-cp", "description": "Where to look for classes: directories, JAR files, or wildcards; the long form is -classpath", "takes": "text" },
+    { "kind": "option", "tokens": ["-Xmx", "<size>"], "label": "-Xmx", "description": "Maximum heap size, for example 512m or 2g", "takes": "text" },
+    { "kind": "option", "tokens": ["-Xms", "<size>"], "label": "-Xms", "description": "Initial heap size, for example 256m", "takes": "text" },
+    { "kind": "option", "tokens": ["-D"], "label": "-D", "description": "Define a system property as name=value, read by the program with System.getProperty", "takes": "text" },
+    { "kind": "option", "tokens": ["-ea"], "label": "-ea", "description": "Enable assertions; the long form is -enableassertions" },
+    { "kind": "option", "tokens": ["--enable-preview"], "label": "--enable-preview", "description": "Allow preview features and APIs of this release" },
+    { "kind": "option", "tokens": ["<class>"], "label": "Main class", "description": "The class holding the main method, named exactly as in the package", "takes": "text" },
+    { "kind": "note", "label": "Class path separators", "description": "Entries in -cp are separated with ; on Windows and : on Linux and macOS" },
+    { "kind": "note", "label": "-jar and -cp together", "description": "java -jar ignores -cp and any main class given on the command line: the manifest of that JAR supplies both" },
+    { "kind": "note", "label": "Option order", "description": "JVM options such as -Xmx, -D and -ea must come before the main class; everything after the main class is passed to the program itself" }
+  ],
+  "actions": [
+    {
+      "name": "run_class",
+      "label": "Run main class",
+      "description": "Run a main class with an explicit class path and heap limit",
+      "executable": "java",
+      "args": [
+        { "value": "-cp" },
+        { "value": "{classpath}" },
+        { "value": "-Xmx" },
+        { "value": "{heap}" },
+        { "value": "{mainclass}" },
+        { "value": "{program_args}", "when": "has_args" }
+      ],
+      "variables": [
+        { "name": "classpath", "type": "text", "label": "Class path", "default": "." },
+        { "name": "mainclass", "type": "text", "label": "Main class", "placeholder": "com.example.Main", "required": true },
+        { "name": "heap", "type": "text", "label": "Maximum heap", "default": "512m" },
+        { "name": "program_args", "type": "text", "label": "Program arguments", "default": "" },
+        { "name": "has_args", "type": "boolean", "label": "Pass program arguments", "default": false }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    }
+  ]
+}

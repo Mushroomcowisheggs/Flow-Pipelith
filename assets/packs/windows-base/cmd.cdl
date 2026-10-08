@@ -1,0 +1,142 @@
+{
+  "name": "cmd",
+  "display_name": "Command Prompt",
+  "description": "Windows command interpreter: run batch files and the shell's built-in commands",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["shell", "batch", "built-in"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["/C"],
+      "label": "/C",
+      "description": "Run the command that follows and then terminate",
+      "children": [
+        {
+          "kind": "subcommand",
+          "tokens": ["dir"],
+          "label": "dir",
+          "description": "List the contents of a directory",
+          "children": [
+            { "kind": "option", "tokens": ["/B"], "label": "/B", "description": "Bare format: names only, without header or summary" },
+            { "kind": "option", "tokens": ["/S"], "label": "/S", "description": "List the matching files in every subdirectory too" },
+            { "kind": "option", "tokens": ["/A"], "label": "/A", "description": "Show files with any attribute, including hidden and system" },
+            { "kind": "option", "tokens": ["/O"], "label": "/O", "description": "List the entries in sorted order, by name by default" },
+            { "kind": "option", "tokens": ["<directory>"], "label": "path", "description": "The directory to list", "takes": "directory" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["copy"],
+          "label": "copy",
+          "description": "Copy one or more files to another location",
+          "children": [
+            { "kind": "option", "tokens": ["/Y"], "label": "/Y", "description": "Overwrite an existing destination file without asking" },
+            { "kind": "option", "tokens": ["/V"], "label": "/V", "description": "Verify that each new file was written correctly" },
+            { "kind": "option", "tokens": ["<source>"], "label": "source", "description": "The file to copy", "takes": "file" },
+            { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "The file or directory to copy to", "takes": "text" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["move"],
+          "label": "move",
+          "description": "Move a file or directory, or rename it inside one volume",
+          "children": [
+            { "kind": "option", "tokens": ["/Y"], "label": "/Y", "description": "Overwrite an existing destination file without asking" },
+            { "kind": "option", "tokens": ["<source>"], "label": "source", "description": "The file or directory to move", "takes": "file" },
+            { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "The new location or name", "takes": "text" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["del"],
+          "label": "del",
+          "description": "Delete one or more files",
+          "children": [
+            { "kind": "option", "tokens": ["/F"], "label": "/F", "description": "Force deletion of read-only files" },
+            { "kind": "option", "tokens": ["/S"], "label": "/S", "description": "Delete the matching files in every subdirectory" },
+            { "kind": "option", "tokens": ["/Q"], "label": "/Q", "description": "Quiet mode: do not ask for confirmation" },
+            { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to delete", "takes": "file" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["mkdir"],
+          "label": "mkdir",
+          "description": "Create a directory, including the missing parents",
+          "children": [
+            { "kind": "option", "tokens": ["<directory>"], "label": "path", "description": "The directory to create", "takes": "directory" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["type"],
+          "label": "type",
+          "description": "Print the contents of a text file",
+          "children": [
+            { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to print", "takes": "file" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["set"],
+          "label": "set",
+          "description": "Show or set environment variables",
+          "children": [
+            { "kind": "option", "tokens": ["/A"], "label": "/A", "description": "Evaluate the right side as an arithmetic expression" },
+            { "kind": "option", "tokens": ["/P"], "label": "/P", "description": "Set the variable from a line read from stdin" },
+            { "kind": "option", "tokens": ["<name=value>"], "label": "assignment", "description": "The variable name and its new value", "takes": "text" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["exit"],
+          "label": "exit",
+          "description": "Leave the command interpreter with this exit code",
+          "children": [
+            { "kind": "option", "tokens": ["<code>"], "label": "code", "description": "The exit code to report", "takes": "number" }
+          ]
+        }
+      ]
+    },
+    { "kind": "subcommand", "tokens": ["/K"], "label": "/K", "description": "Run the command that follows and keep the session open" },
+    { "kind": "option", "tokens": ["/S"], "label": "/S", "description": "Strip the outer quotes of the string after /C or /K and use the rest unchanged" },
+    { "kind": "option", "tokens": ["/Q"], "label": "/Q", "description": "Turn the command echo off" },
+    { "kind": "option", "tokens": ["/D"], "label": "/D", "description": "Skip the AutoRun commands registered in the registry" },
+    { "kind": "option", "tokens": ["/V:ON"], "label": "/V:ON", "description": "Enable delayed expansion of environment variables" },
+    { "kind": "option", "tokens": ["/V:OFF"], "label": "/V:OFF", "description": "Disable delayed expansion of environment variables" },
+    { "kind": "option", "tokens": ["/E:ON"], "label": "/E:ON", "description": "Enable the command processor extensions" },
+    { "kind": "option", "tokens": ["/E:OFF"], "label": "/E:OFF", "description": "Disable the command processor extensions" },
+    { "kind": "option", "tokens": ["/U"], "label": "/U", "description": "Write the output of a pipe as UTF-16LE" },
+    { "kind": "option", "tokens": ["/A"], "label": "/A", "description": "Write the output of a pipe as ANSI characters" },
+    { "kind": "option", "tokens": ["/T:<fg>"], "label": "/T", "description": "Set the console foreground and background colors as two hex digits", "takes": "text" },
+    { "kind": "note", "label": "The string belongs to /C or /K", "description": "cmd only parses the trailing command string when /C or /K is given; on its own cmd opens an interactive session" },
+    { "kind": "note", "label": "One argument per command", "description": "Put a command string that contains spaces into a single argument, and chain several commands with & or &&" }
+  ],
+  "actions": [
+    {
+      "name": "run_batch",
+      "label": "Run batch file",
+      "description": "Run a batch file in a non-interactive command interpreter",
+      "executable": "cmd",
+      "args": [
+        { "value": "/C" },
+        { "value": "{script}" }
+      ],
+      "variables": [
+        { "name": "script", "type": "file", "label": "Batch file", "filters": ["*.bat", "*.cmd"], "required": true },
+        { "name": "dir", "type": "directory", "label": "Working directory", "default": "." }
+      ],
+      "cwd": "{dir}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    }
+  ]
+}

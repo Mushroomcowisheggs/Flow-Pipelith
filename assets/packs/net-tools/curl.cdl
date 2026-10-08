@@ -1,0 +1,117 @@
+{
+  "name": "curl",
+  "display_name": "cURL",
+  "description": "Network request tool: download files, call APIs, upload data",
+  "version": "8.0",
+  "category": "network",
+  "author": "Daniel Stenberg",
+  "license": "MIT",
+  "homepage": "https://curl.se",
+  "tags": ["download", "HTTP", "API"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "actions": [
+    {
+      "name": "download",
+      "label": "Download file",
+      "description": "Save the contents of a URL to a local file, with resume support",
+      "executable": "curl",
+      "args": [
+        { "value": "-L" },
+        { "value": "--fail" },
+        { "value": "--progress-bar" },
+        { "value": "-C" },
+        { "value": "-", "when": "resume" },
+        { "value": "--create-dirs", "when": "make_dirs" },
+        { "value": "-o" },
+        { "value": "{output}" },
+        { "value": "{url}" }
+      ],
+      "variables": [
+        { "name": "url", "type": "text", "label": "Download URL", "required": true, "placeholder": "https://example.com/file.zip" },
+        { "name": "output", "type": "file", "label": "Save as", "save": true, "default": "download.bin", "required": true },
+        { "name": "resume", "type": "boolean", "label": "Resume interrupted download", "default": false },
+        { "name": "make_dirs", "type": "boolean", "label": "Create directories automatically", "default": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 7200
+    },
+    {
+      "name": "request",
+      "label": "Call API",
+      "description": "Send an HTTP request and output the response body",
+      "executable": "curl",
+      "args": [
+        { "value": "-sS" },
+        { "value": "-L" },
+        { "value": "-X" },
+        { "value": "{method}" },
+        { "value": "{headers}", "when": "has_headers" },
+        { "value": "-d" },
+        { "value": "{body}", "when": "has_body" },
+        { "value": "{url}" }
+      ],
+      "variables": [
+        { "name": "url", "type": "text", "label": "Request URL", "required": true },
+        {
+          "name": "method",
+          "type": "enum",
+          "label": "HTTP method",
+          "default": "GET",
+          "options": [
+            { "value": "GET", "label": "GET (read)" },
+            { "value": "POST", "label": "POST (create/submit)" },
+            { "value": "PUT", "label": "PUT (full update)" },
+            { "value": "PATCH", "label": "PATCH (partial update)" },
+            { "value": "DELETE", "label": "DELETE (remove)" }
+          ]
+        },
+        { "name": "headers", "type": "text", "label": "Request headers", "default": "Accept: application/json" },
+        { "name": "has_headers", "type": "boolean", "label": "Include request headers", "default": true },
+        { "name": "body", "type": "text", "label": "Request body", "multiline": true, "default": "" },
+        { "name": "has_body", "type": "boolean", "label": "Include request body", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "headers_only",
+      "label": "Response headers only",
+      "executable": "curl",
+      "args": [
+        { "value": "-sS" },
+        { "value": "-I" },
+        { "value": "{url}" }
+      ],
+      "variables": [
+        { "name": "url", "type": "text", "label": "Request URL", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 120
+    },
+    {
+      "name": "upload",
+      "label": "Upload file",
+      "description": "Upload a file as a multipart form",
+      "executable": "curl",
+      "args": [
+        { "value": "-sS" },
+        { "value": "-F" },
+        { "value": "file=@{file}" },
+        { "value": "{url}" }
+      ],
+      "variables": [
+        { "name": "url", "type": "text", "label": "Upload URL", "required": true },
+        { "name": "file", "type": "file", "label": "File to upload", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600,
+      "confirm": true
+    }
+  ]
+}

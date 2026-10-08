@@ -1,0 +1,7 @@
+{
+  "id": "dev-build",
+  "label": "Build tools",
+  "description": "Compilers, build systems and binary utilities (gcc, cmake, make)",
+  "platforms": ["windows", "macos", "linux"],
+  "origin": "curated"
+}

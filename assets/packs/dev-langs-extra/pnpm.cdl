@@ -1,0 +1,130 @@
+{
+  "name": "pnpm",
+  "display_name": "pnpm",
+  "description": "Package manager for Node.js that links packages from a global content-addressable store",
+  "category": "development",
+  "author": "pnpm contributors",
+  "license": "MIT",
+  "homepage": "https://pnpm.io",
+  "tags": ["node", "javascript", "package manager", "workspace", "monorepo"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["install"],
+      "label": "install",
+      "description": "Install the dependencies of package.json into node_modules",
+      "children": [
+        { "kind": "option", "tokens": ["--frozen-lockfile"], "label": "--frozen-lockfile", "description": "Fail instead of updating the lockfile; the usual setting in CI" },
+        { "kind": "option", "tokens": ["--recursive"], "label": "--recursive", "description": "Install in every project of the workspace (short form -r)" },
+        { "kind": "option", "tokens": ["--filter", "<pattern>"], "label": "--filter", "description": "Only install in the projects matching this name or path pattern", "takes": "text" },
+        { "kind": "option", "tokens": ["--prod"], "label": "--prod", "description": "Install only dependencies, without devDependencies (short form -P)" },
+        { "kind": "option", "tokens": ["--dev"], "label": "--dev", "description": "Install only devDependencies (short form -D)" },
+        { "kind": "option", "tokens": ["--ignore-scripts"], "label": "--ignore-scripts", "description": "Do not run the install and postinstall scripts of dependencies" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["add"],
+      "label": "add",
+      "description": "Install a package and record it in package.json",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "Package to add, optionally with a version, e.g. zod@3 or ./packages/util", "takes": "text" },
+        { "kind": "option", "tokens": ["-D"], "label": "-D", "description": "Save the package as a devDependency" },
+        { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Install the package globally instead of in the current project" },
+        { "kind": "option", "tokens": ["--filter", "<pattern>"], "label": "--filter", "description": "Add the package to the projects matching this name or path pattern", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["remove"],
+      "label": "remove",
+      "description": "Remove a package and its entry in package.json",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "Package to remove", "takes": "text" },
+        { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Remove a globally installed package" },
+        { "kind": "option", "tokens": ["--filter", "<pattern>"], "label": "--filter", "description": "Remove the package from the projects matching this name or path pattern", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["run"],
+      "label": "run",
+      "description": "Run a script defined in package.json",
+      "children": [
+        { "kind": "option", "tokens": ["<script>"], "label": "script", "description": "Name of the script to run", "takes": "text" },
+        { "kind": "option", "tokens": ["--filter", "<pattern>"], "label": "--filter", "description": "Run the script only in the matching projects", "takes": "text" },
+        { "kind": "option", "tokens": ["--recursive"], "label": "--recursive", "description": "Run the script in every project of the workspace (short form -r)" },
+        { "kind": "option", "tokens": ["--parallel"], "label": "--parallel", "description": "Run the script in all matching projects at once instead of in order" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["exec"],
+      "label": "exec",
+      "description": "Run a command with the project's node_modules binaries on PATH",
+      "children": [
+        { "kind": "option", "tokens": ["<command>"], "label": "command", "description": "The command line to run, e.g. tsc --noEmit", "takes": "text" },
+        { "kind": "option", "tokens": ["--filter", "<pattern>"], "label": "--filter", "description": "Run the command in the matching projects", "takes": "text" },
+        { "kind": "option", "tokens": ["--recursive"], "label": "--recursive", "description": "Run the command in every project of the workspace" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["dlx"],
+      "label": "dlx",
+      "description": "Fetch a package into the store and run its binary, without installing it in the project",
+      "children": [
+        { "kind": "option", "tokens": ["<command>"], "label": "command", "description": "Command to run, e.g. create-react-app my-app", "takes": "text" },
+        { "kind": "option", "tokens": ["--package=<name>"], "label": "--package", "description": "The package to install when its name differs from the command being run", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["store"],
+      "label": "store",
+      "description": "Work with the global content-addressable store that every project links from",
+      "children": [
+        { "kind": "subcommand", "tokens": ["path"], "label": "path", "description": "Print the location of the store" },
+        { "kind": "subcommand", "tokens": ["prune"], "label": "prune", "description": "Delete the packages in the store that no project references" },
+        { "kind": "subcommand", "tokens": ["status"], "label": "status", "description": "Check the store for packages that were modified or are missing" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["why"],
+      "label": "why",
+      "description": "Explain why a package is present in the dependency tree",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "The package to explain", "takes": "text" }
+      ]
+    },
+    { "kind": "note", "label": "pnpm dlx versus npx", "description": "pnpm dlx always downloads the package into the pnpm store and executes it from there, so nothing depends on the current project; npx first tries a binary already installed in the project" },
+    { "kind": "note", "label": "Workspace filtering", "description": "--filter selects packages by name or by path (--filter app, --filter ./packages/*); combine it with --recursive to act on several projects at once" }
+  ],
+  "actions": [
+    {
+      "name": "install_reproducible",
+      "label": "Install from the lockfile",
+      "description": "Install exactly what the lockfile pins, optionally for one filtered workspace project",
+      "executable": "pnpm",
+      "args": [
+        { "value": "install" },
+        { "value": "--frozen-lockfile", "when": "frozen" },
+        { "value": "--filter", "when": "filtered" },
+        { "value": "{filter}", "when": "filtered" }
+      ],
+      "variables": [
+        { "name": "frozen", "type": "boolean", "label": "Require an unchanged lockfile", "default": true },
+        { "name": "filter", "type": "text", "label": "Filter pattern", "default": "" },
+        { "name": "filtered", "type": "boolean", "label": "Only one workspace project", "default": false }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "rm",
+  "display_name": "rm",
+  "description": "Remove files and directories",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "File or directory to remove; several may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Remove directories and their contents recursively" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Ignore files that do not exist and never ask for confirmation" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Ask before removing each file" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Remove empty directories without recursing" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the name of every file that is removed" },
+    { "kind": "note", "label": "No trash", "description": "rm unlinks the entry straight away: there is no recycle bin and no undo" },
+    { "kind": "note", "label": "Directories need -r", "description": "rm refuses to remove a directory unless -r or -d is given" }
+  ],
+  "actions": [
+    {
+      "name": "delete_tree",
+      "label": "Delete a directory tree",
+      "description": "Remove a directory and everything under it without confirmation prompts",
+      "executable": "rm",
+      "args": [
+        { "value": "-r" },
+        { "value": "-f" },
+        { "value": "{path}" }
+      ],
+      "variables": [
+        { "name": "path", "type": "directory", "label": "Directory to delete", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600,
+      "confirm": true,
+      "danger": true
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "osascript",
+  "display_name": "AppleScript Runner",
+  "description": "Run AppleScript or JavaScript for Automation scripts",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["automation", "applescript", "scripting", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process", "filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-e", "<statement>"], "label": "-e", "description": "One line of the script; repeat -e to add more lines", "takes": "text" },
+    { "kind": "option", "tokens": ["-l", "<language>"], "label": "-l", "description": "The scripting language the script is written in", "takes": "enum", "options": ["AppleScript", "JavaScript"] },
+    { "kind": "option", "tokens": ["-s", "<flags>"], "label": "-s", "description": "How the result is formatted: h human readable, s source, r raw", "takes": "enum", "options": ["h", "s", "r"] },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Read the script from standard input instead of -e or a file" },
+    { "kind": "option", "tokens": ["<script file>"], "label": "script file", "description": "A script file to run instead of statements given with -e", "takes": "file" },
+    { "kind": "note", "label": "Building a script", "description": "-e may be repeated and the lines are run as one script, which is how multi-line scripts are passed from a shell" },
+    { "kind": "note", "label": "Automation permission", "description": "Controlling another application asks for Automation permission the first time the script runs" },
+    { "kind": "note", "label": "Script arguments", "description": "Arguments placed after a script file are handed to the script's run handler" },
+    { "kind": "note", "label": "JavaScript", "description": "-l JavaScript runs JavaScript for Automation, which uses the same application dictionary" }
+  ],
+  "actions": [
+    {
+      "name": "run_applescript",
+      "label": "Run AppleScript",
+      "description": "Run a script given as a single statement",
+      "executable": "osascript",
+      "args": [
+        { "value": "-e" },
+        { "value": "{source}" }
+      ],
+      "variables": [
+        { "name": "source", "type": "text", "label": "AppleScript statement", "required": true, "multiline": true, "placeholder": "tell application \"Finder\" to get the name of the front window" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

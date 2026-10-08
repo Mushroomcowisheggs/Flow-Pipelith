@@ -1,0 +1,28 @@
+{
+  "name": "systeminfo",
+  "display_name": "Systeminfo",
+  "description": "Report operating system, hardware and hotfix details of a computer",
+  "category": "system",
+  "tags": ["system", "hardware", "inventory", "hotfix"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/s", "<system>"], "label": "/s", "description": "Report on this remote computer", "takes": "text" },
+    { "kind": "option", "tokens": ["/u", "<domain\\user>"], "label": "/u", "description": "Run as this user on the remote computer", "takes": "text" },
+    { "kind": "option", "tokens": ["/p", "<password>"], "label": "/p", "description": "Password of the user given with /u", "takes": "text" },
+    {
+      "kind": "option",
+      "tokens": ["/fo", "<format>"],
+      "label": "/fo",
+      "description": "Choose the output format",
+      "takes": "enum",
+      "options": ["table", "list", "csv"]
+    },
+    { "kind": "option", "tokens": ["/nh"], "label": "/nh", "description": "Hide the column headers in table and csv output" },
+    { "kind": "note", "label": "Slow on a local run", "description": "The full report takes a while: it queries hardware, the OS and the installed hotfixes" },
+    { "kind": "note", "label": "Elevation", "description": "Some sections are only complete in an elevated prompt" },
+    { "kind": "note", "label": "Order", "description": "The connection options /s, /u and /p come before /fo and /nh" },
+    { "kind": "note", "label": "Hotfixes", "description": "The hotfix section lists installed updates and is the reason the command can take minutes" }
+  ]
+}

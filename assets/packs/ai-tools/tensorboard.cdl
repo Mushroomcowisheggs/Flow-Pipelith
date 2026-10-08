@@ -1,0 +1,27 @@
+{
+  "name": "tensorboard",
+  "display_name": "TensorBoard",
+  "description": "Training dashboard: serve scalars, images, graphs and histograms from event log directories",
+  "version": "2.17",
+  "category": "science",
+  "author": "TensorFlow Authors",
+  "license": "Apache-2.0",
+  "homepage": "https://www.tensorflow.org/tensorboard",
+  "tags": ["training", "visualization", "metrics"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["--logdir", "<directory>"], "label": "--logdir", "description": "Directory to read event files from; subdirectories become separate runs", "takes": "directory" },
+    { "kind": "option", "tokens": ["--port", "<port>"], "label": "--port", "description": "Port for the dashboard, default 6006", "takes": "number" },
+    { "kind": "option", "tokens": ["--host", "<address>"], "label": "--host", "description": "Address to bind to, e.g. 127.0.0.1 or 0.0.0.0", "takes": "text" },
+    { "kind": "option", "tokens": ["--reload_interval", "<seconds>"], "label": "--reload_interval", "description": "How often the log directory is rescanned for new data", "takes": "enum", "options": ["1.0", "5.0", "30.0", "60.0"] },
+    { "kind": "option", "tokens": ["--samples_per_plugin", "<spec>"], "label": "--samples_per_plugin", "description": "Cap how many samples a plugin keeps, e.g. scalars=1000 or images=0 for all", "takes": "text" },
+    { "kind": "option", "tokens": ["--bind_all"], "label": "--bind_all", "description": "Listen on every network interface instead of localhost only" },
+    { "kind": "option", "tokens": ["--load_fast"], "label": "--load_fast", "description": "Load run data through the fast data server; true, false or auto" },
+    { "kind": "option", "tokens": ["--logdir_spec", "<spec>"], "label": "--logdir_spec", "description": "Name several log directories at once, e.g. run1:/path/a,run2:/path/b", "takes": "text" },
+    { "kind": "note", "label": "The server keeps running", "description": "tensorboard serves until it is stopped; it does not exit after printing the URL" },
+    { "kind": "note", "label": "logdir versus logdir_spec", "description": "Use --logdir for one directory tree; use --logdir_spec only when you want to give the runs explicit names" },
+    { "kind": "note", "label": "bind_all widens access", "description": "--bind_all exposes the dashboard to every machine that can reach the host; prefer --host 127.0.0.1 for local work" }
+  ]
+}

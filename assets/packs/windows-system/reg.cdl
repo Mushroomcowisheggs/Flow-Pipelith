@@ -1,0 +1,54 @@
+{
+  "name": "reg",
+  "display_name": "Reg",
+  "description": "Read and write registry keys and values from the command line",
+  "category": "system",
+  "tags": ["system", "registry", "configuration"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["query"],
+      "label": "query",
+      "description": "Read a key and its values",
+      "children": [
+        { "kind": "option", "tokens": ["/v", "<name>"], "label": "/v", "description": "Show only the value with this name", "takes": "text" },
+        { "kind": "option", "tokens": ["/ve"], "label": "/ve", "description": "Show only the default (unnamed) value" },
+        { "kind": "option", "tokens": ["/s"], "label": "/s", "description": "Recurse into all subkeys" },
+        { "kind": "option", "tokens": ["/f", "<pattern>"], "label": "/f", "description": "Show only entries matching this pattern; it needs /k, /v or /d to say what is matched", "takes": "text" },
+        { "kind": "option", "tokens": ["/k"], "label": "/k", "description": "Match the pattern against key names" },
+        { "kind": "option", "tokens": ["/d"], "label": "/d", "description": "Match the pattern against value data" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["add"],
+      "label": "add",
+      "description": "Create a key or set a value",
+      "children": [
+        { "kind": "option", "tokens": ["/v", "<name>"], "label": "/v", "description": "Name of the value to set", "takes": "text" },
+        { "kind": "option", "tokens": ["/ve"], "label": "/ve", "description": "Set the default (unnamed) value" },
+        { "kind": "option", "tokens": ["/t", "<type>"], "label": "/t", "description": "Data type of the value", "takes": "enum", "options": ["REG_SZ", "REG_EXPAND_SZ", "REG_MULTI_SZ", "REG_DWORD", "REG_QWORD", "REG_BINARY", "REG_NONE"] },
+        { "kind": "option", "tokens": ["/d", "<data>"], "label": "/d", "description": "The data to store", "takes": "text" },
+        { "kind": "option", "tokens": ["/f"], "label": "/f", "description": "Overwrite an existing value without asking" }
+      ]
+    },
+    { "kind": "subcommand", "tokens": ["delete"], "label": "delete", "description": "Delete a key or a value" },
+    { "kind": "subcommand", "tokens": ["copy"], "label": "copy", "description": "Copy one key to another location" },
+    { "kind": "subcommand", "tokens": ["compare"], "label": "compare", "description": "Compare two keys and list the differences" },
+    { "kind": "subcommand", "tokens": ["export"], "label": "export", "description": "Save a key and its subkeys to a .reg file" },
+    { "kind": "subcommand", "tokens": ["import"], "label": "import", "description": "Load keys and values from a .reg file" },
+    { "kind": "subcommand", "tokens": ["save"], "label": "save", "description": "Save a key to a hive file" },
+    { "kind": "subcommand", "tokens": ["restore"], "label": "restore", "description": "Restore a key from a hive file" },
+    { "kind": "option", "tokens": ["<key>"], "label": "key", "description": "The registry key path the subcommand acts on", "takes": "text" },
+    { "kind": "option", "tokens": ["/reg:64"], "label": "/reg:64", "description": "Use the 64-bit registry view" },
+    { "kind": "option", "tokens": ["/reg:32"], "label": "/reg:32", "description": "Use the 32-bit registry view" },
+    { "kind": "note", "label": "Root key abbreviations", "description": "Keys are written with a short root: HKLM for HKEY_LOCAL_MACHINE, HKCU for HKEY_CURRENT_USER, HKCR, HKU and HKCC" },
+    { "kind": "note", "label": "Elevation", "description": "Writing under HKLM or another user's hive needs an elevated prompt; reads usually do not" },
+    { "kind": "note", "label": "Deleting a value", "description": "To delete one value rather than a whole key, add /v with the value name" },
+    { "kind": "note", "label": "Registry view", "description": "On 64-bit Windows a 32-bit process sees a redirected view; /reg:64 and /reg:32 choose one explicitly" },
+    { "kind": "note", "label": "Back up first", "description": "An export before a change makes the change reversible" }
+  ]
+}

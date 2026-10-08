@@ -1,0 +1,201 @@
+{
+  "name": "git",
+  "display_name": "Git",
+  "description": "Distributed version control X: clone, commit, inspect history and status",
+  "version": "2.55",
+  "category": "development",
+  "author": "Git Community",
+  "license": "GPL-2.0",
+  "homepage": "https://git-scm.com",
+  "tags": ["version control", "collaboration"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["clone"],
+      "label": "clone",
+      "description": "Copy a repository into a new directory",
+      "children": [
+        { "kind": "option", "tokens": ["--depth", "<n>"], "label": "--depth", "description": "Shallow clone with only this much history", "takes": "number" },
+        { "kind": "option", "tokens": ["--branch", "<name>"], "label": "--branch", "description": "Check out this branch instead of the default", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["status"],
+      "label": "status",
+      "description": "Show what changed in the working tree",
+      "children": [
+        { "kind": "option", "tokens": ["--short"], "label": "--short", "description": "One line per change" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["add"],
+      "label": "add",
+      "description": "Stage file contents for the next commit",
+      "children": [
+        { "kind": "option", "tokens": ["-A"], "label": "-A", "description": "Stage every change in the working tree" },
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "Stage this path", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["commit"],
+      "label": "commit",
+      "description": "Record the staged changes",
+      "children": [
+        { "kind": "option", "tokens": ["-m", "<message>"], "label": "-m", "description": "The commit message", "takes": "text" },
+        { "kind": "option", "tokens": ["--amend"], "label": "--amend", "description": "Replace the previous commit" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["push"],
+      "label": "push",
+      "description": "Update the remote with local commits",
+      "children": [
+        { "kind": "option", "tokens": ["-u", "<remote>"], "label": "-u", "description": "Set the upstream and push to it", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["pull"],
+      "label": "pull",
+      "description": "Fetch and integrate remote changes"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["log"],
+      "label": "log",
+      "description": "Show the commit history",
+      "children": [
+        { "kind": "option", "tokens": ["--oneline"], "label": "--oneline", "description": "One line per commit" },
+        { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Limit how many entries are shown", "takes": "number" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["diff"],
+      "label": "diff",
+      "description": "Show changes between two states",
+      "children": [
+        { "kind": "option", "tokens": ["--stat"], "label": "--stat", "description": "Summarize by file instead of showing hunks" }
+      ]
+    },
+    { "kind": "option", "tokens": ["-C", "<directory>"], "label": "-C", "description": "Run as if git had been started in this directory", "takes": "directory" },
+    { "kind": "option", "tokens": ["-c", "<key=value>"], "label": "-c", "description": "Pass one configuration parameter to this invocation", "takes": "text" },
+    { "kind": "note", "label": "Order of arguments", "description": "Global options like -C and -c go before the subcommand; the subcommand's own options go after it" }
+  ],
+  "actions": [
+    {
+      "name": "clone",
+      "label": "Clone repository",
+      "description": "Copy a remote repository into a local directory",
+      "executable": "git",
+      "args": [
+        { "value": "clone" },
+        { "value": "--depth" },
+        { "value": "{depth}", "when": "shallow" },
+        { "value": "{url}" },
+        { "value": "{target}", "when": "has_target" }
+      ],
+      "variables": [
+        { "name": "url", "type": "text", "label": "Repository URL", "required": true, "placeholder": "https://github.com/user/repo.git" },
+        { "name": "target", "type": "directory", "label": "Target directory", "default": "" },
+        { "name": "has_target", "type": "boolean", "label": "Specify target directory", "default": false },
+        { "name": "depth", "type": "number", "label": "Shallow clone depth", "default": "1", "min": 1, "max": 1000, "step": 1 },
+        { "name": "shallow", "type": "boolean", "label": "Use shallow clone (faster)", "default": true }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 1800
+    },
+    {
+      "name": "status",
+      "label": "Show status",
+      "description": "Show working tree changes",
+      "executable": "git",
+      "args": [
+        { "value": "status" },
+        { "value": "--short" },
+        { "value": "--branch" }
+      ],
+      "variables": [
+        { "name": "repo", "type": "directory", "label": "Repository directory", "default": "." }
+      ],
+      "cwd": "{repo}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 120
+    },
+    {
+      "name": "commit",
+      "label": "Commit changes",
+      "description": "Stage the specified files and commit them",
+      "executable": "git",
+      "args": [
+        { "value": "add" },
+        { "value": "-A", "when": "all" },
+        { "value": "{paths}", "when": "has_paths" },
+        { "value": "commit" },
+        { "value": "-m" },
+        { "value": "{message}" }
+      ],
+      "variables": [
+        { "name": "repo", "type": "directory", "label": "Repository directory", "default": "." },
+        { "name": "message", "type": "text", "label": "Commit message", "required": true },
+        { "name": "all", "type": "boolean", "label": "Stage all changes", "default": true },
+        { "name": "paths", "type": "text", "label": "Specific paths", "default": "" },
+        { "name": "has_paths", "type": "boolean", "label": "Use specific paths instead of all", "default": false }
+      ],
+      "cwd": "{repo}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "log",
+      "label": "Show history",
+      "executable": "git",
+      "args": [
+        { "value": "log" },
+        { "value": "--oneline" },
+        { "value": "--graph" },
+        { "value": "--decorate" },
+        { "value": "-n" },
+        { "value": "{count}" }
+      ],
+      "variables": [
+        { "name": "repo", "type": "directory", "label": "Repository directory", "default": "." },
+        { "name": "count", "type": "number", "label": "Number of entries", "default": "20", "min": 1, "max": 1000, "step": 1 }
+      ],
+      "cwd": "{repo}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 120
+    },
+    {
+      "name": "diff",
+      "label": "Show diff",
+      "executable": "git",
+      "args": [
+        { "value": "diff" },
+        { "value": "--stat", "when": "stat_only" },
+        { "value": "{ref}" }
+      ],
+      "variables": [
+        { "name": "repo", "type": "directory", "label": "Repository directory", "default": "." },
+        { "name": "ref", "type": "text", "label": "Comparison target", "default": "HEAD" },
+        { "name": "stat_only", "type": "boolean", "label": "Statistics only", "default": false }
+      ],
+      "cwd": "{repo}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

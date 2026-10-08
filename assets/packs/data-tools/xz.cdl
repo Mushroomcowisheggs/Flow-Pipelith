@@ -1,0 +1,27 @@
+{
+  "name": "xz",
+  "display_name": "xz",
+  "description": "Compress and decompress single files with the LZMA2 .xz format, and list or test existing .xz files",
+  "version": "5.6",
+  "category": "system",
+  "author": "Tukaani Project",
+  "license": "Public Domain / LGPL-2.1",
+  "homepage": "https://tukaani.org/xz/",
+  "tags": ["compression", "xz", "lzma"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to compress or decompress; with no file xz reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-z"], "label": "-z", "description": "Compress (the action used when neither -z nor -d is given)" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Decompress a .xz or .lzma file instead of compressing" },
+    { "kind": "option", "tokens": ["-k"], "label": "-k", "description": "Keep the input file after a successful run; without it the input is removed" },
+    { "kind": "option", "tokens": ["-9"], "label": "-9", "description": "Use the slowest preset, which gives the smallest output" },
+    { "kind": "option", "tokens": ["-T", "<n>"], "label": "-T", "description": "Use this many threads (0 means as many as there are CPU cores)", "takes": "number" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "List information about a compressed file: sizes, ratio and check type" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Test the integrity of a compressed file without writing the output" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Write the result to standard output and keep the input file" },
+    { "kind": "note", "label": "Decompressing removes the input", "description": "xz -d file.xz writes file and deletes file.xz unless -k is given, and compressing without -k deletes the original the same way, so add -k whenever the source must survive" },
+    { "kind": "note", "label": "One file at a time", "description": "xz compresses a single file and stores no file names, so it cannot archive a directory; combine it with tar (tar -cJf archive.tar.xz dir) for that" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hostname",
+  "display_name": "Hostname",
+  "description": "Print the host name of the local computer",
+  "category": "system",
+  "tags": ["system", "identity"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process"],
+  "vocabulary": [
+    { "kind": "subcommand", "tokens": ["hostname"], "label": "hostname", "description": "Print the host name of the local computer" },
+    { "kind": "note", "label": "No options", "description": "hostname has no options; it prints the same name whatever arguments it is given" },
+    { "kind": "note", "label": "Host name only", "description": "It prints the name alone, without the domain suffix" },
+    { "kind": "note", "label": "Setting the name", "description": "Changing the computer name is not done with this command; use the System settings or a rename command" },
+    { "kind": "note", "label": "In a pipeline", "description": "The single line of output is convenient for scripts that need the machine name" }
+  ]
+}

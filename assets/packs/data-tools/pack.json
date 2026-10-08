@@ -1,0 +1,7 @@
+{
+  "id": "data-tools",
+  "label": "Data & archive tools",
+  "description": "JSON, databases and archives (jq, zip)",
+  "platforms": ["windows", "macos", "linux"],
+  "origin": "curated"
+}

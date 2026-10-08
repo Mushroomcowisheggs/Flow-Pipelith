@@ -1,0 +1,54 @@
+{
+  "name": "nvidia-smi",
+  "display_name": "NVIDIA System Management Interface",
+  "description": "Inspect NVIDIA GPUs: utilization, memory, temperature, power and running compute processes",
+  "version": "550",
+  "category": "system",
+  "author": "NVIDIA",
+  "homepage": "https://developer.nvidia.com/nvidia-system-management-interface",
+  "tags": ["GPU", "monitoring", "CUDA"],
+  "platforms": ["windows", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["-q"],
+      "label": "-q",
+      "description": "Dump the full status of every GPU instead of the one-line summary table",
+      "children": [
+        { "kind": "option", "tokens": ["-d", "<target>"], "label": "-d", "description": "Limit the dump to one section of the report", "takes": "enum", "options": ["MEMORY", "UTILIZATION", "TEMPERATURE", "POWER", "CLOCK", "ECC", "PERFORMANCE"] }
+      ]
+    },
+    { "kind": "option", "tokens": ["-l", "<seconds>"], "label": "-l", "description": "Repeat the report every N seconds until the command is stopped", "takes": "number" },
+    { "kind": "option", "tokens": ["-i", "<id>"], "label": "-i", "description": "Restrict the command to one GPU by index or UUID", "takes": "text" },
+    { "kind": "option", "tokens": ["--query-gpu=<fields>"], "label": "--query-gpu", "description": "Print only the named fields, comma separated, e.g. name,memory.used,utilization.gpu", "takes": "text" },
+    { "kind": "option", "tokens": ["--format=csv"], "label": "--format=csv", "description": "Emit machine-readable CSV with a header line" },
+    { "kind": "option", "tokens": ["--query-compute-apps=<fields>"], "label": "--query-compute-apps", "description": "List the compute processes on the GPUs, e.g. pid,process_name,used_memory", "takes": "text" },
+    { "kind": "option", "tokens": ["-L"], "label": "-L", "description": "List the available GPUs with their UUIDs and bus ids" },
+    { "kind": "option", "tokens": ["-pm", "<mode>"], "label": "-pm", "description": "Set persistence mode: 1 keeps the driver loaded when no client is running", "takes": "enum", "options": ["0", "1"] },
+    { "kind": "note", "label": "Use the CSV query form in scripts", "description": "nvidia-smi --query-gpu=name,memory.used,utilization.gpu --format=csv,noheader,nounits is the form to parse; the --format=csv token adds the header line by default" },
+    { "kind": "note", "label": "-q is the stable machine-readable form", "description": "-q prints every field the driver exposes in a fixed labeled layout; the default summary table is meant for humans and its columns change between driver versions" },
+    { "kind": "note", "label": "The driver must match the CUDA runtime", "description": "nvidia-smi works only when the installed driver supports the CUDA version the toolkit expects; a mismatch usually shows up as a driver/library version error" },
+    { "kind": "note", "label": "Where the tool lives", "description": "On Windows it ships with the driver in the system directory and needs an NVIDIA driver present; on Linux it comes from the driver package as well, not from the CUDA toolkit" }
+  ],
+  "actions": [
+    {
+      "name": "query_gpu",
+      "label": "Query GPUs as CSV",
+      "description": "Print the chosen GPU fields as CSV, one line per GPU",
+      "executable": "nvidia-smi",
+      "args": [
+        { "value": "--query-gpu={fields}" },
+        { "value": "--format=csv" }
+      ],
+      "variables": [
+        { "name": "fields", "type": "text", "label": "Fields", "default": "name,memory.used,memory.total,utilization.gpu,temperature.gpu", "required": true }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 60
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "awk",
+  "display_name": "AWK",
+  "description": "Scan text record by record and act on fields that match a pattern",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<program>"], "label": "program", "description": "The pattern-action program, for example '{print $1}'", "takes": "text" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "Input file; omitted or - reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-F", "<separator>"], "label": "-F", "description": "Use this field separator instead of runs of white space", "takes": "text" },
+    { "kind": "option", "tokens": ["-v", "<name=value>"], "label": "-v", "description": "Set a program variable before the input is read", "takes": "text" },
+    { "kind": "option", "tokens": ["-f", "<file>"], "label": "-f", "description": "Read the program from this file", "takes": "file" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the version of the awk implementation in use" },
+    { "kind": "option", "tokens": ["-safe"], "label": "-safe", "description": "Refuse system(), redirections and file writes; supported by the BSD awk on macOS" },
+    { "kind": "note", "label": "Fields and records", "description": "$0 is the whole record, $1 the first field and NF the number of fields; the record separator is NR with FNR counting within the current file" },
+    { "kind": "note", "label": "Separators", "description": "OFS is the output field separator and FS the input one; -F ':' can also be written as a BEGIN block setting FS" },
+    { "kind": "note", "label": "Two AWK implementations", "description": "macOS ships the BSD one-true-awk, GNU awk (gawk) is standard on Linux; gawk-only features such as gensub() do not exist in the BSD version" }
+  ]
+}

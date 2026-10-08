@@ -1,0 +1,56 @@
+{
+  "name": "php",
+  "display_name": "PHP",
+  "description": "PHP command-line interpreter: run scripts, evaluate code, check syntax and serve a directory",
+  "version": "8.2",
+  "category": "development",
+  "author": "The PHP Group",
+  "license": "PHP-3.01",
+  "homepage": "https://www.php.net",
+  "tags": ["php", "scripting", "web", "cli"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<script>"], "label": "script", "description": "The PHP file to execute; its arguments follow it", "takes": "file" },
+    { "kind": "option", "tokens": ["-f", "<file>"], "label": "-f", "description": "Parse and execute this file; the same as passing the file as the first argument", "takes": "file" },
+    { "kind": "option", "tokens": ["-r", "<code>"], "label": "-r", "description": "Run this PHP code, without the opening <?php tag", "takes": "text" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Start the interactive PHP shell instead of running a file" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Check the syntax of a file and exit without running it" },
+    { "kind": "option", "tokens": ["-m"], "label": "-m", "description": "List the compiled-in and loaded modules" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Print the phpinfo() output for this build" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the PHP version" },
+    { "kind": "option", "tokens": ["-c", "<file>"], "label": "-c", "description": "Look for php.ini in this file or directory instead of the default locations", "takes": "file" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Run without loading any php.ini file" },
+    { "kind": "option", "tokens": ["--ini"], "label": "--ini", "description": "Show which php.ini files are loaded and which one was used" },
+    { "kind": "option", "tokens": ["-d", "<name=value>"], "label": "-d", "description": "Define one INI entry for this run, written as name=value, e.g. memory_limit=512M", "takes": "text" },
+    { "kind": "option", "tokens": ["-e"], "label": "-e", "description": "Generate extended information for the debugger and profiler" },
+    { "kind": "option", "tokens": ["-S", "<addr:port>"], "label": "-S", "description": "Run the built-in web server on this address and port, e.g. localhost:8000", "takes": "text" },
+    { "kind": "option", "tokens": ["-t", "<directory>"], "label": "-t", "description": "Document root for the built-in web server", "takes": "directory" },
+    { "kind": "note", "label": "php -S is a development server", "description": "-S runs a single-threaded development server meant for local testing; it has no process management or hardening, so never expose it to a network you do not control" },
+    { "kind": "note", "label": "Options come before the script", "description": "php reads its options only up to the script name; anything after the script file is handed to the script in $argv, so php -d memory_limit=512M script.php arg1 passes arg1 to the script" }
+  ],
+  "actions": [
+    {
+      "name": "serve",
+      "label": "Start the built-in web server",
+      "description": "Serve a directory over HTTP with the PHP development server",
+      "executable": "php",
+      "args": [
+        { "value": "-S" },
+        { "value": "{address}" },
+        { "value": "-t", "when": "has_docroot" },
+        { "value": "{docroot}", "when": "has_docroot" }
+      ],
+      "variables": [
+        { "name": "address", "type": "text", "label": "Address and port", "default": "localhost:8000", "placeholder": "localhost:8000" },
+        { "name": "docroot", "type": "directory", "label": "Document root", "default": "" },
+        { "name": "has_docroot", "type": "boolean", "label": "Serve a specific directory", "default": true }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 0
+    }
+  ]
+}

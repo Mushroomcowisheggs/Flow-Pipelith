@@ -1,0 +1,61 @@
+{
+  "name": "javac",
+  "display_name": "Java Compiler",
+  "description": "Compile Java source files into class files for the JVM",
+  "version": "21",
+  "cdl_version": "0.2",
+  "category": "development",
+  "author": "Eclipse Adoptium",
+  "license": "GPL-2.0-with-classpath-exception",
+  "homepage": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html",
+  "tags": ["jvm", "jdk", "compiler", "build"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-d", "<directory>"], "label": "-d", "description": "Write the class files into this directory, creating the package layout", "takes": "directory" },
+    { "kind": "option", "tokens": ["-cp", "<path>"], "label": "-cp", "description": "Where to find referenced classes and JARs; the long form is -classpath", "takes": "text" },
+    { "kind": "option", "tokens": ["--release", "<version>"], "label": "--release", "description": "Compile against the API of this Java release, for example 17 or 21", "takes": "text" },
+    { "kind": "option", "tokens": ["-source", "<version>"], "label": "-source", "description": "Accept only source syntax of this release", "takes": "text" },
+    { "kind": "option", "tokens": ["-target", "<version>"], "label": "-target", "description": "Produce class files for this release of the virtual machine", "takes": "text" },
+    { "kind": "option", "tokens": ["-encoding", "<charset>"], "label": "-encoding", "description": "Character set of the source files, for example UTF-8", "takes": "text" },
+    { "kind": "option", "tokens": ["-Xlint"], "label": "-Xlint", "description": "Enable all recommended warnings, not just the mandatory ones" },
+    { "kind": "option", "tokens": ["-Werror"], "label": "-Werror", "description": "Treat warnings as errors and fail the compilation" },
+    { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Generate all debugging information: line numbers, local variables and source file" },
+    { "kind": "option", "tokens": ["-parameters"], "label": "-parameters", "description": "Record constructor and method parameter names for reflection" },
+    { "kind": "option", "tokens": ["-verbose"], "label": "-verbose", "description": "Report each class loaded and each source file compiled" },
+    { "kind": "option", "tokens": ["<file>"], "label": "Source file", "description": "A .java file to compile; repeat the pick once per file", "takes": "file" },
+    { "kind": "note", "label": "Class path separators", "description": "Entries in -cp are separated with ; on Windows and : on Linux and macOS" },
+    { "kind": "note", "label": "Output directory", "description": "Without -d the class files land next to their sources; naming -d keeps the source tree clean and lets java -cp use that directory" }
+  ],
+  "actions": [
+    {
+      "name": "compile_tree",
+      "label": "Compile sources",
+      "description": "Compile one source tree against a class path into an output directory",
+      "executable": "javac",
+      "args": [
+        { "value": "-encoding" },
+        { "value": "{encoding}" },
+        { "value": "--release" },
+        { "value": "{release}" },
+        { "value": "-cp" },
+        { "value": "{classpath}" },
+        { "value": "-d" },
+        { "value": "{outdir}" },
+        { "value": "{sources}" }
+      ],
+      "variables": [
+        { "name": "sources", "type": "text", "label": "Source files", "placeholder": "src/Main.java src/Util.java", "required": true },
+        { "name": "outdir", "type": "directory", "label": "Output directory", "default": "out" },
+        { "name": "classpath", "type": "text", "label": "Class path", "default": "" },
+        { "name": "release", "type": "text", "label": "Target release", "default": "21" },
+        { "name": "encoding", "type": "text", "label": "Source encoding", "default": "UTF-8" }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 900
+    }
+  ]
+}

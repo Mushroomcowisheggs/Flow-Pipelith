@@ -1,0 +1,51 @@
+{
+  "name": "Rscript",
+  "display_name": "Rscript",
+  "description": "Non-interactive front end of R: run an R script or a single expression and exit",
+  "version": "4.5",
+  "category": "science",
+  "author": "R Core Team",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://www.r-project.org",
+  "tags": ["R", "statistics", "scripting", "science"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<script>"], "label": "script", "description": "The R script file to run; arguments after it are passed to the script", "takes": "file" },
+    { "kind": "option", "tokens": ["-e", "<expr>"], "label": "-e", "description": "Evaluate this R expression and exit; repeat the option to evaluate several expressions in order", "takes": "text" },
+    { "kind": "option", "tokens": ["--vanilla"], "label": "--vanilla", "description": "Combine --no-save, --no-environ, --no-site-file, --no-init-file and --no-restore for a reproducible run" },
+    { "kind": "option", "tokens": ["--no-save"], "label": "--no-save", "description": "Do not save the workspace when R exits" },
+    { "kind": "option", "tokens": ["--no-restore"], "label": "--no-restore", "description": "Do not restore a previously saved workspace at startup" },
+    { "kind": "option", "tokens": ["--no-echo"], "label": "--no-echo", "description": "Do not echo the input while it runs, so only the script's own output is printed" },
+    { "kind": "option", "tokens": ["--no-init-file"], "label": "--no-init-file", "description": "Do not read the user's .Rprofile" },
+    { "kind": "option", "tokens": ["--no-environ"], "label": "--no-environ", "description": "Do not read the user's .Renviron file" },
+    { "kind": "option", "tokens": ["--no-site-file"], "label": "--no-site-file", "description": "Do not read the site-wide Rprofile" },
+    { "kind": "option", "tokens": ["--verbose"], "label": "--verbose", "description": "Print what R is doing while it starts up" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the R version and exit" },
+    { "kind": "option", "tokens": ["--default-packages=<pkgs>"], "label": "--default-packages", "description": "Comma-separated packages to attach at startup, e.g. base,stats,utils, or NULL for none", "takes": "text" },
+    { "kind": "note", "label": "Quoting with -e", "description": "The expression is a single argument, so quote it for the shell: Rscript -e 'print(mean(1:10))'. In PowerShell or cmd.exe use the platform's own quoting rules for the same string" },
+    { "kind": "note", "label": "Arguments for the script", "description": "Everything after the script file, or after the last -e expression, is passed through; read it inside R with commandArgs(trailingOnly = TRUE)" }
+  ],
+  "actions": [
+    {
+      "name": "eval_expression",
+      "label": "Evaluate an expression",
+      "description": "Run one R expression in a clean session and print its result",
+      "executable": "Rscript",
+      "args": [
+        { "value": "--vanilla", "when": "vanilla" },
+        { "value": "-e" },
+        { "value": "{expression}" }
+      ],
+      "variables": [
+        { "name": "expression", "type": "text", "label": "R expression", "multiline": true, "required": true, "default": "print(summary(c(1, 2, 3)))" },
+        { "name": "vanilla", "type": "boolean", "label": "Vanilla session (ignore profiles and saved workspace)", "default": true }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

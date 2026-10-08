@@ -1,0 +1,23 @@
+{
+  "name": "mdfind",
+  "display_name": "Spotlight Search",
+  "description": "Run a Spotlight query and print the paths that match",
+  "category": "data",
+  "author": "Apple",
+  "tags": ["search", "spotlight", "metadata", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<query>"], "label": "query", "description": "A Spotlight query, for example kMDItemFSName == \"*.pdf\"c", "takes": "text" },
+    { "kind": "option", "tokens": ["-onlyin", "<directory>"], "label": "-onlyin", "description": "Search only inside this directory", "takes": "directory" },
+    { "kind": "option", "tokens": ["-name", "<name>"], "label": "-name", "description": "Match files whose name matches this pattern instead of running a query", "takes": "text" },
+    { "kind": "option", "tokens": ["-live"], "label": "-live", "description": "Keep running and print new matches as Spotlight indexes them" },
+    { "kind": "option", "tokens": ["-count"], "label": "-count", "description": "Print only the number of matches" },
+    { "kind": "option", "tokens": ["-0"], "label": "-0", "description": "Separate the printed paths with a null byte instead of a newline" },
+    { "kind": "option", "tokens": ["-literal"], "label": "-literal", "description": "Treat the query literally, without reading a leading dash as an option" },
+    { "kind": "note", "label": "Spotlight indexing", "description": "mdfind only sees what Spotlight has indexed; folders and volumes excluded from indexing return no matches" },
+    { "kind": "note", "label": "-live needs -onlyin", "description": "The -live option is only valid together with -onlyin" },
+    { "kind": "note", "label": "Query syntax", "description": "Queries compare metadata attributes, for example kMDItemTextContent == \"report\"c, where the trailing c asks for a case insensitive comparison" }
+  ]
+}

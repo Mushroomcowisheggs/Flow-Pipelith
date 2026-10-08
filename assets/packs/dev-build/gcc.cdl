@@ -1,0 +1,133 @@
+{
+  "name": "gcc",
+  "display_name": "GCC",
+  "description": "GNU Compiler Collection: compiles C / C++ source files into executables",
+  "version": "13.0",
+  "cdl_version": "0.1",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://gcc.gnu.org",
+  "tags": ["compiler", "C", "C++"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "actions": [
+    {
+      "name": "compile_cpp",
+      "label": "Compile C++",
+      "description": "Compile a C++ source file into an executable",
+      "executable": "g++",
+      "args": [
+        { "value": "-std=c++17" },
+        { "value": "-Wall" },
+        { "value": "-O2", "when": "optimize" },
+        { "value": "-g", "when": "debug_info" },
+        { "value": "-o" },
+        { "value": "{output}" },
+        { "value": "{source}" }
+      ],
+      "variables": [
+        {
+          "name": "source",
+          "type": "file",
+          "label": "Source file",
+          "filters": ["*.cpp", "*.cc", "*.cxx"],
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "file",
+          "label": "Output executable",
+          "save": true,
+          "default": "a.exe"
+        },
+        {
+          "name": "optimize",
+          "type": "boolean",
+          "label": "Enable optimization (-O2)",
+          "default": true
+        },
+        {
+          "name": "debug_info",
+          "type": "boolean",
+          "label": "Include debug info (-g)",
+          "default": false
+        }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "compile_c",
+      "label": "Compile C",
+      "description": "Compile a C source file into an executable",
+      "executable": "gcc",
+      "args": [
+        { "value": "-std=c11" },
+        { "value": "-Wall" },
+        { "value": "-O2", "when": "optimize" },
+        { "value": "-o" },
+        { "value": "{output}" },
+        { "value": "{source}" }
+      ],
+      "variables": [
+        {
+          "name": "source",
+          "type": "file",
+          "label": "Source file",
+          "filters": ["*.c"],
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "file",
+          "label": "Output executable",
+          "save": true,
+          "default": "a.exe"
+        },
+        {
+          "name": "optimize",
+          "type": "boolean",
+          "label": "Enable optimization (-O2)",
+          "default": true
+        }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "compile_to_object",
+      "label": "Compile to object file",
+      "description": "Compile without linking, producing a .o object file",
+      "executable": "gcc",
+      "args": [
+        { "value": "-c" },
+        { "value": "-Wall" },
+        { "value": "-o" },
+        { "value": "{output}" },
+        { "value": "{source}" }
+      ],
+      "variables": [
+        { "name": "source", "type": "file", "label": "Source file", "filters": ["*.c", "*.cpp"], "required": true },
+        { "name": "output", "type": "file", "label": "Object file", "save": true, "default": "out.o" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "version",
+      "label": "Show version",
+      "description": "Print compiler version information",
+      "executable": "gcc",
+      "args": [{ "value": "--version" }],
+      "variables": [],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 30
+    }
+  ]
+}

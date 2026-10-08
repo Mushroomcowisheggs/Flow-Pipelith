@@ -1,0 +1,67 @@
+# .gitignore — allowlist ("whitelist") style.
+#
+# Everything is ignored by default; only the paths allowed below are tracked. A new file therefore
+# has to be admitted on purpose, so build output, editor scratch, downloaded dependencies and
+# machine-local state stay out of the repository by construction instead of by remembering a rule for
+# every new kind of artifact. It is what keeps the repository at ~15 MB while a working tree with
+# caches, `zig-out/`, screenshots and the retired WebView2 payload is ~670 MB.
+#
+# To start tracking something new, add a `!` line for it — and for the directories on the way to it.
+#
+# Deliberately untracked, and kept on the `reference` branch instead — everything that is not part
+# of the program itself: `ARCHITECTURE.md` and `design.md` (the engineering rules, the decisions and
+# the original product brief), `archive/` (the retired WebView2 shell and its Node suites), `docs/`
+# (the interface specifications), `dev/` (the build driver, the GUI harness and its baselines, the
+# path audit) and `tools/` (the dependency fetcher, the end-to-end suites, and the process-layer
+# experiments, which even carried two compiled `.exe` files). `master` carries only what a build reads
+# and what the program offers: `.gitignore`, `build.zig`, `src/`, `third_party/` and `assets/`. The
+# branch also carries the comments that cite those documents; `master` is self-contained without them.
+
+# ── 1. Deny everything… ──────────────────────────────────────────────────────
+*
+# …except directories, so the rules below can reach inside them. A file inside an allowed directory
+# is still ignored unless a later rule allows it explicitly.
+!*/
+
+# ── 2. Repository metadata and the build entry point ─────────────────────────
+!.gitignore
+!build.zig
+
+# ── 3. What the program is: sources and the data it offers ───────────────────
+!src/**
+!assets/**
+
+# ── 4. Vendored GUI dependencies ─────────────────────────────────────────────
+# Only what the build reads: the ImGui sources, the SDL3 headers/libs (including the DLL that ships
+# next to the executable), and the WebView2 shim header the picker's GUID stand-in compiles against.
+# The rest of third_party/webview2 is the retired WebView2 shell's payload (rule 9) — 45 MB nothing
+# builds from any more — plus the downloaded .nupkg; `third_party/_dl/` holds fetch output.
+!third_party/NATIVE-GUI-NOTICE.md
+!third_party/imgui/**
+!third_party/sdl3/**
+!third_party/webview2/shim_include/**
+!third_party/webview2/LICENSE.txt
+!third_party/webview2/NOTICE.txt
+
+# ── 5. …and inside the allowed trees, keep generated and scratch content out again ──
+# (Ignoring a directory excludes everything under it, so these cannot be re-admitted by `dev/**`.)
+/zig-out/
+/.zig-cache/
+/.zig-global-cache/
+/crashdumps/
+/archive/
+/dev/_shot/
+/dev/_native-tmp/
+/dev/_build/
+/.pipelith/
+/.pipelith-test/
+/.pipelith-test-empty/
+/third_party/_dl/
+
+# ── 6. Compiled artifacts are never tracked, even inside an allowed tree ─────
+# (Their sources are what belongs here. `SDL3.dll` / `libSDL3.dll.a` are the vendored SDL3 build
+# inputs, so they are matched by neither rule.)
+*.exe
+*.pdb
+*.obj
+*.o

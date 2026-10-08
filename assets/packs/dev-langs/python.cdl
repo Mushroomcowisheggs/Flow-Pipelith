@@ -1,0 +1,87 @@
+{
+  "name": "python",
+  "display_name": "Python",
+  "description": "Python interpreter: run scripts, install packages, execute one-liners",
+  "version": "3.12",
+  "category": "development",
+  "author": "Python Software Foundation",
+  "license": "PSF-2.0",
+  "homepage": "https://www.python.org",
+  "tags": ["scripting", "data", "automation"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "actions": [
+    {
+      "name": "run_script",
+      "label": "Run script",
+      "description": "Execute a Python script file with command-line arguments",
+      "executable": "python",
+      "args": [
+        { "value": "-u" },
+        { "value": "{script}" },
+        { "value": "{args}", "when": "has_args" }
+      ],
+      "variables": [
+        { "name": "script", "type": "file", "label": "Script file", "filters": ["*.py"], "required": true },
+        { "name": "args", "type": "text", "label": "Command-line arguments", "default": "" },
+        { "name": "has_args", "type": "boolean", "label": "Pass arguments", "default": false }
+      ],
+      "stdin": "pipe",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    },
+    {
+      "name": "run_code",
+      "label": "Run one-liner",
+      "description": "Execute a snippet of Python code directly with -c",
+      "executable": "python",
+      "args": [
+        { "value": "-u" },
+        { "value": "-c" },
+        { "value": "{code}" }
+      ],
+      "variables": [
+        { "name": "code", "type": "text", "label": "Code", "multiline": true, "required": true, "default": "print('hello')" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    },
+    {
+      "name": "install_package",
+      "label": "Install package",
+      "description": "Install a Python package via pip",
+      "executable": "python",
+      "args": [
+        { "value": "-m" },
+        { "value": "pip" },
+        { "value": "install" },
+        { "value": "--upgrade", "when": "upgrade" },
+        { "value": "--user", "when": "user_install" },
+        { "value": "{package}" }
+      ],
+      "variables": [
+        { "name": "package", "type": "text", "label": "Package name", "required": true, "placeholder": "e.g. requests" },
+        { "name": "upgrade", "type": "boolean", "label": "Upgrade to the latest version", "default": true },
+        { "name": "user_install", "type": "boolean", "label": "Install to the user directory", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 1800,
+      "confirm": true,
+      "danger": true
+    },
+    {
+      "name": "version",
+      "label": "Show version",
+      "executable": "python",
+      "args": [{ "value": "--version" }],
+      "variables": [],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 30
+    }
+  ]
+}

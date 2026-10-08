@@ -1,0 +1,214 @@
+{
+  "name": "ffmpeg",
+  "display_name": "FFmpeg",
+  "description": "Audio/video processing tool: format conversion, compression, audio extraction, clip trimming",
+  "version": "8.1",
+  "category": "media",
+  "author": "FFmpeg Team",
+  "license": "LGPL-2.1",
+  "homepage": "https://ffmpeg.org",
+  "tags": ["video", "audio", "conversion", "compression"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "actions": [
+    {
+      "name": "convert",
+      "label": "Convert format",
+      "description": "Convert video/audio to a specified container and codec",
+      "executable": "ffmpeg",
+      "args": [
+        { "value": "-hide_banner" },
+        { "value": "-y" },
+        { "value": "-i" },
+        { "value": "{input}" },
+        { "value": "-c:v" },
+        { "value": "{video_codec}" },
+        { "value": "-crf" },
+        { "value": "{quality}" },
+        { "value": "-c:a" },
+        { "value": "{audio_codec}" },
+        { "value": "{output}" }
+      ],
+      "variables": [
+        {
+          "name": "input",
+          "type": "file",
+          "label": "Input file",
+          "filters": ["*.mp4", "*.mkv", "*.avi", "*.mov", "*.webm", "*.mp3", "*.wav", "*.flac"],
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "file",
+          "label": "Output file",
+          "save": true,
+          "default": "output.mp4"
+        },
+        {
+          "name": "video_codec",
+          "type": "enum",
+          "label": "Video codec",
+          "default": "libx264",
+          "options": [
+            { "value": "libx264", "label": "H.264 (best compatibility)" },
+            { "value": "libx265", "label": "H.265 (smaller file size)" },
+            { "value": "libvpx-vp9", "label": "VP9 (web friendly)" },
+            { "value": "copy", "label": "Copy (no re-encoding)" }
+          ]
+        },
+        {
+          "name": "audio_codec",
+          "type": "enum",
+          "label": "Audio codec",
+          "default": "aac",
+          "options": [
+            { "value": "aac", "label": "AAC" },
+            { "value": "libmp3lame", "label": "MP3" },
+            { "value": "libopus", "label": "Opus" },
+            { "value": "copy", "label": "Copy" }
+          ]
+        },
+        {
+          "name": "quality",
+          "type": "number",
+          "label": "Quality (CRF, lower is higher quality)",
+          "default": "23",
+          "min": 0,
+          "max": 51,
+          "step": 1
+        }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600,
+      "confirm": true
+    },
+    {
+      "name": "extract_audio",
+      "label": "Extract audio",
+      "description": "Extract the audio track from a video and save it as an audio file",
+      "executable": "ffmpeg",
+      "args": [
+        { "value": "-hide_banner" },
+        { "value": "-y" },
+        { "value": "-i" },
+        { "value": "{input}" },
+        { "value": "-vn" },
+        { "value": "-acodec" },
+        { "value": "{codec}" },
+        { "value": "{output}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "Input video", "filters": ["*.mp4", "*.mkv", "*.mov"], "required": true },
+        { "name": "output", "type": "file", "label": "Output audio", "save": true, "default": "output.m4a" },
+        {
+          "name": "codec",
+          "type": "enum",
+          "label": "Audio codec",
+          "default": "copy",
+          "options": [
+            { "value": "copy", "label": "Copy (fastest)" },
+            { "value": "libmp3lame", "label": "MP3" },
+            { "value": "libopus", "label": "Opus" },
+            { "value": "pcm_s16le", "label": "WAV (lossless)" }
+          ]
+        }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 1800
+    },
+    {
+      "name": "compress",
+      "label": "Compress video",
+      "description": "Reduce video size using a target resolution and bitrate",
+      "executable": "ffmpeg",
+      "args": [
+        { "value": "-hide_banner" },
+        { "value": "-y" },
+        { "value": "-i" },
+        { "value": "{input}" },
+        { "value": "-vf" },
+        { "value": "scale=-2:{height}" },
+        { "value": "-b:v" },
+        { "value": "{bitrate}k" },
+        { "value": "-c:v" },
+        { "value": "libx264" },
+        { "value": "-preset" },
+        { "value": "medium" },
+        { "value": "{output}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "Input video", "filters": ["*.mp4", "*.mkv", "*.mov"], "required": true },
+        { "name": "output", "type": "file", "label": "Output video", "save": true, "default": "compressed.mp4" },
+        {
+          "name": "height",
+          "type": "enum",
+          "label": "Target height",
+          "default": "720",
+          "options": [
+            { "value": "2160", "label": "4K (2160p)" },
+            { "value": "1080", "label": "1080p" },
+            { "value": "720", "label": "720p" },
+            { "value": "480", "label": "480p" },
+            { "value": "360", "label": "360p" }
+          ]
+        },
+        { "name": "bitrate", "type": "number", "label": "Video bitrate (kbps)", "default": "2500", "min": 100, "max": 50000, "step": 100 }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600,
+      "confirm": true
+    },
+    {
+      "name": "trim",
+      "label": "Trim clip",
+      "description": "Cut a segment of audio/video by start and end time",
+      "executable": "ffmpeg",
+      "args": [
+        { "value": "-hide_banner" },
+        { "value": "-y" },
+        { "value": "-ss" },
+        { "value": "{start}" },
+        { "value": "-i" },
+        { "value": "{input}" },
+        { "value": "-t" },
+        { "value": "{duration}" },
+        { "value": "-c" },
+        { "value": "copy" },
+        { "value": "{output}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "Input file", "filters": ["*.mp4", "*.mkv", "*.mp3"], "required": true },
+        { "name": "output", "type": "file", "label": "Output file", "save": true, "default": "clip.mp4" },
+        { "name": "start", "type": "text", "label": "Start time", "default": "00:00:00", "placeholder": "HH:MM:SS or seconds" },
+        { "name": "duration", "type": "text", "label": "Duration", "default": "00:00:10", "placeholder": "HH:MM:SS or seconds" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 1800
+    },
+    {
+      "name": "info",
+      "label": "Show media info",
+      "description": "Print codec, duration, resolution and other information about a file",
+      "executable": "ffmpeg",
+      "args": [
+        { "value": "-hide_banner" },
+        { "value": "-i" },
+        { "value": "{input}" },
+        { "value": "-f" },
+        { "value": "null" },
+        { "value": "-" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "Media file", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

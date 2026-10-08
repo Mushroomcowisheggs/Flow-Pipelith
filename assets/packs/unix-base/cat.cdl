@@ -1,0 +1,21 @@
+{
+  "name": "cat",
+  "display_name": "cat",
+  "description": "Print files to standard output and join several files into one stream",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to print; several may be given and are printed in order", "takes": "file" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Number every output line" },
+    { "kind": "option", "tokens": ["-b"], "label": "-b", "description": "Number only the non-blank output lines" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Squeeze runs of blank lines into a single blank line" },
+    { "kind": "option", "tokens": ["-A"], "label": "-A", "description": "Show non-printing characters, tabs as ^I and the end of each line as $" },
+    { "kind": "option", "tokens": ["-E"], "label": "-E", "description": "Show the end of each line as $" },
+    { "kind": "option", "tokens": ["-T"], "label": "-T", "description": "Show tabs as ^I" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Show non-printing characters, except tabs and line ends" },
+    { "kind": "note", "label": "A dash means standard input", "description": "The file name - stands for standard input, so cat - prints what is piped in and cat file - joins a file with that stream" },
+    { "kind": "note", "label": "Missing files", "description": "cat reports every file it cannot read and keeps going with the rest; the exit status is then non-zero" }
+  ]
+}

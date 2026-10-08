@@ -1,0 +1,23 @@
+{
+  "name": "split",
+  "display_name": "split",
+  "description": "Break a large file into smaller files of a fixed size or piece count",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "discard", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "input", "description": "File to split; omitted or - reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["<prefix>"], "label": "prefix", "description": "Start of the name of each output file, x by default", "takes": "text" },
+    { "kind": "option", "tokens": ["-l", "<lines>"], "label": "-l", "description": "Put this many lines in each output file", "takes": "number" },
+    { "kind": "option", "tokens": ["-b", "<size>"], "label": "-b", "description": "Give each output file this many bytes, with a suffix such as K or M", "takes": "text" },
+    { "kind": "option", "tokens": ["-n", "<chunks>"], "label": "-n", "description": "Split into this many files of roughly equal size", "takes": "number" },
+    { "kind": "option", "tokens": ["-a", "<length>"], "label": "-a", "description": "Use this many characters in the suffix of each file name", "takes": "number" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Use decimal suffixes such as 00, 01 instead of letters" },
+    { "kind": "option", "tokens": ["--additional-suffix=<suffix>"], "label": "--additional-suffix", "description": "Append this string after the generated suffix, for example .txt", "takes": "text" },
+    { "kind": "option", "tokens": ["-e"], "label": "-e", "description": "Do not create empty output files" },
+    { "kind": "note", "label": "Default suffix", "description": "Without options the file is split every 1000 lines into xaa, xab, xac and so on; -d -a 2 produces x00, x01 instead" },
+    { "kind": "note", "label": "Line, byte and chunk modes", "description": "-l, -b and -n choose between a fixed number of lines, a fixed byte size and a fixed number of pieces; only one of them should be given" },
+    { "kind": "note", "label": "--additional-suffix is GNU only", "description": "The GNU coreutils option is not available on macOS, where the suffix length must be chosen with -a and files are renamed afterwards if needed" }
+  ]
+}

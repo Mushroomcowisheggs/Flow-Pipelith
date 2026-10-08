@@ -1,0 +1,280 @@
+{
+  "name": "dotnet",
+  "display_name": ".NET CLI",
+  "description": ".NET SDK driver: restore, build, run, test, publish, and manage NuGet packages and tools",
+  "version": "10.0",
+  "category": "development",
+  "author": "Microsoft",
+  "license": "MIT",
+  "homepage": "https://learn.microsoft.com/dotnet/core/tools/",
+  "tags": ["dotnet", "csharp", "build", "nuget"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["build"],
+      "label": "build",
+      "description": "Compile a project or solution and its dependencies",
+      "children": [
+        { "kind": "option", "tokens": ["<project>"], "label": "project or solution", "description": "The project or solution file to build", "takes": "file" },
+        { "kind": "option", "tokens": ["--configuration", "<config>"], "label": "--configuration", "description": "Build in this configuration instead of Debug", "takes": "enum", "options": ["Debug", "Release"] },
+        { "kind": "option", "tokens": ["--output", "<directory>"], "label": "--output", "description": "Place the built binaries in this directory", "takes": "directory" },
+        { "kind": "option", "tokens": ["--framework", "<tfm>"], "label": "--framework", "description": "Build only this target framework, e.g. net10.0", "takes": "text" },
+        { "kind": "option", "tokens": ["--runtime", "<rid>"], "label": "--runtime", "description": "Target this runtime identifier, e.g. win-x64 or linux-arm64", "takes": "text" },
+        { "kind": "option", "tokens": ["--self-contained"], "label": "--self-contained", "description": "Bundle the .NET runtime with the output instead of relying on an installed one" },
+        { "kind": "option", "tokens": ["--no-restore"], "label": "--no-restore", "description": "Do not restore packages before building" },
+        { "kind": "option", "tokens": ["-p:<name=value>"], "label": "-p:", "description": "Set an MSBuild property for this build, written as name=value, e.g. Configuration=Release", "takes": "text" },
+        { "kind": "option", "tokens": ["-v", "<level>"], "label": "-v", "description": "How much MSBuild prints to the console", "takes": "enum", "options": ["quiet", "minimal", "normal", "detailed", "diagnostic"] }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["run"],
+      "label": "run",
+      "description": "Build and run the project's entry point",
+      "children": [
+        { "kind": "option", "tokens": ["--project", "<path>"], "label": "--project", "description": "Run this project instead of the one in the current directory", "takes": "file" },
+        { "kind": "option", "tokens": ["--configuration", "<config>"], "label": "--configuration", "description": "Run in this configuration", "takes": "enum", "options": ["Debug", "Release"] },
+        { "kind": "option", "tokens": ["--framework", "<tfm>"], "label": "--framework", "description": "Run this target framework, e.g. net10.0", "takes": "text" },
+        { "kind": "option", "tokens": ["--no-build"], "label": "--no-build", "description": "Run the existing build output without building first" },
+        { "kind": "option", "tokens": ["--no-restore"], "label": "--no-restore", "description": "Do not restore packages before running" },
+        { "kind": "option", "tokens": ["--runtime", "<rid>"], "label": "--runtime", "description": "Run against this runtime identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--self-contained"], "label": "--self-contained", "description": "Run with a self-contained runtime; requires --runtime" },
+        { "kind": "option", "tokens": ["--", "<arguments>"], "label": "--", "description": "Everything after this goes to the application, not to dotnet", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["publish"],
+      "label": "publish",
+      "description": "Build the project and copy the deployable output to a directory",
+      "children": [
+        { "kind": "option", "tokens": ["--configuration", "<config>"], "label": "--configuration", "description": "Publish in this configuration; Release is the usual choice", "takes": "enum", "options": ["Debug", "Release"] },
+        { "kind": "option", "tokens": ["--output", "<directory>"], "label": "--output", "description": "Directory that receives the published files", "takes": "directory" },
+        { "kind": "option", "tokens": ["--runtime", "<rid>"], "label": "--runtime", "description": "Publish for this runtime identifier, e.g. win-x64 or linux-x64", "takes": "text" },
+        { "kind": "option", "tokens": ["--self-contained"], "label": "--self-contained", "description": "Include the .NET runtime in the published output" },
+        { "kind": "option", "tokens": ["--framework", "<tfm>"], "label": "--framework", "description": "Publish this target framework, e.g. net10.0", "takes": "text" },
+        { "kind": "option", "tokens": ["--no-build"], "label": "--no-build", "description": "Publish the existing build output without building first" },
+        { "kind": "option", "tokens": ["--no-restore"], "label": "--no-restore", "description": "Do not restore packages before publishing" },
+        { "kind": "option", "tokens": ["-p:<name=value>"], "label": "-p:", "description": "Set an MSBuild property, e.g. PublishSingleFile=true", "takes": "text" },
+        { "kind": "option", "tokens": ["-v", "<level>"], "label": "-v", "description": "How much MSBuild prints to the console", "takes": "enum", "options": ["quiet", "minimal", "normal", "detailed", "diagnostic"] }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["test"],
+      "label": "test",
+      "description": "Run the unit tests of a project or solution",
+      "children": [
+        { "kind": "option", "tokens": ["--configuration", "<config>"], "label": "--configuration", "description": "Test this configuration", "takes": "enum", "options": ["Debug", "Release"] },
+        { "kind": "option", "tokens": ["--framework", "<tfm>"], "label": "--framework", "description": "Test only this target framework", "takes": "text" },
+        { "kind": "option", "tokens": ["--no-build"], "label": "--no-build", "description": "Test the existing build output without building first" },
+        { "kind": "option", "tokens": ["--no-restore"], "label": "--no-restore", "description": "Do not restore packages before testing" },
+        { "kind": "option", "tokens": ["--filter", "<expression>"], "label": "--filter", "description": "Run only the tests matching this expression, e.g. FullyQualifiedName~Orders", "takes": "text" },
+        { "kind": "option", "tokens": ["--logger", "<logger>"], "label": "--logger", "description": "Test logger to use, e.g. trx or console;verbosity=detailed", "takes": "text" },
+        { "kind": "option", "tokens": ["--results-directory", "<directory>"], "label": "--results-directory", "description": "Directory for the test result files", "takes": "directory" },
+        { "kind": "option", "tokens": ["--output", "<directory>"], "label": "--output", "description": "Directory for the built test binaries", "takes": "directory" },
+        { "kind": "option", "tokens": ["-v", "<level>"], "label": "-v", "description": "How much MSBuild prints to the console", "takes": "enum", "options": ["quiet", "minimal", "normal", "detailed", "diagnostic"] }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["pack"],
+      "label": "pack",
+      "description": "Build the project and produce a NuGet package",
+      "children": [
+        { "kind": "option", "tokens": ["--configuration", "<config>"], "label": "--configuration", "description": "Pack this configuration; Release is the usual choice", "takes": "enum", "options": ["Debug", "Release"] },
+        { "kind": "option", "tokens": ["--output", "<directory>"], "label": "--output", "description": "Directory that receives the .nupkg file", "takes": "directory" },
+        { "kind": "option", "tokens": ["--runtime", "<rid>"], "label": "--runtime", "description": "Pack for this runtime identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--version-suffix", "<suffix>"], "label": "--version-suffix", "description": "Append this suffix to the package version, e.g. beta.1", "takes": "text" },
+        { "kind": "option", "tokens": ["--no-build"], "label": "--no-build", "description": "Pack the existing build output without building first" },
+        { "kind": "option", "tokens": ["--no-restore"], "label": "--no-restore", "description": "Do not restore packages before packing" },
+        { "kind": "option", "tokens": ["-p:<name=value>"], "label": "-p:", "description": "Set an MSBuild property, e.g. PackageVersion=1.2.3", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["new"],
+      "label": "new",
+      "description": "Create a new project, file or solution from a template",
+      "children": [
+        { "kind": "option", "tokens": ["<template>"], "label": "template", "description": "Template short name, e.g. console, classlib, webapi, xunit, sln", "takes": "text" },
+        { "kind": "option", "tokens": ["--name", "<name>"], "label": "--name", "description": "Name of the created project or file", "takes": "text" },
+        { "kind": "option", "tokens": ["--output", "<directory>"], "label": "--output", "description": "Directory to create the output in", "takes": "directory" },
+        { "kind": "option", "tokens": ["--language", "<language>"], "label": "--language", "description": "Filter templates by language, e.g. C#, F# or VB", "takes": "text" },
+        { "kind": "option", "tokens": ["--dry-run"], "label": "--dry-run", "description": "Report what would be created without writing anything" },
+        { "kind": "option", "tokens": ["--force"], "label": "--force", "description": "Overwrite existing files instead of failing" },
+        { "kind": "subcommand", "tokens": ["list"], "label": "list", "description": "List the available templates" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["add"],
+      "label": "add",
+      "description": "Add a package reference or a project reference to a project",
+      "children": [
+        { "kind": "option", "tokens": ["<project>"], "label": "project (optional)", "description": "The project file to change; it goes before package or reference", "takes": "file" },
+        {
+          "kind": "subcommand",
+          "tokens": ["package", "<package>"],
+          "label": "package",
+          "description": "Add a NuGet package reference",
+          "takes": "text",
+          "children": [
+            { "kind": "option", "tokens": ["--version", "<version>"], "label": "--version", "description": "Pin this package version", "takes": "text" },
+            { "kind": "option", "tokens": ["--framework", "<tfm>"], "label": "--framework", "description": "Add the reference for this target framework only", "takes": "text" },
+            { "kind": "option", "tokens": ["--no-restore"], "label": "--no-restore", "description": "Edit the project without running restore afterwards" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["reference", "<path>"],
+          "label": "reference",
+          "description": "Add a reference to another project",
+          "takes": "file",
+          "children": [
+            { "kind": "option", "tokens": ["--framework", "<tfm>"], "label": "--framework", "description": "Add the reference for this target framework only", "takes": "text" }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["restore"],
+      "label": "restore",
+      "description": "Download and install the dependencies listed by a project",
+      "children": [
+        { "kind": "option", "tokens": ["--source", "<source>"], "label": "--source", "description": "NuGet package source to use instead of the configured ones", "takes": "text" },
+        { "kind": "option", "tokens": ["--packages", "<directory>"], "label": "--packages", "description": "Directory where restored packages are placed", "takes": "directory" },
+        { "kind": "option", "tokens": ["--configfile", "<file>"], "label": "--configfile", "description": "Use this NuGet configuration file", "takes": "file" },
+        { "kind": "option", "tokens": ["--runtime", "<rid>"], "label": "--runtime", "description": "Restore for this runtime identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--force"], "label": "--force", "description": "Resolve the dependencies again even if the lock state looks valid" },
+        { "kind": "option", "tokens": ["--no-cache"], "label": "--no-cache", "description": "Do not use the local HTTP package cache" },
+        { "kind": "option", "tokens": ["-v", "<level>"], "label": "-v", "description": "How much MSBuild prints to the console", "takes": "enum", "options": ["quiet", "minimal", "normal", "detailed", "diagnostic"] }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["tool"],
+      "label": "tool",
+      "description": "Install and manage .NET global, local and path tools",
+      "children": [
+        {
+          "kind": "subcommand",
+          "tokens": ["install", "<package>"],
+          "label": "install",
+          "description": "Install a tool package",
+          "takes": "text",
+          "children": [
+            { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Install into the user-wide tool directory" },
+            { "kind": "option", "tokens": ["--tool-path", "<directory>"], "label": "--tool-path", "description": "Install the tool into this directory", "takes": "directory" },
+            { "kind": "option", "tokens": ["--local"], "label": "--local", "description": "Install into the local tool manifest of the current directory" },
+            { "kind": "option", "tokens": ["--version", "<version>"], "label": "--version", "description": "Install this version of the tool", "takes": "text" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["uninstall", "<package>"],
+          "label": "uninstall",
+          "description": "Remove an installed tool",
+          "takes": "text",
+          "children": [
+            { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Remove a user-wide tool" },
+            { "kind": "option", "tokens": ["--tool-path", "<directory>"], "label": "--tool-path", "description": "Remove the tool installed in this directory", "takes": "directory" },
+            { "kind": "option", "tokens": ["--local"], "label": "--local", "description": "Remove a tool from the local manifest" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["list"],
+          "label": "list",
+          "description": "List the installed tools",
+          "children": [
+            { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "List user-wide tools" },
+            { "kind": "option", "tokens": ["--tool-path", "<directory>"], "label": "--tool-path", "description": "List the tools installed in this directory", "takes": "directory" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["update", "<package>"],
+          "label": "update",
+          "description": "Update an installed tool to its latest version",
+          "takes": "text",
+          "children": [
+            { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Update a user-wide tool" },
+            { "kind": "option", "tokens": ["--version", "<version>"], "label": "--version", "description": "Update to this version", "takes": "text" }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["nuget"],
+      "label": "nuget",
+      "description": "Interact with NuGet package sources",
+      "children": [
+        {
+          "kind": "subcommand",
+          "tokens": ["push", "<package-path>"],
+          "label": "push",
+          "description": "Upload a .nupkg file to a package source",
+          "takes": "file",
+          "children": [
+            { "kind": "option", "tokens": ["--source", "<source>"], "label": "--source", "description": "Server URL or source name to push to", "takes": "text" },
+            { "kind": "option", "tokens": ["--api-key", "<key>"], "label": "--api-key", "description": "API key for the server", "takes": "text" },
+            { "kind": "option", "tokens": ["--skip-duplicate"], "label": "--skip-duplicate", "description": "Treat an already published version as a success instead of an error" },
+            { "kind": "option", "tokens": ["--timeout", "<seconds>"], "label": "--timeout", "description": "Give up pushing after this many seconds", "takes": "number" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["add", "source", "<url>"],
+          "label": "add source",
+          "description": "Register a NuGet package source",
+          "takes": "text",
+          "children": [
+            { "kind": "option", "tokens": ["--name", "<name>"], "label": "--name", "description": "Name this source", "takes": "text" },
+            { "kind": "option", "tokens": ["--username", "<user>"], "label": "--username", "description": "User name for an authenticated source", "takes": "text" },
+            { "kind": "option", "tokens": ["--store-password-in-clear-text"], "label": "--store-password-in-clear-text", "description": "Allow the password to be stored unencrypted in the config file" }
+          ]
+        }
+      ]
+    },
+    { "kind": "option", "tokens": ["--info"], "label": "--info", "description": "Print the installed .NET, SDK and environment information" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the version of the dotnet SDK in use" },
+    { "kind": "option", "tokens": ["--list-sdks"], "label": "--list-sdks", "description": "List the installed SDK versions and their locations" },
+    { "kind": "option", "tokens": ["--list-runtimes"], "label": "--list-runtimes", "description": "List the installed .NET runtimes" },
+    { "kind": "note", "label": "dotnet run builds first", "description": "dotnet run performs an implicit build and restore before launching; pass --no-build to reuse the previous output, and use dotnet publish when you need a deliverable instead of a development run" },
+    { "kind": "note", "label": "Where the project path goes", "description": "The project or solution path is an argument of the subcommand: dotnet build src/App.csproj, never dotnet src/App.csproj build" }
+  ],
+  "actions": [
+    {
+      "name": "build_project",
+      "label": "Build project",
+      "description": "Build a project or solution in the chosen configuration",
+      "executable": "dotnet",
+      "args": [
+        { "value": "build" },
+        { "value": "{project}" },
+        { "value": "--configuration" },
+        { "value": "{configuration}" },
+        { "value": "--output", "when": "has_output" },
+        { "value": "{output}", "when": "has_output" },
+        { "value": "--no-restore", "when": "no_restore" }
+      ],
+      "variables": [
+        { "name": "project", "type": "file", "label": "Project or solution", "filters": ["*.csproj", "*.fsproj", "*.vbproj", "*.sln"], "required": true },
+        { "name": "configuration", "type": "enum", "label": "Configuration", "default": "Debug", "options": [{ "value": "Debug", "label": "Debug" }, { "value": "Release", "label": "Release" }] },
+        { "name": "output", "type": "directory", "label": "Output directory", "default": "" },
+        { "name": "has_output", "type": "boolean", "label": "Write to a specific output directory", "default": false },
+        { "name": "no_restore", "type": "boolean", "label": "Skip restore", "default": false }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

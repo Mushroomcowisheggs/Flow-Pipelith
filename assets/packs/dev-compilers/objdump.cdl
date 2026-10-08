@@ -1,0 +1,33 @@
+{
+  "name": "objdump",
+  "display_name": "GNU objdump",
+  "description": "GNU binutils: displays the headers, symbols and disassembly of object files",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/binutils/",
+  "tags": ["disassembly", "binutils", "inspection"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "pipe", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The object file or executable to inspect", "takes": "file" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Disassemble the sections that hold instructions" },
+    { "kind": "option", "tokens": ["-D"], "label": "-D", "description": "Disassemble every section, including data" },
+    { "kind": "option", "tokens": ["-h"], "label": "-h", "description": "Print the section headers" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Print the symbol table" },
+    { "kind": "option", "tokens": ["-T"], "label": "-T", "description": "Print the dynamic symbol table" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Print the full contents of the sections" },
+    { "kind": "option", "tokens": ["-C"], "label": "-C", "description": "Decode mangled C++ symbol names" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Print the relocations" },
+    { "kind": "option", "tokens": ["-x"], "label": "-x", "description": "Print all headers" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Print the file header" },
+    { "kind": "option", "tokens": ["--section=<name>"], "label": "--section", "description": "Restrict the output to this section", "takes": "text" },
+    { "kind": "option", "tokens": ["-S"], "label": "-S", "description": "Interleave the source code with the disassembly" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Print file and line numbers with the disassembly" },
+    { "kind": "option", "tokens": ["-M", "<options>"], "label": "-M", "description": "Pass options to the disassembler, for example intel or att", "takes": "text" },
+    { "kind": "note", "label": "Read from a file", "description": "objdump always inspects a file named on the command line; it cannot be fed from standard input" },
+    { "kind": "note", "label": "Symbol names", "description": "Add -C to the disassembly of C++ code, otherwise every call target is shown in its mangled form" },
+    { "kind": "note", "label": "Other platforms", "description": "This is the GNU binutils objdump; llvm-objdump is the LLVM equivalent and otool is the macOS one" }
+  ]
+}

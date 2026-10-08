@@ -1,0 +1,98 @@
+{
+  "name": "ssh-keygen",
+  "display_name": "ssh-keygen",
+  "description": "Create and inspect SSH key pairs: generate keys, read public keys and fingerprints, edit known_hosts",
+  "category": "system",
+  "author": "OpenSSH Project",
+  "license": "BSD-2-Clause",
+  "homepage": "https://www.openssh.com",
+  "tags": ["keys", "authentication", "cryptography"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "option",
+      "tokens": ["-t", "<type>"],
+      "label": "-t",
+      "description": "Type of key to create: ed25519, rsa or ecdsa",
+      "takes": "enum",
+      "options": ["ed25519", "rsa", "ecdsa"]
+    },
+    {
+      "kind": "option",
+      "tokens": ["-b", "<bits>"],
+      "label": "-b",
+      "description": "Key size in bits: 4096 for RSA or 521 for ECDSA; ed25519 has a fixed size and ignores it",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-C", "<comment>"],
+      "label": "-C",
+      "description": "Comment stored in the public key, usually user@host so the key can be recognised later",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-f", "<file>"],
+      "label": "-f",
+      "description": "File the key pair is written to; ssh-keygen asks before overwriting an existing key file",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-N", "<passphrase>"],
+      "label": "-N",
+      "description": "Passphrase that protects the private key; an empty value means no passphrase",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-p"],
+      "label": "-p",
+      "description": "Change the passphrase of an existing private key; the old passphrase is asked for first"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-y"],
+      "label": "-y",
+      "description": "Read a private key and print the matching public key"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-l"],
+      "label": "-l",
+      "description": "Print the fingerprint of a key file, together with its comment"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-R", "<host>"],
+      "label": "-R",
+      "description": "Remove every key belonging to this host from known_hosts",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-F", "<host>"],
+      "label": "-F",
+      "description": "Search known_hosts for this host and print the entry that is found",
+      "takes": "text"
+    },
+    {
+      "kind": "note",
+      "label": "-N with an empty passphrase",
+      "description": "Write -N \"\" to create a key that has no passphrase; that is the form unattended scripts and servers use, while a normal key should keep a passphrase"
+    },
+    {
+      "kind": "note",
+      "label": "Choose the key type",
+      "description": "-t ed25519 is the modern recommended choice; use -t rsa -b 4096 only where an older system cannot handle ed25519 keys"
+    },
+    {
+      "kind": "note",
+      "label": "Which file is which",
+      "description": "-f names the private key, and a matching .pub file with the public key is written next to it; the public key is the one that goes into authorized_keys on the server, and the private key never leaves this machine"
+    }
+  ]
+}

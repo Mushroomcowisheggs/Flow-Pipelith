@@ -1,0 +1,42 @@
+{
+  "name": "netstat",
+  "display_name": "Netstat",
+  "description": "Show active TCP connections, listening ports and network interface statistics",
+  "category": "network",
+  "tags": ["network", "ports", "connections", "diagnostics"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Show all connections and all listening ports" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Show addresses and ports as numbers, without name resolution" },
+    { "kind": "option", "tokens": ["-o"], "label": "-o", "description": "Show the owning process ID for each connection" },
+    { "kind": "option", "tokens": ["-b"], "label": "-b", "description": "Show the executable involved in each connection" },
+    { "kind": "option", "tokens": ["-e"], "label": "-e", "description": "Show Ethernet interface statistics" },
+    {
+      "kind": "option",
+      "tokens": ["-s"],
+      "label": "-s",
+      "description": "Show per-protocol statistics",
+      "takes": "enum",
+      "options": ["IP", "IPv6", "ICMP", "ICMPv6", "TCP", "TCPv6", "UDP", "UDPv6"]
+    },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Show the routing table" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Show fully qualified domain names for external addresses" },
+    {
+      "kind": "option",
+      "tokens": ["-p", "<protocol>"],
+      "label": "-p",
+      "description": "Show only connections of one protocol",
+      "takes": "enum",
+      "options": ["TCP", "TCPv6", "UDP", "UDPv6"]
+    },
+    { "kind": "option", "tokens": ["<interval>"], "label": "interval", "description": "Repeat the listing every N seconds until interrupted", "takes": "number" },
+    { "kind": "note", "label": "Elevation", "description": "-b needs an elevated prompt; -o also shows the process ID without elevation" },
+    { "kind": "note", "label": "-a vs no -a", "description": "Without -a, only established connections are listed; listening ports appear only with -a" },
+    { "kind": "note", "label": "Numeric output", "description": "-n is what makes netstat output fast and easy to parse or pipe" },
+    { "kind": "note", "label": "-e and -s", "description": "-e reports interface counters, -s reports per-protocol counters; both accept an interval" },
+    { "kind": "note", "label": "-p is a protocol filter", "description": "-p filters by protocol name, not by port number" },
+    { "kind": "note", "label": "Cost of -b", "description": "-b is slow on a busy machine and may report access denied for some connections" }
+  ]
+}

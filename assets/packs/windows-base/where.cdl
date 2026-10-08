@@ -1,0 +1,22 @@
+{
+  "name": "where",
+  "display_name": "Where",
+  "description": "Locate an executable the way the shell resolves it on PATH",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["path", "locate"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<pattern>"], "label": "pattern", "description": "The file name or wildcard to look for, for example python.exe or *.dll", "takes": "text" },
+    { "kind": "option", "tokens": ["/R"], "label": "/R", "description": "Search this directory and everything below it", "takes": "directory" },
+    { "kind": "option", "tokens": ["/Q"], "label": "/Q", "description": "Quiet mode: return only an exit code and print no path" },
+    { "kind": "option", "tokens": ["/F"], "label": "/F", "description": "Print every matched path in quotes" },
+    { "kind": "option", "tokens": ["/T"], "label": "/T", "description": "Print the size, date and time of every match" },
+    { "kind": "note", "label": "Search order", "description": "where searches the current directory first and then the directories listed in PATH, and prints every match it finds" },
+    { "kind": "note", "label": "Using it as a check", "description": "where prints an INFO line on stderr and exits with code 1 when nothing matches, which makes it a convenient availability test" }
+  ]
+}

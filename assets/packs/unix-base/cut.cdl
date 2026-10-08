@@ -1,0 +1,21 @@
+{
+  "name": "cut",
+  "display_name": "cut",
+  "description": "Remove sections from each line of a file",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-f", "<list>"], "label": "-f", "description": "Select these fields, counted from 1", "takes": "text" },
+    { "kind": "option", "tokens": ["-d", "<delimiter>"], "label": "-d", "description": "Use this single character as the field delimiter instead of TAB", "takes": "text" },
+    { "kind": "option", "tokens": ["-c", "<list>"], "label": "-c", "description": "Select these character positions", "takes": "text" },
+    { "kind": "option", "tokens": ["-b", "<list>"], "label": "-b", "description": "Select these byte positions", "takes": "text" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "With -b, do not split a multi-byte character" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "With -f, drop lines that contain no delimiter at all" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to read; several may be given, the default is standard input", "takes": "file" },
+    { "kind": "note", "label": "Field list syntax", "description": "-f takes a comma-separated list of fields and ranges, for example -f 1,3 or -f 2-5; an open range such as -f 3- runs to the end of the line" },
+    { "kind": "note", "label": "One delimiter only", "description": "cut splits on a single character, and -d cannot be a regular expression or a string of several characters" },
+    { "kind": "note", "label": "Pick exactly one of -f, -c, -b", "description": "cut requires one selection mode; giving -f together with -c is an error" }
+  ]
+}

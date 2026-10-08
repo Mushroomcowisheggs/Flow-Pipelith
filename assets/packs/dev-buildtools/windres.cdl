@@ -1,0 +1,30 @@
+{
+  "name": "windres",
+  "display_name": "windres",
+  "description": "MinGW's Windows resource compiler: turn .rc scripts into COFF objects to link",
+  "version": "2.42",
+  "category": "development",
+  "author": "GNU Binutils",
+  "license": "GPL-3.0",
+  "homepage": "https://sourceware.org/binutils/docs/binutils/windres.html",
+  "tags": ["mingw", "resources", "windows"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-i", "<file>"], "label": "-i", "description": "Read this resource script (.rc) or compiled resource (.res)", "takes": "file" },
+    { "kind": "option", "tokens": ["-o", "<file>"], "label": "-o", "description": "Write the object file here (with -J rc: write a .res file)", "takes": "file" },
+    { "kind": "option", "tokens": ["-O", "<format>"], "label": "-O", "description": "Write the output in this object format", "takes": "enum", "options": ["res", "coff", "coff-pe-i386", "coff-i386", "coff-x86-64", "binary"] },
+    { "kind": "option", "tokens": ["-I", "<directory>"], "label": "-I", "description": "Add this directory to the include search path", "takes": "directory" },
+    { "kind": "option", "tokens": ["--define=<macro>"], "label": "--define", "description": "Define a macro for the preprocessor, as name or name=value", "takes": "text" },
+    { "kind": "option", "tokens": ["--include-dir", "<directory>"], "label": "--include-dir", "description": "The long spelling of -I", "takes": "directory" },
+    { "kind": "option", "tokens": ["--preprocessor", "<program>"], "label": "--preprocessor", "description": "Use this preprocessor instead of the built-in one", "takes": "text" },
+    { "kind": "option", "tokens": ["--preprocessor-arg", "<arg>"], "label": "--preprocessor-arg", "description": "Pass one extra argument to the preprocessor", "takes": "text" },
+    { "kind": "option", "tokens": ["-J", "<format>"], "label": "-J", "description": "Read the input in this format: rc, res or coff", "takes": "enum", "options": ["rc", "res", "coff"] },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the version banner and the preprocessor command line" },
+    { "kind": "option", "tokens": ["--help"], "label": "--help", "description": "Show the windres usage summary" },
+    { "kind": "note", "label": "The link step", "description": "windres produces an object, not an executable: pass the result to the link step, for example gcc app.o app.res.o -o app.exe -mwindows" },
+    { "kind": "note", "label": "Includes and defines", "description": "A .rc file usually needs -I for the directory holding its headers (often the MinGW include directory) and --define for the macros that switch parts of the script in" },
+    { "kind": "note", "label": "One output, one format", "description": "-O chooses the output format (coff for linking on Windows) while -J chooses the format of the input; mixing them up is the usual cause of a garbled resource" }
+  ]
+}

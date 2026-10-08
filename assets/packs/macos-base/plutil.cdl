@@ -1,0 +1,82 @@
+{
+  "name": "plutil",
+  "display_name": "Property List Utility",
+  "description": "Check, print, convert and edit property list files",
+  "category": "data",
+  "author": "Apple",
+  "tags": ["plist", "property list", "convert", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["-lint"],
+      "label": "-lint",
+      "description": "Check that a property list is well formed",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The property list to check", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-p"],
+      "label": "-p",
+      "description": "Print a property list in a readable form",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The property list to print", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-convert", "<format>"],
+      "label": "-convert",
+      "description": "Rewrite a property list in another format",
+      "takes": "enum",
+      "options": ["xml1", "binary1", "json"],
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The property list to convert", "takes": "file" },
+        { "kind": "option", "tokens": ["-o", "<output>"], "label": "-o", "description": "Write the result to this file instead of replacing the input", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-replace", "<keypath>"],
+      "label": "-replace",
+      "description": "Change the value at a key path",
+      "takes": "text",
+      "children": [
+        { "kind": "option", "tokens": ["-string", "<value>"], "label": "-string", "description": "The new value is a string", "takes": "text" },
+        { "kind": "option", "tokens": ["-integer", "<value>"], "label": "-integer", "description": "The new value is an integer", "takes": "number" },
+        { "kind": "option", "tokens": ["-float", "<value>"], "label": "-float", "description": "The new value is a floating point number", "takes": "number" },
+        { "kind": "option", "tokens": ["-bool", "<value>"], "label": "-bool", "description": "The new value is a boolean", "takes": "enum", "options": ["true", "false"] },
+        { "kind": "option", "tokens": ["-json", "<value>"], "label": "-json", "description": "The new value is written as JSON", "takes": "text" },
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The property list to modify", "takes": "file" },
+        { "kind": "note", "label": "Order", "description": "The type flag comes before the value and the file comes last: plutil -replace Key -string value file.plist" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-insert", "<keypath>"],
+      "label": "-insert",
+      "description": "Add a new value at a key path that does not exist yet",
+      "takes": "text",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The property list to modify", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-remove", "<keypath>"],
+      "label": "-remove",
+      "description": "Remove the value at a key path",
+      "takes": "text",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The property list to modify", "takes": "file" }
+      ]
+    },
+    { "kind": "note", "label": "Key paths", "description": "A key path uses a dot between dictionary keys and a number for an array index, for example Key.SubKey.0" },
+    { "kind": "note", "label": "Editing verbs", "description": "-insert and -remove accept the same value type flags as -replace, which are listed under that verb" },
+    { "kind": "note", "label": "Formats", "description": "binary1 is the compact form applications read fastest, xml1 is the readable text form, and json is available for simple trees such as the output of a command" }
+  ]
+}

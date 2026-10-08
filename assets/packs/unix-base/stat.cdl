@@ -1,0 +1,17 @@
+{
+  "name": "stat",
+  "display_name": "stat",
+  "description": "Display detailed status of a file or file system",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File whose status is reported; several may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["-L"], "label": "-L", "description": "Report the file a symbolic link points to instead of the link itself" },
+    { "kind": "option", "tokens": ["-c", "<format>"], "label": "-c (GNU)", "description": "On GNU coreutils, print the report using this format string", "takes": "text" },
+    { "kind": "option", "tokens": ["-f", "<format>"], "label": "-f (BSD)", "description": "On macOS and BSD, print the report using this format string", "takes": "text" },
+    { "kind": "note", "label": "-c and -f are not the same on both systems", "description": "GNU coreutils uses -c for a format string and -f for the file system status, while macOS and BSD use -f for the format string" },
+    { "kind": "note", "label": "Format escapes", "description": "A format string is built from percent escapes: %n name, %s size in bytes, %a access rights in octal, %y time of last modification" }
+  ]
+}

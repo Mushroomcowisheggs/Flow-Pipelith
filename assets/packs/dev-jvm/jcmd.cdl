@@ -1,0 +1,28 @@
+{
+  "name": "jcmd",
+  "display_name": "JCMD",
+  "description": "Send diagnostic commands to a running Java virtual machine",
+  "version": "21",
+  "cdl_version": "0.2",
+  "category": "development",
+  "author": "Eclipse Adoptium",
+  "license": "GPL-2.0-with-classpath-exception",
+  "homepage": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/jcmd.html",
+  "tags": ["jvm", "jdk", "diagnostics", "troubleshooting"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<pid>"], "label": "Target process", "description": "Process id of the Java virtual machine to send the command to", "takes": "number" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "List the running Java virtual machines instead of sending a command" },
+    { "kind": "option", "tokens": ["help"], "label": "help", "description": "List the commands this virtual machine accepts, optionally for one command" },
+    { "kind": "option", "tokens": ["VM.version"], "label": "VM.version", "description": "Print the version and build of the target virtual machine" },
+    { "kind": "option", "tokens": ["VM.flags"], "label": "VM.flags", "description": "Print the command line flags the target was started with" },
+    { "kind": "option", "tokens": ["VM.system_properties"], "label": "VM.system_properties", "description": "Print the system properties of the target" },
+    { "kind": "option", "tokens": ["GC.heap_info"], "label": "GC.heap_info", "description": "Print heap and garbage collector occupancy of the target" },
+    { "kind": "option", "tokens": ["Thread.print"], "label": "Thread.print", "description": "Print a stack trace for every thread, the usual way to find a hang" },
+    { "kind": "option", "tokens": ["GC.class_histogram"], "label": "GC.class_histogram", "description": "Print a histogram of live objects by class, to look for a leak" },
+    { "kind": "note", "label": "Same user required", "description": "The command is accepted only when the sending user owns the target process, so run jcmd as the user that started that JVM" },
+    { "kind": "note", "label": "Attach cost", "description": "Diagnostic commands stop the target briefly while the data is gathered; Thread.print and GC.class_histogram on a busy server are not free" }
+  ]
+}

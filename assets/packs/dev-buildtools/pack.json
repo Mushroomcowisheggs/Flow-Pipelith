@@ -1,0 +1,7 @@
+{
+  "id": "dev-buildtools",
+  "label": "Build helpers",
+  "description": "Build drivers, package config and the small utilities around a build",
+  "platforms": ["windows", "linux", "macos"],
+  "origin": "curated"
+}

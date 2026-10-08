@@ -1,0 +1,21 @@
+{
+  "name": "takeown",
+  "display_name": "Takeown",
+  "description": "Give the current user or the Administrators group ownership of a file or directory",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["ownership", "permissions", "acl"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/F"], "label": "/F", "description": "The file or directory to take ownership of; wildcards are allowed", "takes": "file" },
+    { "kind": "option", "tokens": ["/A"], "label": "/A", "description": "Give ownership to the Administrators group instead of the current user" },
+    { "kind": "option", "tokens": ["/R"], "label": "/R", "description": "Recurse into every subdirectory" },
+    { "kind": "option", "tokens": ["/D"], "label": "/D", "description": "Answer the confirmation prompt, used together with /R", "takes": "enum", "options": ["Y", "N"] },
+    { "kind": "note", "label": "Needs an elevated prompt", "description": "takeown only succeeds from an elevated command prompt, and on a directory it changes that directory alone unless /R is given" },
+    { "kind": "note", "label": "Ownership is only the first half", "description": "Taking ownership does not grant access by itself: follow it with icacls /grant to give a user permissions, or /reset to restore the inherited ones" }
+  ]
+}

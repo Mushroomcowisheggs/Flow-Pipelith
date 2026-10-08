@@ -1,0 +1,29 @@
+{
+  "name": "gcc-nm",
+  "display_name": "gcc-nm",
+  "description": "nm wrapper that loads the gcc plugin so symbols of LTO objects are listed",
+  "version": "14.2",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://gcc.gnu.org/onlinedocs/gcc/Arithmetic.html",
+  "tags": ["gcc", "symbols", "lto"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The object file or archive whose symbols should be listed", "takes": "file" },
+    { "kind": "option", "tokens": ["-C"], "label": "-C", "description": "Demangle C++ names into their source form" },
+    { "kind": "option", "tokens": ["-A"], "label": "-A", "description": "Print the file name on its own line before its symbols" },
+    { "kind": "option", "tokens": ["-D"], "label": "-D", "description": "Show the dynamic symbols of a shared object instead of the normal ones" },
+    { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Show only the external symbols" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u", "description": "Show only the undefined symbols" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Look up and print each symbol's source file and line" },
+    { "kind": "option", "tokens": ["-S"], "label": "-S", "description": "Print the size of each symbol" },
+    { "kind": "option", "tokens": ["--size-sort"], "label": "--size-sort", "description": "Sort the symbols by size, smallest first" },
+    { "kind": "option", "tokens": ["--defined-only"], "label": "--defined-only", "description": "Show only the defined symbols" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the nm version" },
+    { "kind": "note", "label": "Why it exists", "description": "gcc-nm is nm with the gcc LTO plugin loaded automatically; it exists so that objects compiled with -flto list their symbols instead of being reported as having no symbols" },
+    { "kind": "note", "label": "It takes nm arguments", "description": "The whole nm command line is accepted unchanged, for example gcc-nm -C --size-sort libfoo.a" }
+  ]
+}

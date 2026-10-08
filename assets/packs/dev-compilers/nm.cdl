@@ -1,0 +1,32 @@
+{
+  "name": "nm",
+  "display_name": "GNU nm",
+  "description": "GNU binutils: lists the symbols of object files, archives and executables",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/binutils/",
+  "tags": ["symbols", "binutils", "inspection"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "pipe", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The object file, archive or executable to inspect", "takes": "file" },
+    { "kind": "option", "tokens": ["-C"], "label": "-C", "description": "Decode mangled C++ symbol names" },
+    { "kind": "option", "tokens": ["-D"], "label": "-D", "description": "Show the dynamic symbols instead of the regular symbol table" },
+    { "kind": "option", "tokens": ["--defined-only"], "label": "--defined-only", "description": "Show only the symbols the file defines" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u", "description": "Show only the symbols the file references but does not define" },
+    { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Show only external symbols" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Include debugger-only symbols as well" },
+    { "kind": "option", "tokens": ["-S"], "label": "-S", "description": "Print the size of each symbol" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Print the source file and line for each symbol, when available" },
+    { "kind": "option", "tokens": ["-A"], "label": "-A", "description": "Print the file name before each symbol" },
+    { "kind": "option", "tokens": ["--size-sort"], "label": "--size-sort", "description": "Sort the symbols by size" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Sort the symbols numerically by address" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Reverse the current sort order" },
+    { "kind": "option", "tokens": ["--format=<format>"], "label": "--format", "description": "Choose the output layout", "takes": "enum", "options": ["bsd", "sysv", "posix"] },
+    { "kind": "option", "tokens": ["--radix=<radix>"], "label": "--radix", "description": "Print symbol values in this radix: d decimal, o octal, x hexadecimal", "takes": "enum", "options": ["d", "o", "x"] },
+    { "kind": "note", "label": "Symbol letters", "description": "The letter before each name is the symbol type: T or t is code, D or d is data, U is undefined, and the lower case forms are local" },
+    { "kind": "note", "label": "Shared libraries", "description": "-D is the useful view of a shared library: it shows the symbols the library exports and imports, while the regular table is usually stripped" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "tr",
+  "display_name": "tr",
+  "description": "Translate or delete characters in a stream",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<set1>"], "label": "set1", "description": "The characters to translate, delete or squeeze", "takes": "text" },
+    { "kind": "option", "tokens": ["<set2>"], "label": "set2", "description": "The replacement characters, taken one by one in the order of set1", "takes": "text" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Delete the characters of set1 instead of translating them" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Replace each run of the same character with a single one" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Use the complement of set1: every character that is not in it" },
+    { "kind": "note", "label": "Standard input only", "description": "tr has no file argument: put the file on standard input, as in cat file | tr a-z A-Z or tr a-z A-Z < file" },
+    { "kind": "note", "label": "Sets", "description": "A set is literal characters or a named class such as [:upper:], [:lower:], [:digit:], [:space:] or [:punct:]" },
+    { "kind": "note", "label": "Standard output only", "description": "tr writes the converted stream to standard output and never changes the file it read from, so the result has to be piped or redirected to be kept" }
+  ]
+}

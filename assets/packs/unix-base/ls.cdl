@@ -1,0 +1,48 @@
+{
+  "name": "ls",
+  "display_name": "ls",
+  "description": "List directory contents with names, sizes, times and permissions",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "Directory to list; several may be given, the default is the current directory", "takes": "directory" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Long format: one line per entry with permissions, owner, group, size and time" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "List all entries, including names that start with a dot" },
+    { "kind": "option", "tokens": ["-A"], "label": "-A", "description": "List hidden entries but skip the . and .. entries" },
+    { "kind": "option", "tokens": ["-h"], "label": "-h", "description": "With -l, print sizes in powers of 1024 (K, M, G)" },
+    { "kind": "option", "tokens": ["-1"], "label": "-1", "description": "Print one entry per line" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Sort by modification time, newest first" },
+    { "kind": "option", "tokens": ["-S"], "label": "-S", "description": "Sort by file size, largest first" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Reverse the sort order" },
+    { "kind": "option", "tokens": ["-R"], "label": "-R", "description": "Recurse into subdirectories" },
+    { "kind": "option", "tokens": ["-F"], "label": "-F", "description": "Append a type indicator: / for a directory, * for an executable, @ for a symbolic link" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "List the directory itself instead of its contents" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Print the inode number of each entry" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "With -l, print numeric user and group IDs instead of names" },
+    { "kind": "option", "tokens": ["--color=<when>"], "label": "--color", "description": "Colorize the output: always, auto only on a terminal, or never", "takes": "enum", "options": ["auto", "always", "never"] },
+    { "kind": "note", "label": "Details need -l", "description": "Sizes, owners, permissions and timestamps only appear with -l; -h, -n and -i have no visible effect without it" },
+    { "kind": "note", "label": "Hidden names", "description": "A name starting with a dot is hidden by default: -a also lists . and .., -A lists hidden names without those two" }
+  ],
+  "actions": [
+    {
+      "name": "detailed_listing",
+      "label": "Detailed listing",
+      "description": "Long listing of a directory, hidden entries included, with human-readable sizes",
+      "executable": "ls",
+      "args": [
+        { "value": "-l" },
+        { "value": "-h" },
+        { "value": "-A" },
+        { "value": "{path}" }
+      ],
+      "variables": [
+        { "name": "path", "type": "directory", "label": "Directory", "default": "." }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 60
+    }
+  ]
+}

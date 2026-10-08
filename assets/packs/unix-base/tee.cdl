@@ -1,0 +1,16 @@
+{
+  "name": "tee",
+  "display_name": "tee",
+  "description": "Copy standard input to standard output and to files at the same time",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File that receives a copy of the input; several may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Append to the named files instead of replacing their contents" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Ignore the interrupt signal, so Ctrl+C does not stop tee" },
+    { "kind": "note", "label": "What it is for", "description": "tee sits in the middle of a pipeline: the stream continues to the next stage and is also saved to each named file" },
+    { "kind": "note", "label": "Replacing files", "description": "Without -a every named file is truncated before writing, so an existing file loses its contents" }
+  ]
+}

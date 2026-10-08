@@ -1,0 +1,7 @@
+{
+  "id": "dev-compilers",
+  "label": "Compilers & binary tools",
+  "description": "C/C++ compilers, debuggers and the object-file utilities around them",
+  "platforms": ["windows", "linux", "macos"],
+  "origin": "curated"
+}

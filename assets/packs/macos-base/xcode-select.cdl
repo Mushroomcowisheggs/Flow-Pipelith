@@ -1,0 +1,45 @@
+{
+  "name": "xcode-select",
+  "display_name": "Xcode Select",
+  "description": "Choose the developer directory the Apple developer tools use",
+  "category": "development",
+  "author": "Apple",
+  "tags": ["xcode", "developer tools", "command line tools", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["--install"],
+      "label": "--install",
+      "description": "Install the Command Line Developer Tools",
+      "children": [
+        { "kind": "note", "label": "Installer", "description": "Opens the macOS installer dialog and takes no further arguments" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["--switch"],
+      "label": "--switch",
+      "description": "Make another developer directory the active one",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "The developer directory, for example /Applications/Xcode.app/Contents/Developer", "takes": "directory" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["--print-path"],
+      "label": "--print-path",
+      "description": "Print the developer directory that is currently active",
+      "children": [
+        { "kind": "note", "label": "Use", "description": "The printed path is what xcodebuild, clang and the other developer tools use" }
+      ]
+    },
+    { "kind": "option", "tokens": ["--reset"], "label": "--reset", "description": "Forget the chosen directory and go back to the default search" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the version of the xcode-select tool itself" },
+    { "kind": "option", "tokens": ["--help"], "label": "--help", "description": "Print the usage of xcode-select" },
+    { "kind": "note", "label": "Short forms", "description": "The short forms are -p for --print-path, -s for --switch, -v for --version and -r for --reset" },
+    { "kind": "note", "label": "Requirements", "description": "The developer tools must be installed first; switching needs the path to an Xcode or CommandLineTools bundle" }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "name": "ssh",
+  "display_name": "OpenSSH Client",
+  "description": "Remote login and command execution: connect to a host, run a command, forward ports",
+  "category": "network",
+  "author": "OpenSSH Project",
+  "license": "BSD-2-Clause",
+  "homepage": "https://www.openssh.com",
+  "tags": ["remote", "shell", "tunnel"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "option",
+      "tokens": ["-p", "<port>"],
+      "label": "-p",
+      "description": "Connect to this TCP port on the remote host instead of the default 22",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-i", "<file>"],
+      "label": "-i",
+      "description": "Private key file to authenticate with, instead of the default identity files",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-L", "<local:host:port>"],
+      "label": "-L",
+      "description": "Forward a local port to a host and port reachable from the remote side, for example 8080:localhost:80",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-R", "<remote:host:port>"],
+      "label": "-R",
+      "description": "Forward a port on the remote host back to a host and port reachable from here",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-D", "<port>"],
+      "label": "-D",
+      "description": "Run a SOCKS proxy on this local port and send its traffic through the remote host",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-N"],
+      "label": "-N",
+      "description": "Do not run a remote command: keep the connection open for port forwarding only"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-T"],
+      "label": "-T",
+      "description": "Do not allocate a terminal on the remote side"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-t"],
+      "label": "-t",
+      "description": "Force terminal allocation, needed by interactive programs that require a tty"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-l", "<user>"],
+      "label": "-l",
+      "description": "Log in as this user instead of writing user@host",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-o", "<option>"],
+      "label": "-o",
+      "description": "Set one configuration option, for example -o StrictHostKeyChecking=accept-new",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-J", "<jump-host>"],
+      "label": "-J",
+      "description": "Connect through this jump host instead of reaching the target directly",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-C"],
+      "label": "-C",
+      "description": "Compress the connection; it helps on slow links and costs time on fast ones"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-v"],
+      "label": "-v",
+      "description": "Verbose output, the usual way to diagnose authentication or key problems"
+    },
+    {
+      "kind": "option",
+      "tokens": ["<user@host>"],
+      "label": "user@host",
+      "description": "The destination: a host name or address, optionally prefixed with the login user",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["<command>"],
+      "label": "command",
+      "description": "Command to run on the remote host instead of opening an interactive shell",
+      "takes": "text"
+    },
+    {
+      "kind": "note",
+      "label": "Options come before the destination",
+      "description": "ssh reads its own options first: write ssh -p 2222 user@host command, not ssh user@host -p 2222"
+    },
+    {
+      "kind": "note",
+      "label": "Forwarding needs -N",
+      "description": "ssh -N -L 8080:localhost:80 user@host forwards the port and stays in the foreground without a shell; add -f only when it should continue in the background"
+    },
+    {
+      "kind": "note",
+      "label": "The first connection asks about the host key",
+      "description": "An unknown host key is shown as a fingerprint and must be accepted; -o StrictHostKeyChecking=accept-new accepts a new key automatically, while changed keys still fail"
+    }
+  ],
+  "actions": [
+    {
+      "name": "local_forward",
+      "label": "Local port forward",
+      "description": "Open a local port that tunnels to a host and port reachable from the remote machine",
+      "executable": "ssh",
+      "args": [
+        { "value": "-N" },
+        { "value": "-L" },
+        { "value": "{local_port}:{target_host}:{target_port}" },
+        { "value": "-p" },
+        { "value": "{port}" },
+        { "value": "{destination}" }
+      ],
+      "variables": [
+        { "name": "destination", "type": "text", "label": "Remote host", "required": true, "placeholder": "user@example.com" },
+        { "name": "port", "type": "number", "label": "SSH port", "default": "22", "min": 1, "max": 65535, "step": 1 },
+        { "name": "local_port", "type": "number", "label": "Local port", "default": "8080", "min": 1, "max": 65535, "step": 1 },
+        { "name": "target_host", "type": "text", "label": "Target host as seen from the remote side", "default": "localhost" },
+        { "name": "target_port", "type": "number", "label": "Target port", "default": "80", "min": 1, "max": 65535, "step": 1 }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 7200
+    }
+  ]
+}

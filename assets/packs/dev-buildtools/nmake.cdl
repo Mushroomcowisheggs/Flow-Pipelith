@@ -1,0 +1,29 @@
+{
+  "name": "nmake",
+  "display_name": "NMake",
+  "description": "Microsoft's make: build a project from a makefile with the MSVC toolchain",
+  "version": "14.4",
+  "category": "development",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "homepage": "https://learn.microsoft.com/cpp/build/reference/nmake-reference",
+  "tags": ["build", "msvc", "makefile"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/f", "<makefile>"], "label": "/f", "description": "Read this makefile instead of makefile", "takes": "file" },
+    { "kind": "option", "tokens": ["<target>"], "label": "target", "description": "Build this target; with no target, the first one in the makefile is built", "takes": "text" },
+    { "kind": "option", "tokens": ["/n"], "label": "/n", "description": "Dry run: display the commands without executing them" },
+    { "kind": "option", "tokens": ["/k"], "label": "/k", "description": "Keep building unrelated targets after a command fails" },
+    { "kind": "option", "tokens": ["/a"], "label": "/a", "description": "Rebuild every target even if it is up to date" },
+    { "kind": "option", "tokens": ["/c"], "label": "/c", "description": "Suppress the non-fatal NMAKE messages and the copyright banner" },
+    { "kind": "option", "tokens": ["/NOLOGO"], "label": "/NOLOGO", "description": "Suppress the copyright banner only" },
+    { "kind": "option", "tokens": ["/d"], "label": "/d", "description": "Display the timestamp of every file that is checked" },
+    { "kind": "option", "tokens": ["/x", "<file>"], "label": "/x", "description": "Write the errors to this file as well as to stderr", "takes": "file" },
+    { "kind": "option", "tokens": ["/?"], "label": "/?", "description": "Show the NMAKE command syntax" },
+    { "kind": "note", "label": "Options use a slash", "description": "NMAKE is a Windows tool: write /n, /k or /f makefile.mak, not -n or -k, and expect no GNU make compatibility" },
+    { "kind": "note", "label": "The developer prompt", "description": "NMAKE and the toolchain it calls (cl, link, rc) only exist in a Visual Studio developer command prompt; run vcvarsall.bat or use the Developer PowerShell first" },
+    { "kind": "note", "label": "Macros on the command line", "description": "A name=value argument overrides a macro in the makefile, for example nmake /f app.mak CONFIG=Release; pass it after the options" }
+  ]
+}

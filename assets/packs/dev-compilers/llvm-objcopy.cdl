@@ -1,0 +1,29 @@
+{
+  "name": "llvm-objcopy",
+  "display_name": "llvm-objcopy",
+  "description": "LLVM tool for copying and transforming object files and executables",
+  "category": "development",
+  "author": "LLVM Project",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "homepage": "https://llvm.org/docs/CommandGuide/llvm-objcopy.html",
+  "tags": ["object files", "symbols", "LLVM"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<input>"], "label": "input", "description": "The object file or executable to read", "takes": "file" },
+    { "kind": "option", "tokens": ["<output>"], "label": "output", "description": "Where to write the result; pick it after the input", "takes": "file" },
+    { "kind": "option", "tokens": ["--strip-all"], "label": "--strip-all", "description": "Remove all symbols and debug information" },
+    { "kind": "option", "tokens": ["--strip-debug"], "label": "--strip-debug", "description": "Remove the debug information and keep the symbols" },
+    { "kind": "option", "tokens": ["--strip-unneeded"], "label": "--strip-unneeded", "description": "Remove the symbols that are not needed for relocation processing" },
+    { "kind": "option", "tokens": ["-O", "<format>"], "label": "-O", "description": "Write the output in this object format, for example binary, elf or pe", "takes": "text" },
+    { "kind": "option", "tokens": ["-I", "<format>"], "label": "-I", "description": "Read the input as this object format, which raw binary input needs", "takes": "text" },
+    { "kind": "option", "tokens": ["--only-section=<name>"], "label": "--only-section", "description": "Keep only this section in the output; may be given more than once", "takes": "text" },
+    { "kind": "option", "tokens": ["--remove-section=<name>"], "label": "--remove-section", "description": "Remove this section from the output", "takes": "text" },
+    { "kind": "option", "tokens": ["--only-keep-debug"], "label": "--only-keep-debug", "description": "Keep the debug information and drop the rest, to build a separate debug file" },
+    { "kind": "option", "tokens": ["--add-gnu-debuglink=<file>"], "label": "--add-gnu-debuglink", "description": "Record in the output where its separate debug file lives", "takes": "file" },
+    { "kind": "note", "label": "Keep the original", "description": "With only an input file llvm-objcopy rewrites that file in place; naming an output as well leaves the original untouched" },
+    { "kind": "note", "label": "Flags come first", "description": "Options are read before the file names, so the usual order is llvm-objcopy --strip-all prog prog.stripped" },
+    { "kind": "note", "label": "Family", "description": "This is the LLVM version of GNU objcopy; llvm-strip is the strip-only member of the same family" }
+  ]
+}

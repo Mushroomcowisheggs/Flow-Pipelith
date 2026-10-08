@@ -1,0 +1,21 @@
+{
+  "name": "taskkill",
+  "display_name": "Taskkill",
+  "description": "End one or more running processes by name or by process id",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["process", "kill"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/PID"], "label": "/PID", "description": "End the process with this process id", "takes": "number" },
+    { "kind": "option", "tokens": ["/IM"], "label": "/IM", "description": "End every process with this image name, for example notepad.exe", "takes": "text" },
+    { "kind": "option", "tokens": ["/F"], "label": "/F", "description": "Force the process to end" },
+    { "kind": "option", "tokens": ["/T"], "label": "/T", "description": "End the process and every child process it started" },
+    { "kind": "option", "tokens": ["/FI"], "label": "/FI", "description": "Only act on processes matching this filter, for example STATUS eq NOT RESPONDING", "takes": "text" },
+    { "kind": "note", "label": "Ending by name", "description": "taskkill /F /IM name.exe ends every instance of that image; without /F the process only receives a close request and may refuse to exit" }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "name": "huggingface-cli",
+  "display_name": "Hugging Face CLI",
+  "description": "Hugging Face Hub client: download and upload models and datasets, manage the local cache",
+  "version": "0.25",
+  "category": "data",
+  "author": "Hugging Face",
+  "license": "Apache-2.0",
+  "homepage": "https://huggingface.co/docs/huggingface_hub/guides/cli",
+  "tags": ["models", "datasets", "hub"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["download"],
+      "label": "download",
+      "description": "Download a repository from the Hub into the local cache",
+      "children": [
+        { "kind": "option", "tokens": ["<repo>"], "label": "repo", "description": "Repository id as owner/name", "takes": "text" },
+        { "kind": "option", "tokens": ["--repo-type", "<type>"], "label": "--repo-type", "description": "Which kind of repository to download", "takes": "enum", "options": ["model", "dataset", "space"] },
+        { "kind": "option", "tokens": ["--include", "<pattern>"], "label": "--include", "description": "Download only files matching this glob pattern", "takes": "text" },
+        { "kind": "option", "tokens": ["--local-dir", "<directory>"], "label": "--local-dir", "description": "Write the files here instead of into the shared cache", "takes": "directory" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["upload"],
+      "label": "upload",
+      "description": "Upload a file or folder into a Hub repository",
+      "children": [
+        { "kind": "option", "tokens": ["<repo>"], "label": "repo", "description": "Repository id as owner/name", "takes": "text" },
+        { "kind": "option", "tokens": ["<local-path>"], "label": "local path", "description": "The file or folder to upload", "takes": "file" },
+        { "kind": "option", "tokens": ["--repo-type", "<type>"], "label": "--repo-type", "description": "Which kind of repository to upload to", "takes": "enum", "options": ["model", "dataset", "space"] },
+        { "kind": "option", "tokens": ["--path-in-repo", "<path>"], "label": "--path-in-repo", "description": "Where the file should land inside the repository", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["login"],
+      "label": "login",
+      "description": "Store an access token so later commands can reach private repositories"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["whoami"],
+      "label": "whoami",
+      "description": "Show which account the stored token belongs to"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["repo"],
+      "label": "repo",
+      "description": "Create or delete a repository on the Hub",
+      "children": [
+        {
+          "kind": "subcommand",
+          "tokens": ["create"],
+          "label": "create",
+          "description": "Create a new repository under your account or an organization",
+          "children": [
+            { "kind": "option", "tokens": ["<repo>"], "label": "repo", "description": "Repository id as owner/name", "takes": "text" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["delete"],
+          "label": "delete",
+          "description": "Delete a repository; this cannot be undone",
+          "children": [
+            { "kind": "option", "tokens": ["<repo>"], "label": "repo", "description": "Repository id as owner/name", "takes": "text" }
+          ]
+        },
+        { "kind": "option", "tokens": ["--repo-type", "<type>"], "label": "--repo-type", "description": "Which kind of repository to act on", "takes": "enum", "options": ["model", "dataset", "space"] },
+        { "kind": "option", "tokens": ["--private"], "label": "--private", "description": "Create the repository as private" },
+        { "kind": "option", "tokens": ["--token", "<token>"], "label": "--token", "description": "Use this access token instead of the stored one", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["scan-cache"],
+      "label": "scan-cache",
+      "description": "Report how much space the local cache takes and which repositories it holds"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["delete-cache"],
+      "label": "delete-cache",
+      "description": "Remove cached repositories, interactively or by filter",
+      "children": [
+        { "kind": "option", "tokens": ["--yes"], "label": "--yes", "description": "Skip the confirmation prompt" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["env"],
+      "label": "env",
+      "description": "Print the Hub environment: versions, endpoints and the token source"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["cache"],
+      "label": "cache",
+      "description": "Inspect the local cache directories the CLI writes to"
+    },
+    { "kind": "note", "label": "The token is stored outside the project", "description": "login writes the access token into the user profile (the Hugging Face home directory, normally ~/.cache/huggingface/token); this is the one place this tool writes outside the project directory" },
+    { "kind": "note", "label": "Cache location", "description": "Downloads default to the shared cache under the Hugging Face home directory; --local-dir writes them next to the project instead" },
+    { "kind": "note", "label": "--token works anywhere", "description": "Most Hub subcommands accept --token to override the stored credential for that single invocation" }
+  ],
+  "actions": [
+    {
+      "name": "download_repo",
+      "label": "Download repository",
+      "description": "Download a model or dataset repository into a local directory",
+      "executable": "huggingface-cli",
+      "args": [
+        { "value": "download" },
+        { "value": "{repo}" },
+        { "value": "--repo-type" },
+        { "value": "{repo_type}" },
+        { "value": "--local-dir" },
+        { "value": "{target}" }
+      ],
+      "variables": [
+        { "name": "repo", "type": "text", "label": "Repository id", "required": true, "placeholder": "bert-base-uncased" },
+        { "name": "target", "type": "directory", "label": "Local directory", "required": true },
+        {
+          "name": "repo_type",
+          "type": "enum",
+          "label": "Repository type",
+          "default": "model",
+          "options": [
+            { "value": "model", "label": "model" },
+            { "value": "dataset", "label": "dataset" },
+            { "value": "space", "label": "space" }
+          ]
+        }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

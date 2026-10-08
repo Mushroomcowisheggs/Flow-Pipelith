@@ -1,0 +1,20 @@
+{
+  "name": "touch",
+  "display_name": "touch",
+  "description": "Create empty files or update the timestamps of existing ones",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to create or whose timestamps are updated; several may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Change only the access time" },
+    { "kind": "option", "tokens": ["-m"], "label": "-m", "description": "Change only the modification time" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Do not create the file when it does not exist" },
+    { "kind": "option", "tokens": ["-t", "<timestamp>"], "label": "-t", "description": "Use this timestamp in the form [[CC]YY]MMDDhhmm[.ss] instead of now", "takes": "text" },
+    { "kind": "option", "tokens": ["-d", "<date>"], "label": "-d", "description": "Use the date named by this string instead of now", "takes": "text" },
+    { "kind": "option", "tokens": ["-r", "<file>"], "label": "-r", "description": "Use the timestamps of this reference file instead of now", "takes": "file" },
+    { "kind": "note", "label": "Two effects", "description": "touch creates an empty file when the name does not exist, and otherwise just updates its timestamps" },
+    { "kind": "note", "label": "Timestamp formats", "description": "-t wants [[CC]YY]MMDDhhmm[.ss] such as 202401151030, while -d accepts a readable date such as \"2024-01-15 10:30\"" }
+  ]
+}

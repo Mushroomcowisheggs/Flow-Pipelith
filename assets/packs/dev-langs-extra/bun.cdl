@@ -1,0 +1,160 @@
+{
+  "name": "bun",
+  "display_name": "Bun",
+  "description": "Bun runtime and package manager: run scripts, install packages, test and bundle JavaScript and TypeScript",
+  "category": "development",
+  "author": "Oven",
+  "license": "MIT",
+  "homepage": "https://bun.sh",
+  "tags": ["bun", "javascript", "typescript", "runtime", "package manager"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["run"],
+      "label": "run",
+      "description": "Run a package.json script, or a JavaScript or TypeScript file",
+      "children": [
+        { "kind": "option", "tokens": ["<script>"], "label": "script or file", "description": "A script name from package.json, or the path of a file to execute", "takes": "text" },
+        { "kind": "option", "tokens": ["--watch"], "label": "--watch", "description": "Restart the process when the imported files change" },
+        { "kind": "option", "tokens": ["--hot"], "label": "--hot", "description": "Reload the code in place without restarting the process" },
+        { "kind": "option", "tokens": ["--filter", "<pattern>"], "label": "--filter", "description": "Run the script in every workspace package whose name or path matches", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["install"],
+      "label": "install",
+      "description": "Install the dependencies of package.json",
+      "children": [
+        { "kind": "option", "tokens": ["--frozen-lockfile"], "label": "--frozen-lockfile", "description": "Fail instead of updating the lockfile; use it in CI" },
+        { "kind": "option", "tokens": ["--production"], "label": "--production", "description": "Install only the dependencies, without devDependencies" },
+        { "kind": "option", "tokens": ["--no-save"], "label": "--no-save", "description": "Install without writing package.json or the lockfile" },
+        { "kind": "option", "tokens": ["--dry-run"], "label": "--dry-run", "description": "Report what would be installed without installing it" },
+        { "kind": "option", "tokens": ["--force"], "label": "--force", "description": "Ignore the cache and re-download every package" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["add"],
+      "label": "add",
+      "description": "Install one or more packages and add them to package.json",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "Package to add, optionally with a version, e.g. zod@3 or ./local-package", "takes": "text" },
+        { "kind": "option", "tokens": ["--dev"], "label": "--dev", "description": "Add to devDependencies" },
+        { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Install into the global package directory instead of the project" },
+        { "kind": "option", "tokens": ["--exact"], "label": "--exact", "description": "Pin the exact version, without a range prefix" },
+        { "kind": "option", "tokens": ["--optional"], "label": "--optional", "description": "Add to optionalDependencies" },
+        { "kind": "option", "tokens": ["--dry-run"], "label": "--dry-run", "description": "Report what would be installed without installing it" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["remove"],
+      "label": "remove",
+      "description": "Remove a package and its entry in package.json",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "Package to remove", "takes": "text" },
+        { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Remove a globally installed package" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["test"],
+      "label": "test",
+      "description": "Run the tests with the built-in Jest-compatible test runner",
+      "children": [
+        { "kind": "option", "tokens": ["<filter>"], "label": "filter", "description": "Only run test files whose path matches this string", "takes": "text" },
+        { "kind": "option", "tokens": ["--watch"], "label": "--watch", "description": "Re-run the affected tests when files change" },
+        { "kind": "option", "tokens": ["--coverage"], "label": "--coverage", "description": "Print a coverage report" },
+        { "kind": "option", "tokens": ["--bail"], "label": "--bail", "description": "Stop after the first failing test" },
+        { "kind": "option", "tokens": ["--timeout", "<ms>"], "label": "--timeout", "description": "Fail a test that runs longer than this many milliseconds", "takes": "number" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["build"],
+      "label": "build",
+      "description": "Bundle files for the browser or for a server runtime",
+      "children": [
+        { "kind": "option", "tokens": ["<entrypoint>"], "label": "entry point", "description": "The file to start bundling from", "takes": "file" },
+        { "kind": "option", "tokens": ["--outdir", "<directory>"], "label": "--outdir", "description": "Directory that receives the bundle", "takes": "directory" },
+        { "kind": "option", "tokens": ["--target", "<target>"], "label": "--target", "description": "Runtime the bundle is built for", "takes": "enum", "options": ["browser", "bun", "node"] },
+        { "kind": "option", "tokens": ["--minify"], "label": "--minify", "description": "Minify the generated code" },
+        { "kind": "option", "tokens": ["--sourcemap"], "label": "--sourcemap", "description": "Emit a source map next to the bundle" },
+        { "kind": "option", "tokens": ["--external", "<module>"], "label": "--external", "description": "Leave this module out of the bundle and import it at runtime", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["x"],
+      "label": "x",
+      "description": "Download and run a package binary without installing it into the project",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "The package or binary to run", "takes": "text" },
+        { "kind": "option", "tokens": ["--bun"], "label": "--bun", "description": "Force the tool to run on the Bun runtime instead of Node.js" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["pm"],
+      "label": "pm",
+      "description": "Inspect the package manager state",
+      "children": [
+        {
+          "kind": "subcommand",
+          "tokens": ["ls"],
+          "label": "ls",
+          "description": "List the installed packages",
+          "children": [
+            { "kind": "option", "tokens": ["--all"], "label": "--all", "description": "Show the whole dependency tree, not only the top level" }
+          ]
+        },
+        { "kind": "subcommand", "tokens": ["bin"], "label": "bin", "description": "Print the directory where package binaries are linked" },
+        {
+          "kind": "subcommand",
+          "tokens": ["cache"],
+          "label": "cache",
+          "description": "Work with the global module cache",
+          "children": [
+            { "kind": "subcommand", "tokens": ["rm"], "label": "rm", "description": "Delete the global module cache" }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["create", "<template>"],
+      "label": "create",
+      "description": "Create a project from a template or a GitHub repository",
+      "takes": "text",
+      "children": [
+        { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "Directory to create the project in", "takes": "directory" }
+      ]
+    },
+    { "kind": "note", "label": "bun run without a script name", "description": "bun run with no script name lists the scripts defined in package.json, and bun <file> is shorthand for bun run <file>" }
+  ],
+  "actions": [
+    {
+      "name": "install_reproducible",
+      "label": "Install dependencies (lockfile exact)",
+      "description": "Install exactly what the lockfile pins, optionally without devDependencies",
+      "executable": "bun",
+      "args": [
+        { "value": "install" },
+        { "value": "--frozen-lockfile", "when": "frozen" },
+        { "value": "--production", "when": "production" }
+      ],
+      "variables": [
+        { "name": "frozen", "type": "boolean", "label": "Require an unchanged lockfile", "default": true },
+        { "name": "production", "type": "boolean", "label": "Skip devDependencies", "default": false }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

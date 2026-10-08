@@ -1,0 +1,22 @@
+{
+  "name": "comm",
+  "display_name": "comm",
+  "description": "Compare two sorted files line by line and print their common and unique lines",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file1>"], "label": "first file", "description": "The first sorted file to compare", "takes": "file" },
+    { "kind": "option", "tokens": ["<file2>"], "label": "second file", "description": "The second sorted file to compare", "takes": "file" },
+    { "kind": "option", "tokens": ["-1"], "label": "-1", "description": "Suppress column 1, the lines only in the first file" },
+    { "kind": "option", "tokens": ["-2"], "label": "-2", "description": "Suppress column 2, the lines only in the second file" },
+    { "kind": "option", "tokens": ["-3"], "label": "-3", "description": "Suppress column 3, the lines present in both files" },
+    { "kind": "option", "tokens": ["--check-order"], "label": "--check-order", "description": "Fail when the input is not correctly sorted instead of comparing it as it is" },
+    { "kind": "option", "tokens": ["--nocheck-order"], "label": "--nocheck-order", "description": "Do not check that the input is sorted" },
+    { "kind": "option", "tokens": ["--output-delimiter=<string>"], "label": "--output-delimiter", "description": "Separate the columns with this string instead of a tab", "takes": "text" },
+    { "kind": "option", "tokens": ["--total"], "label": "--total", "description": "Print a final line giving the count of each of the three columns" },
+    { "kind": "note", "label": "Input must be sorted", "description": "Both files must be sorted in the same collating order; LC_ALL=C gives the byte order that makes this predictable" },
+    { "kind": "note", "label": "Column meaning", "description": "Column 1 holds lines only in file1, column 2 lines only in file2 and column 3 lines in both, so use -12 to see the lines the files share" }
+  ]
+}

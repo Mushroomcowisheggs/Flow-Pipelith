@@ -1,0 +1,17 @@
+{
+  "name": "mkdir",
+  "display_name": "mkdir",
+  "description": "Create directories",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<directory>"], "label": "directory", "description": "Directory to create; several may be given", "takes": "directory" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Create missing parent directories, and do not fail when the directory already exists" },
+    { "kind": "option", "tokens": ["-m", "<mode>"], "label": "-m", "description": "Set the permissions of the new directory instead of the default", "takes": "text" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print a message for every directory that is created" },
+    { "kind": "note", "label": "Parents", "description": "-p is what makes mkdir a/b/c work in one step, and it keeps the command quiet when the directory is already there" },
+    { "kind": "note", "label": "Mode syntax", "description": "-m takes the same symbolic or octal notation as chmod, for example 755 or u=rwx,go=rx" }
+  ]
+}

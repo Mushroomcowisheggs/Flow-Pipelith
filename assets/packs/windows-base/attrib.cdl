@@ -1,0 +1,28 @@
+{
+  "name": "attrib",
+  "display_name": "Attrib",
+  "description": "Show or change the file attributes: read-only, hidden, system and archive",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["attributes", "files"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "path", "description": "The file or directory to act on; wildcards are allowed", "takes": "file" },
+    { "kind": "option", "tokens": ["+R"], "label": "+R", "description": "Set the read-only attribute" },
+    { "kind": "option", "tokens": ["-R"], "label": "-R", "description": "Clear the read-only attribute" },
+    { "kind": "option", "tokens": ["+H"], "label": "+H", "description": "Set the hidden attribute" },
+    { "kind": "option", "tokens": ["-H"], "label": "-H", "description": "Clear the hidden attribute" },
+    { "kind": "option", "tokens": ["+S"], "label": "+S", "description": "Set the system attribute" },
+    { "kind": "option", "tokens": ["-S"], "label": "-S", "description": "Clear the system attribute" },
+    { "kind": "option", "tokens": ["+A"], "label": "+A", "description": "Set the archive attribute, which backup tools use to spot changed files" },
+    { "kind": "option", "tokens": ["-A"], "label": "-A", "description": "Clear the archive attribute, marking the file as already backed up" },
+    { "kind": "option", "tokens": ["/S"], "label": "/S", "description": "Also process matching files in every subdirectory" },
+    { "kind": "option", "tokens": ["/D"], "label": "/D", "description": "Process directories as well as files" },
+    { "kind": "note", "label": "Run with no switches to read", "description": "attrib with only a path prints the current attributes; two-letter columns such as R, H, S and A mark the ones that are set" },
+    { "kind": "note", "label": "Combine switches in one pick", "description": "Several attribute switches may be given together, for example +R -A on the same command line" }
+  ]
+}

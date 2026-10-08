@@ -1,0 +1,84 @@
+{
+  "name": "defaults",
+  "display_name": "User Defaults",
+  "description": "Read, write and delete macOS preference values by domain and key",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["preferences", "plist", "settings", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["read"],
+      "label": "read",
+      "description": "Print the values stored in a domain",
+      "children": [
+        { "kind": "option", "tokens": ["<domain>"], "label": "domain", "description": "The domain to read, for example com.apple.dock", "takes": "text" },
+        { "kind": "option", "tokens": ["<key>"], "label": "key", "description": "Read only this key of the domain", "takes": "text" },
+        { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Read the global domain, which is NSGlobalDomain" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["read-type"],
+      "label": "read-type",
+      "description": "Print the type of a stored value, for example boolean or integer",
+      "children": [
+        { "kind": "option", "tokens": ["<domain>"], "label": "domain", "description": "The domain to look in, for example com.apple.dock", "takes": "text" },
+        { "kind": "option", "tokens": ["<key>"], "label": "key", "description": "The key whose type is printed", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["write"],
+      "label": "write",
+      "description": "Store a value in a domain",
+      "children": [
+        { "kind": "option", "tokens": ["<domain>"], "label": "domain", "description": "The domain to write, for example com.apple.dock", "takes": "text" },
+        { "kind": "option", "tokens": ["<key>"], "label": "key", "description": "The key to set", "takes": "text" },
+        { "kind": "option", "tokens": ["-string", "<value>"], "label": "-string", "description": "Store the value as a string", "takes": "text" },
+        { "kind": "option", "tokens": ["-int", "<value>"], "label": "-int", "description": "Store the value as an integer", "takes": "number" },
+        { "kind": "option", "tokens": ["-float", "<value>"], "label": "-float", "description": "Store the value as a floating point number", "takes": "number" },
+        { "kind": "option", "tokens": ["-bool", "<value>"], "label": "-bool", "description": "Store the value as a boolean", "takes": "enum", "options": ["true", "false"] },
+        { "kind": "note", "label": "Order", "description": "The domain and key come before the type flag: defaults write com.apple.dock autohide -bool true" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["delete"],
+      "label": "delete",
+      "description": "Remove a key or a whole domain from the preferences",
+      "children": [
+        { "kind": "option", "tokens": ["<domain>"], "label": "domain", "description": "The domain to delete from, for example com.apple.dock", "takes": "text" },
+        { "kind": "option", "tokens": ["<key>"], "label": "key", "description": "The key to remove; without a key the whole domain is deleted", "takes": "text" }
+      ]
+    },
+    { "kind": "subcommand", "tokens": ["domains"], "label": "domains", "description": "List the domains that have stored preferences" },
+    { "kind": "subcommand", "tokens": ["find", "<word>"], "label": "find", "description": "Search the domains for a key or value containing this word", "takes": "text" },
+    {
+      "kind": "subcommand",
+      "tokens": ["export", "<domain>"],
+      "label": "export",
+      "description": "Write a domain out as a property list file",
+      "takes": "text",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "The property list file to write, or a dash for standard output", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["import", "<domain>"],
+      "label": "import",
+      "description": "Read the values of a domain from a property list file",
+      "takes": "text",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "The property list file to read, or a dash for standard input", "takes": "file" }
+      ]
+    },
+    { "kind": "note", "label": "Domains", "description": "A domain is normally an application bundle identifier such as com.apple.finder; the global domain NSGlobalDomain is reached with -g" },
+    { "kind": "note", "label": "Cached preferences", "description": "A running application may keep its own copy of the values; relaunch it, or refresh the cache with killall cfprefsd" },
+    { "kind": "note", "label": "Values without a type flag", "description": "A value written without -string, -int, -float or -bool is parsed as a property list, so quoted text is read as a string" }
+  ]
+}

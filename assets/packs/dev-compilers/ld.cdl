@@ -1,0 +1,32 @@
+{
+  "name": "ld",
+  "display_name": "GNU ld",
+  "description": "GNU linker: combines object files and libraries into an executable or shared library",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/binutils/",
+  "tags": ["linker", "binutils"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-o", "<file>"], "label": "-o", "description": "Write the linked output to this file", "takes": "file" },
+    { "kind": "option", "tokens": ["<object>"], "label": "object file", "description": "An object file or archive to link; they are processed in the order given", "takes": "file" },
+    { "kind": "option", "tokens": ["-L", "<directory>"], "label": "-L", "description": "Add this directory to the library search path", "takes": "directory" },
+    { "kind": "option", "tokens": ["-l", "<library>"], "label": "-l", "description": "Search for this library, named without the lib prefix and the extension", "takes": "text" },
+    { "kind": "option", "tokens": ["-shared"], "label": "-shared", "description": "Produce a shared library instead of an executable" },
+    { "kind": "option", "tokens": ["-static"], "label": "-static", "description": "Link against static libraries only" },
+    { "kind": "option", "tokens": ["-rpath=<directory>"], "label": "-rpath", "description": "Record this directory as a runtime library search path in the output", "takes": "directory" },
+    { "kind": "option", "tokens": ["-e", "<symbol>"], "label": "-e", "description": "Use this symbol as the entry point", "takes": "text" },
+    { "kind": "option", "tokens": ["-M"], "label": "-M", "description": "Print a link map to standard output" },
+    { "kind": "option", "tokens": ["-Map", "<file>"], "label": "-Map", "description": "Write a link map to this file", "takes": "file" },
+    { "kind": "option", "tokens": ["-T", "<script>"], "label": "-T", "description": "Use this linker script instead of the default one", "takes": "file" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Omit all symbol information from the output" },
+    { "kind": "option", "tokens": ["--start-group"], "label": "--start-group", "description": "Start a group of archives that are searched repeatedly to resolve circular references" },
+    { "kind": "option", "tokens": ["--end-group"], "label": "--end-group", "description": "Close the archive group opened by --start-group" },
+    { "kind": "note", "label": "Prefer the compiler driver", "description": "clang++ or g++ should drive the link: the driver adds the startup files, the C/C++ runtime and the right search paths, then calls ld" },
+    { "kind": "note", "label": "Input order", "description": "Object files and libraries are consumed from left to right, so a library must follow the objects that reference it" },
+    { "kind": "note", "label": "Archives are searched once", "description": "An archive is scanned a single time; wrap mutually dependent archives in --start-group and --end-group" }
+  ]
+}

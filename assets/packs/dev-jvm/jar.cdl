@@ -1,0 +1,62 @@
+{
+  "name": "jar",
+  "display_name": "JAR Tool",
+  "description": "Create, inspect, update and extract Java archives",
+  "version": "21",
+  "cdl_version": "0.2",
+  "category": "development",
+  "author": "Eclipse Adoptium",
+  "license": "GPL-2.0-with-classpath-exception",
+  "homepage": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/jar.html",
+  "tags": ["jvm", "jdk", "archive", "packaging"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["--create"],
+      "label": "--create",
+      "description": "Create a new archive, taking the files to pack as operands",
+      "children": [
+        { "kind": "option", "tokens": ["--file", "<file>"], "label": "--file", "description": "The archive to write; may also be given as the short form -f", "takes": "file" },
+        { "kind": "option", "tokens": ["--main-class", "<class>"], "label": "--main-class", "description": "Store this class in the manifest as the entry point for java -jar", "takes": "text" },
+        { "kind": "option", "tokens": ["--manifest", "<file>"], "label": "--manifest", "description": "Merge the attributes of this manifest file into the generated one", "takes": "file" },
+        { "kind": "option", "tokens": ["--module-version", "<version>"], "label": "--module-version", "description": "Record this version in the module descriptor of the archive", "takes": "text" },
+        { "kind": "option", "tokens": ["--verbose"], "label": "--verbose", "description": "Print each entry as it is added" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["--list"],
+      "label": "--list",
+      "description": "Print a table of the archive's contents",
+      "children": [
+        { "kind": "option", "tokens": ["--file", "<file>"], "label": "--file", "description": "The archive to read", "takes": "file" },
+        { "kind": "option", "tokens": ["--verbose"], "label": "--verbose", "description": "Also print size, date and compression of each entry" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["--extract"],
+      "label": "--extract",
+      "description": "Unpack the archive into the current directory",
+      "children": [
+        { "kind": "option", "tokens": ["--file", "<file>"], "label": "--file", "description": "The archive to unpack", "takes": "file" },
+        { "kind": "option", "tokens": ["--verbose"], "label": "--verbose", "description": "Print each file as it is written" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["--update"],
+      "label": "--update",
+      "description": "Add or replace the named entries inside an existing archive",
+      "children": [
+        { "kind": "option", "tokens": ["--file", "<file>"], "label": "--file", "description": "The archive to modify", "takes": "file" }
+      ]
+    },
+    { "kind": "note", "label": "Order of options", "description": "The operation such as --create and the archive named by --file must be given in that order; options after --file apply to the entries being packed" },
+    { "kind": "note", "label": "Short forms", "description": "The classic single-letter forms still work: c create, t list, x extract, u update, f archive, m manifest, e main class, v verbose, and they may be bundled as in cvf" },
+    { "kind": "note", "label": "Content order", "description": "jar reads and writes in one pass: the archive name comes first, then the files to pack, with no way to add entries before it as in zip" }
+  ]
+}

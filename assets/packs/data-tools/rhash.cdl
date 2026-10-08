@@ -1,0 +1,29 @@
+{
+  "name": "rhash",
+  "display_name": "RHash",
+  "description": "Compute, print and verify many kinds of file checksums, including SHA-2, SHA-1, MD5 and CRC32",
+  "version": "1.4",
+  "category": "data",
+  "author": "Aleksey Kravchenko",
+  "license": "BSD-2-Clause",
+  "homepage": "https://rhash.sourceforge.net/",
+  "tags": ["checksum", "hash", "verify"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "A file to hash; give the entry several times to hash several files, or add -r for a directory", "takes": "file" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Calculate all supported hash sums of each file at once instead of one selected hash" },
+    { "kind": "option", "tokens": ["--sha256"], "label": "--sha256", "description": "Calculate the SHA-256 hash" },
+    { "kind": "option", "tokens": ["--sha1"], "label": "--sha1", "description": "Calculate the SHA-1 hash" },
+    { "kind": "option", "tokens": ["--md5"], "label": "--md5", "description": "Calculate the MD5 hash" },
+    { "kind": "option", "tokens": ["--crc32"], "label": "--crc32", "description": "Calculate the CRC32 checksum" },
+    { "kind": "option", "tokens": ["-c", "<file>"], "label": "-c", "description": "Verify the checksums listed in this file and report which of the named files match", "takes": "file" },
+    { "kind": "option", "tokens": ["--check-embedded"], "label": "--check-embedded", "description": "Verify the checksums stored inside a torrent file instead of a separate checksum list" },
+    { "kind": "option", "tokens": ["-o", "<file>"], "label": "-o", "description": "Write the results into this file instead of standard output", "takes": "file" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Show hashing progress in percents while the files are read" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Process the files inside a directory recursively" },
+    { "kind": "note", "label": "Check lists", "description": "The lines rhash prints are exactly what -c reads back, so redirect the output to a file and verify it later with rhash -c that file" },
+    { "kind": "note", "label": "Embedded checksums", "description": "--check-embedded reads the checksums stored inside a .torrent file rather than a checksum list, so it needs no second file" }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "name": "sc",
+  "display_name": "SC",
+  "description": "Query and configure Windows services and their startup behaviour",
+  "category": "system",
+  "tags": ["system", "services", "configuration"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "subcommand", "tokens": ["query"], "label": "query", "description": "Show the status of a service" },
+    { "kind": "subcommand", "tokens": ["start"], "label": "start", "description": "Start a stopped service" },
+    { "kind": "subcommand", "tokens": ["stop"], "label": "stop", "description": "Stop a running service" },
+    { "kind": "subcommand", "tokens": ["pause"], "label": "pause", "description": "Pause a running service" },
+    { "kind": "subcommand", "tokens": ["continue"], "label": "continue", "description": "Resume a paused service" },
+    {
+      "kind": "subcommand",
+      "tokens": ["config"],
+      "label": "config",
+      "description": "Change how a service starts or runs",
+      "children": [
+        {
+          "kind": "option",
+          "tokens": ["start=", "<type>"],
+          "label": "start=",
+          "description": "Change the startup type of the service",
+          "takes": "enum",
+          "options": ["auto", "demand", "disabled", "delayed-auto"]
+        },
+        { "kind": "option", "tokens": ["binPath=", "<path>"], "label": "binPath=", "description": "Path to the service executable", "takes": "file" },
+        { "kind": "option", "tokens": ["DisplayName=", "<name>"], "label": "DisplayName=", "description": "Name shown in the services list", "takes": "text" },
+        { "kind": "option", "tokens": ["obj=", "<account>"], "label": "obj=", "description": "Account the service logs on as", "takes": "text" }
+      ]
+    },
+    { "kind": "subcommand", "tokens": ["create"], "label": "create", "description": "Create a service entry" },
+    { "kind": "subcommand", "tokens": ["delete"], "label": "delete", "description": "Delete a service entry" },
+    { "kind": "option", "tokens": ["<service>"], "label": "service", "description": "The service name the subcommand acts on", "takes": "text" },
+    { "kind": "note", "label": "Space after the equals sign", "description": "The config arguments keep a space after '=', so the value is its own argument: sc config X start= auto, and the same for binPath= and obj=" },
+    { "kind": "note", "label": "Service name not display name", "description": "Use the service name, for example wuauserv; the display name is a different string" },
+    { "kind": "note", "label": "Elevation", "description": "start, stop, config, create and delete need an elevated prompt" },
+    { "kind": "note", "label": "When a change takes effect", "description": "A changed startup type applies the next time the service starts; restart it to apply it now" },
+    { "kind": "note", "label": "query alone", "description": "sc query without a service name lists all running services" }
+  ]
+}

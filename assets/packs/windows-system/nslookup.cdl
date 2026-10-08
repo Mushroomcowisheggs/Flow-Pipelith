@@ -1,0 +1,39 @@
+{
+  "name": "nslookup",
+  "display_name": "Nslookup",
+  "description": "Query DNS name servers for name and address mappings",
+  "category": "network",
+  "tags": ["network", "DNS", "lookup", "diagnostics"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    {
+      "kind": "option",
+      "tokens": ["-type=<record>"],
+      "label": "-type",
+      "description": "Query this record type",
+      "takes": "enum",
+      "options": ["A", "AAAA", "CNAME", "MX", "NS", "PTR", "SOA", "SRV", "TXT", "ANY"]
+    },
+    {
+      "kind": "option",
+      "tokens": ["-querytype=<record>"],
+      "label": "-querytype",
+      "description": "Long form of -type",
+      "takes": "enum",
+      "options": ["A", "AAAA", "CNAME", "MX", "NS", "PTR", "SOA", "SRV", "TXT", "ANY"]
+    },
+    { "kind": "option", "tokens": ["-timeout=<seconds>"], "label": "-timeout", "description": "Wait this many seconds for a reply", "takes": "number" },
+    { "kind": "option", "tokens": ["-retry=<count>"], "label": "-retry", "description": "Retry a failed request this many times", "takes": "number" },
+    { "kind": "option", "tokens": ["-debug"], "label": "-debug", "description": "Print the full response packets and the query details" },
+    { "kind": "option", "tokens": ["-nodebug"], "label": "-nodebug", "description": "Turn debug output off again" },
+    { "kind": "option", "tokens": ["-d2"], "label": "-d2", "description": "Exhaustive debug output" },
+    { "kind": "option", "tokens": ["-norecurse"], "label": "-norecurse", "description": "Send the query without asking the server to recurse" },
+    { "kind": "option", "tokens": ["<name>"], "label": "name", "description": "The host name or address to look up", "takes": "text" },
+    { "kind": "note", "label": "Default server", "description": "Without a server argument nslookup uses the DNS servers of the active adapter" },
+    { "kind": "note", "label": "Choosing a server", "description": "nslookup name server sends the query to that server, for example nslookup example.com 8.8.8.8" },
+    { "kind": "note", "label": "Record type", "description": "-type must come before the name; the same value is also accepted as set type=<record> in interactive mode" },
+    { "kind": "note", "label": "Address in, name out", "description": "Looking up an IP address queries the PTR record and needs a reverse zone to answer" }
+  ]
+}

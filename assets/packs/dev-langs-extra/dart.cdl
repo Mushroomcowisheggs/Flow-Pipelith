@@ -1,0 +1,192 @@
+{
+  "name": "dart",
+  "display_name": "Dart",
+  "description": "Dart SDK: run and compile programs, analyze, format, test, document and manage packages with pub",
+  "category": "development",
+  "author": "Dart Team (Google)",
+  "license": "BSD-3-Clause",
+  "homepage": "https://dart.dev",
+  "tags": ["dart", "flutter", "build", "pub"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["run"],
+      "label": "run",
+      "description": "Run a Dart program in the VM without producing an executable",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The Dart file to run; without it the current package's main entry point runs", "takes": "file" },
+        { "kind": "option", "tokens": ["--enable-asserts"], "label": "--enable-asserts", "description": "Keep assert statements active; they are ignored by default outside debug tooling" },
+        { "kind": "option", "tokens": ["--enable-experiment=<experiment>"], "label": "--enable-experiment", "description": "Turn on this language experiment for the run", "takes": "text" },
+        { "kind": "option", "tokens": ["--observe"], "label": "--observe", "description": "Start the program with the VM service enabled for debugging" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["compile"],
+      "label": "compile",
+      "description": "Compile a Dart program ahead of time, to JavaScript or to a snapshot",
+      "children": [
+        {
+          "kind": "subcommand",
+          "tokens": ["exe", "<file>"],
+          "label": "exe",
+          "description": "Compile to a self-contained native executable",
+          "takes": "file",
+          "children": [
+            { "kind": "option", "tokens": ["-o", "<output>"], "label": "-o", "description": "Where to write the executable", "takes": "file" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["js", "<file>"],
+          "label": "js",
+          "description": "Compile to JavaScript",
+          "takes": "file",
+          "children": [
+            { "kind": "option", "tokens": ["-o", "<output>"], "label": "-o", "description": "Where to write the .js file", "takes": "file" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["kernel", "<file>"],
+          "label": "kernel",
+          "description": "Compile to a portable kernel (.dill) file",
+          "takes": "file",
+          "children": [
+            { "kind": "option", "tokens": ["-o", "<output>"], "label": "-o", "description": "Where to write the .dill file", "takes": "file" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["aot-snapshot", "<file>"],
+          "label": "aot-snapshot",
+          "description": "Compile to a native AOT snapshot that is loaded by the dart runtime",
+          "takes": "file",
+          "children": [
+            { "kind": "option", "tokens": ["-o", "<output>"], "label": "-o", "description": "Where to write the snapshot", "takes": "file" }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["pub"],
+      "label": "pub",
+      "description": "The package manager that ships with the Dart SDK",
+      "children": [
+        { "kind": "subcommand", "tokens": ["get"], "label": "get", "description": "Resolve the dependencies in pubspec.yaml and download the missing ones" },
+        {
+          "kind": "subcommand",
+          "tokens": ["add", "<package>"],
+          "label": "add",
+          "description": "Add a package to pubspec.yaml and install it",
+          "takes": "text",
+          "children": [
+            { "kind": "option", "tokens": ["--dev"], "label": "--dev", "description": "Add the package to dev_dependencies instead of dependencies" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["upgrade"],
+          "label": "upgrade",
+          "description": "Upgrade the packages to the newest versions allowed by pubspec.yaml",
+          "children": [
+            { "kind": "option", "tokens": ["--major-versions"], "label": "--major-versions", "description": "Also raise the version constraints written in pubspec.yaml" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["publish"],
+          "label": "publish",
+          "description": "Upload the package in the current directory to pub.dev",
+          "children": [
+            { "kind": "option", "tokens": ["--dry-run"], "label": "--dry-run", "description": "Validate and show what would be uploaded without publishing" }
+          ]
+        },
+        { "kind": "subcommand", "tokens": ["outdated"], "label": "outdated", "description": "Show which dependencies have newer versions available" },
+        { "kind": "subcommand", "tokens": ["deps"], "label": "deps", "description": "Print the dependency graph of the package" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["analyze"],
+      "label": "analyze",
+      "description": "Run the static analyzer and report errors, warnings and lints",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "Directory to analyze; the current directory is analyzed when omitted", "takes": "directory" },
+        { "kind": "option", "tokens": ["--fatal-infos"], "label": "--fatal-infos", "description": "Treat info-level findings as errors and exit non-zero" },
+        { "kind": "option", "tokens": ["--fatal-warnings"], "label": "--fatal-warnings", "description": "Treat warnings as errors and exit non-zero" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["format"],
+      "label": "format",
+      "description": "Rewrite Dart source files in the standard formatting style",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "File or directory to format; dart format . formats the whole project", "takes": "directory" },
+        { "kind": "option", "tokens": ["--output=<mode>"], "label": "--output", "description": "What to do with the formatted source", "takes": "enum", "options": ["write", "show", "none"] },
+        { "kind": "option", "tokens": ["--set-exit-if-changed"], "label": "--set-exit-if-changed", "description": "Exit non-zero when any file would change; useful in CI" },
+        { "kind": "option", "tokens": ["--line-length", "<length>"], "label": "--line-length", "description": "Wrap lines at this many characters", "takes": "number" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["test"],
+      "label": "test",
+      "description": "Run the tests in the test directory with the test package",
+      "children": [
+        { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "Only run the tests in this file or directory", "takes": "directory" },
+        { "kind": "option", "tokens": ["--name", "<regexp>"], "label": "--name", "description": "Only run tests whose name matches this regular expression", "takes": "text" },
+        { "kind": "option", "tokens": ["--platform", "<platform>"], "label": "--platform", "description": "Where to run the tests, e.g. vm, chrome or node", "takes": "text" },
+        { "kind": "option", "tokens": ["--coverage=<directory>"], "label": "--coverage", "description": "Write a coverage report into this directory", "takes": "directory" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["doc"],
+      "label": "doc",
+      "description": "Generate the API documentation of the package",
+      "children": [
+        { "kind": "option", "tokens": ["--output", "<directory>"], "label": "--output", "description": "Directory that receives the generated documentation", "takes": "directory" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["create", "<directory>"],
+      "label": "create",
+      "description": "Create a new Dart project from a template",
+      "takes": "directory",
+      "children": [
+        { "kind": "option", "tokens": ["--template", "<template>"], "label": "--template", "description": "Template to use, e.g. console, package, server-shelf or web", "takes": "text" },
+        { "kind": "option", "tokens": ["--force"], "label": "--force", "description": "Create the project even if the directory already exists and is not empty" }
+      ]
+    },
+    { "kind": "note", "label": "dart pub versus flutter pub", "description": "In a Flutter project run flutter pub, which wraps the same pub commands and also resolves the Flutter SDK packages; dart pub get works there too but knows nothing about Flutter-specific dependencies" },
+    { "kind": "note", "label": "dart format needs a path", "description": "dart format requires at least one file or directory: dart format . formats everything below the current directory" }
+  ],
+  "actions": [
+    {
+      "name": "run_file",
+      "label": "Run a Dart file",
+      "description": "Run one Dart program in the VM, optionally with asserts enabled",
+      "executable": "dart",
+      "args": [
+        { "value": "run" },
+        { "value": "{file}" },
+        { "value": "--enable-asserts", "when": "asserts" }
+      ],
+      "variables": [
+        { "name": "file", "type": "file", "label": "Dart file", "filters": ["*.dart"], "required": true },
+        { "name": "asserts", "type": "boolean", "label": "Enable asserts", "default": false }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

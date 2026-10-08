@@ -1,0 +1,31 @@
+{
+  "name": "clang-tidy",
+  "display_name": "clang-tidy",
+  "description": "LLVM static analyzer: reports and fixes C/C++ problems reported by its checks",
+  "category": "development",
+  "author": "LLVM Project",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "homepage": "https://clang.llvm.org/extra/clang-tidy/",
+  "tags": ["static analysis", "linter", "C++"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "source file", "description": "A source file to analyze; several files may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["-checks=<list>"], "label": "-checks", "description": "Select the checks by name or glob, for example bugprone-*, or prefix one with - to turn it off", "takes": "text" },
+    { "kind": "option", "tokens": ["-p", "<directory>"], "label": "-p", "description": "Read the compilation database compile_commands.json from this build directory", "takes": "directory" },
+    { "kind": "option", "tokens": ["--fix"], "label": "--fix", "description": "Apply the suggested fixes to the source files" },
+    { "kind": "option", "tokens": ["--fix-errors"], "label": "--fix-errors", "description": "Apply the fixes even in files that also have compilation errors" },
+    { "kind": "option", "tokens": ["--header-filter=<regex>"], "label": "--header-filter", "description": "Report warnings from the headers whose path matches this regular expression", "takes": "text" },
+    { "kind": "option", "tokens": ["--warnings-as-errors=<list>"], "label": "--warnings-as-errors", "description": "Treat the warnings of these checks as errors and return a failing exit code", "takes": "text" },
+    { "kind": "option", "tokens": ["--extra-arg=<argument>"], "label": "--extra-arg", "description": "Add one compiler argument after the ones from the compilation database", "takes": "text" },
+    { "kind": "option", "tokens": ["--list-checks"], "label": "--list-checks", "description": "List the enabled checks and exit" },
+    { "kind": "option", "tokens": ["--dump-config"], "label": "--dump-config", "description": "Print the effective configuration and exit" },
+    { "kind": "option", "tokens": ["--export-fixes=<file>"], "label": "--export-fixes", "description": "Write the suggested fixes to this YAML file instead of applying them", "takes": "file" },
+    { "kind": "option", "tokens": ["--system-headers"], "label": "--system-headers", "description": "Report the warnings that come from system headers too" },
+    { "kind": "option", "tokens": ["--quiet"], "label": "--quiet", "description": "Suppress the summary lines about the checks that ran" },
+    { "kind": "note", "label": "Compile flags are required", "description": "clang-tidy analyzes a file the way it is compiled, so it needs a compilation database: configure the build with CMAKE_EXPORT_COMPILE_COMMANDS=ON and point -p at that build directory" },
+    { "kind": "note", "label": "Fixes need --fix", "description": "Without --fix clang-tidy only reports the findings; with it the suggested edits are written into the files" },
+    { "kind": "note", "label": "Configuration file", "description": "The check list and the check options normally live in a .clang-tidy file found next to the source or in a parent directory" }
+  ]
+}

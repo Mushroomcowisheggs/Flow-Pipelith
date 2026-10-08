@@ -1,0 +1,80 @@
+{
+  "name": "make",
+  "display_name": "Make",
+  "description": "Classic build tool: build and clean according to Makefile rules",
+  "version": "4.0",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/make/",
+  "tags": ["build", "C", "C++"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "actions": [
+    {
+      "name": "build",
+      "label": "Build",
+      "description": "Run the default target (or a specified target)",
+      "executable": "make",
+      "args": [
+        { "value": "-j" },
+        { "value": "{jobs}" },
+        { "value": "-f" },
+        { "value": "{makefile}", "when": "custom_makefile" },
+        { "value": "{target}", "when": "has_target" }
+      ],
+      "variables": [
+        { "name": "dir", "type": "directory", "label": "Working directory", "default": "." },
+        { "name": "jobs", "type": "number", "label": "Parallel jobs", "default": "4", "min": 1, "max": 128, "step": 1 },
+        { "name": "target", "type": "text", "label": "Target name", "default": "all" },
+        { "name": "has_target", "type": "boolean", "label": "Specify target", "default": false },
+        { "name": "makefile", "type": "file", "label": "Makefile path", "filters": ["Makefile", "*.mk"], "default": "Makefile" },
+        { "name": "custom_makefile", "type": "boolean", "label": "Use a custom Makefile", "default": false }
+      ],
+      "cwd": "{dir}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    },
+    {
+      "name": "clean",
+      "label": "Clean",
+      "executable": "make",
+      "args": [
+        { "value": "clean" },
+        { "value": "-f" },
+        { "value": "{makefile}", "when": "custom_makefile" }
+      ],
+      "variables": [
+        { "name": "dir", "type": "directory", "label": "Working directory", "default": "." },
+        { "name": "makefile", "type": "file", "label": "Makefile path", "default": "Makefile" },
+        { "name": "custom_makefile", "type": "boolean", "label": "Use a custom Makefile", "default": false }
+      ],
+      "cwd": "{dir}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600,
+      "confirm": true
+    },
+    {
+      "name": "dry_run",
+      "label": "Dry run (no execution)",
+      "description": "Print the commands that would run without making any changes",
+      "executable": "make",
+      "args": [
+        { "value": "-n" },
+        { "value": "{target}", "when": "has_target" }
+      ],
+      "variables": [
+        { "name": "dir", "type": "directory", "label": "Working directory", "default": "." },
+        { "name": "target", "type": "text", "label": "Target name", "default": "all" },
+        { "name": "has_target", "type": "boolean", "label": "Specify target", "default": true }
+      ],
+      "cwd": "{dir}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

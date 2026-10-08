@@ -1,0 +1,159 @@
+{
+  "name": "gpg",
+  "display_name": "GnuPG",
+  "description": "OpenPGP encryption and signing: encrypt, decrypt, sign, verify and manage keys",
+  "category": "system",
+  "author": "GnuPG Project",
+  "license": "GPL-3.0",
+  "homepage": "https://gnupg.org",
+  "tags": ["encryption", "signature", "OpenPGP"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "option",
+      "tokens": ["--encrypt"],
+      "label": "--encrypt",
+      "description": "Encrypt the input for the keys named with --recipient"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--decrypt"],
+      "label": "--decrypt",
+      "description": "Decrypt the input and write the plaintext to stdout unless --output is given"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--symmetric"],
+      "label": "--symmetric",
+      "description": "Encrypt with a passphrase instead of a public key"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--sign"],
+      "label": "--sign",
+      "description": "Sign the input; the data and the signature are packed into a single file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--detach-sign"],
+      "label": "--detach-sign",
+      "description": "Write the signature into its own file and leave the data untouched"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--clearsign"],
+      "label": "--clearsign",
+      "description": "Sign text so the message stays readable, with the signature wrapped around it"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--verify"],
+      "label": "--verify",
+      "description": "Check a signature against the signed data"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--armor"],
+      "label": "--armor",
+      "description": "Write ASCII text instead of binary, so the result can be pasted into mail or a configuration file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--output", "<file>"],
+      "label": "--output",
+      "description": "Write the result to this file; put it before the input file name, an existing file is overwritten",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--recipient", "<id>"],
+      "label": "--recipient",
+      "description": "Encrypt for this key: a name, an email address or a key fingerprint",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--cipher-algo", "<alg>"],
+      "label": "--cipher-algo",
+      "description": "Cipher used for the encrypted data",
+      "takes": "enum",
+      "options": ["AES256", "AES192", "AES128", "TWOFISH"]
+    },
+    {
+      "kind": "option",
+      "tokens": ["--list-keys"],
+      "label": "--list-keys",
+      "description": "List the public keys in the keyring, optionally followed by a key id"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--list-secret-keys"],
+      "label": "--list-secret-keys",
+      "description": "List the private keys available for signing and decryption"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--import", "<file>"],
+      "label": "--import",
+      "description": "Read the keys in this file into the keyring",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["--export"],
+      "label": "--export",
+      "description": "Write public keys out; without a key id the whole keyring is exported"
+    },
+    {
+      "kind": "option",
+      "tokens": ["<key-id>"],
+      "label": "key-id",
+      "description": "Name, email address or fingerprint of a key, used with --recipient, --export and --list-keys",
+      "takes": "text"
+    },
+    {
+      "kind": "note",
+      "label": "Armor for text output",
+      "description": "--armor turns the OpenPGP output into text that can be pasted into mail or a repository; without it the result is binary and cannot be used as text"
+    },
+    {
+      "kind": "note",
+      "label": "Put --output in front of the input file",
+      "description": "The readable form is gpg --encrypt -o secret.gpg secret.txt: options first, file names last, so -o and the input file can never be taken for one another"
+    },
+    {
+      "kind": "note",
+      "label": "Where the result goes",
+      "description": "Without --output, encryption writes to stdout and decryption writes the plaintext to stdout; add --output to write a file instead, and note that it overwrites an existing file"
+    }
+  ],
+  "actions": [
+    {
+      "name": "encrypt_file",
+      "label": "Encrypt a file",
+      "description": "Encrypt a file for one recipient and write the result to a new file",
+      "executable": "gpg",
+      "args": [
+        { "value": "--encrypt" },
+        { "value": "--armor", "when": "armor" },
+        { "value": "--recipient" },
+        { "value": "{recipient}" },
+        { "value": "--output" },
+        { "value": "{output}" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "File to encrypt", "required": true },
+        { "name": "recipient", "type": "text", "label": "Recipient key", "required": true, "placeholder": "user@example.com" },
+        { "name": "output", "type": "file", "label": "Encrypted output file", "save": true, "default": "secret.gpg" },
+        { "name": "armor", "type": "boolean", "label": "Write text (armored) output", "default": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300,
+      "confirm": true
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "ar",
+  "display_name": "GNU ar",
+  "description": "GNU archiver: creates and edits static libraries and other archives",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/binutils/",
+  "tags": ["archiver", "static library", "binutils"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "subcommand", "tokens": ["rcs", "<archive>"], "label": "rcs", "description": "Create the archive if needed, insert the named files and write an index", "takes": "file" },
+    { "kind": "subcommand", "tokens": ["t", "<archive>"], "label": "t", "description": "List the members of the archive", "takes": "file" },
+    { "kind": "subcommand", "tokens": ["x", "<archive>"], "label": "x", "description": "Extract the members into the current directory", "takes": "file" },
+    { "kind": "subcommand", "tokens": ["d", "<archive>"], "label": "d", "description": "Delete the named members from the archive", "takes": "file" },
+    { "kind": "subcommand", "tokens": ["p", "<archive>"], "label": "p", "description": "Write the named members to standard output", "takes": "file" },
+    { "kind": "subcommand", "tokens": ["q", "<archive>"], "label": "q", "description": "Append the named files quickly, without checking for duplicates", "takes": "file" },
+    { "kind": "option", "tokens": ["<member>"], "label": "member file", "description": "A file to insert, delete or print", "takes": "file" },
+    { "kind": "note", "label": "Operation letters are one token", "description": "The operation and its modifiers form the first argument: rcs, not -r -c -s" },
+    { "kind": "note", "label": "Write the index", "description": "Include s in the operation, as in rcs, so the archive gets the symbol index the linker needs" },
+    { "kind": "note", "label": "Which operations take names", "description": "r, d and p act on the member names given after the archive; t and x list or extract every member when none is named" }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "zstd",
+  "display_name": "Zstandard",
+  "description": "Compress and decompress files with the fast Zstandard format, and list or test .zst files",
+  "version": "1.5",
+  "category": "system",
+  "author": "Meta Platforms",
+  "license": "BSD-3-Clause",
+  "homepage": "https://facebook.github.io/zstd/",
+  "tags": ["compression", "zstd"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to compress or decompress; with no file zstd reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-z"], "label": "-z", "description": "Compress (the action used when neither -z nor -d is given)" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Decompress a .zst file instead of compressing" },
+    { "kind": "option", "tokens": ["-k"], "label": "-k", "description": "Keep the input file; keeping it is already the default, so this only matters when --rm was given" },
+    { "kind": "option", "tokens": ["-19"], "label": "-19", "description": "Use compression level 19, the highest level available without --ultra" },
+    { "kind": "option", "tokens": ["--ultra"], "label": "--ultra", "description": "Unlock the levels above 19, up to -22; they are slower and need more memory" },
+    { "kind": "option", "tokens": ["-T", "<n>"], "label": "-T", "description": "Use this many threads (0 means as many as there are CPU cores)", "takes": "number" },
+    { "kind": "option", "tokens": ["--long=<n>"], "label": "--long", "description": "Turn on long distance matching with this window size, which helps with large, similar files", "takes": "number" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "List information about a compressed file: sizes, ratio, check and dictionary" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Test the integrity of a compressed file without writing the output" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Write the result to standard output and keep the input file" },
+    { "kind": "option", "tokens": ["-o", "<file>"], "label": "-o", "description": "Write the result to this file instead of the name derived from the input", "takes": "file" },
+    { "kind": "option", "tokens": ["--rm"], "label": "--rm", "description": "Delete the source file after a successful run" },
+    { "kind": "note", "label": "--rm deletes the source", "description": "zstd keeps the input file by default, unlike xz; --rm is what removes it, and the removal happens after a successful run with no undo" },
+    { "kind": "note", "label": "Levels and threads", "description": "The level is written as a plain number such as -19 and -T sets the thread count; levels above 19 are refused unless --ultra comes first" }
+  ]
+}

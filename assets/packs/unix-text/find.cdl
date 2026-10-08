@@ -1,0 +1,69 @@
+{
+  "name": "find",
+  "display_name": "find",
+  "description": "Walk a directory tree and select files by name, type, size or age",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<path>"], "label": "start path", "description": "Directory to walk; the search starts here and descends", "takes": "directory" },
+    { "kind": "option", "tokens": ["-name", "<pattern>"], "label": "-name", "description": "Match the base name against a shell pattern such as *.log", "takes": "text" },
+    { "kind": "option", "tokens": ["-iname", "<pattern>"], "label": "-iname", "description": "Like -name but case-insensitive", "takes": "text" },
+    { "kind": "option", "tokens": ["-path", "<pattern>"], "label": "-path", "description": "Match the whole path, not just the base name", "takes": "text" },
+    { "kind": "option", "tokens": ["-type", "<type>"], "label": "-type", "description": "Keep only entries of this type", "takes": "enum", "options": ["f", "d", "l"] },
+    { "kind": "option", "tokens": ["-maxdepth", "<n>"], "label": "-maxdepth", "description": "Descend at most this many directory levels", "takes": "number" },
+    { "kind": "option", "tokens": ["-mindepth", "<n>"], "label": "-mindepth", "description": "Do not act on the first levels of the tree", "takes": "number" },
+    { "kind": "option", "tokens": ["-size", "<n>"], "label": "-size", "description": "Match files of this size, in 512-byte blocks by default; use +n or -n for more or fewer", "takes": "text" },
+    { "kind": "option", "tokens": ["-mtime", "<days>"], "label": "-mtime", "description": "Match files last modified this many days ago", "takes": "number" },
+    { "kind": "option", "tokens": ["-mmin", "<minutes>"], "label": "-mmin", "description": "Match files last modified this many minutes ago", "takes": "number" },
+    { "kind": "option", "tokens": ["-newer", "<file>"], "label": "-newer", "description": "Match files modified more recently than this file", "takes": "file" },
+    { "kind": "option", "tokens": ["-perm", "<mode>"], "label": "-perm", "description": "Match files with this permission mode, for example -perm -u+w", "takes": "text" },
+    { "kind": "option", "tokens": ["-empty"], "label": "-empty", "description": "Match empty files and empty directories" },
+    { "kind": "option", "tokens": ["-not"], "label": "-not", "description": "Negate the test that follows" },
+    { "kind": "option", "tokens": ["-o"], "label": "-o", "description": "Logical or: match when either the left or the right test matches" },
+    { "kind": "option", "tokens": ["-print"], "label": "-print", "description": "Print the matched path, followed by a newline" },
+    { "kind": "option", "tokens": ["-print0"], "label": "-print0", "description": "Print the matched path followed by a NUL, for xargs -0" },
+    { "kind": "option", "tokens": ["-delete"], "label": "-delete", "description": "Delete every matched entry; this is a destructive action" },
+    { "kind": "option", "tokens": ["-exec", "<command>"], "label": "-exec", "description": "Run a command on each match; the command must end with a ; argument, or + to batch", "takes": "text" },
+    { "kind": "note", "label": "Expression order and evaluation", "description": "find evaluates its expression left to right with short-circuit or, so put -maxdepth and other global options before the first test and avoid bare patterns where a flag is meant" },
+    { "kind": "note", "label": "Shell globs and quotes", "description": "Quote patterns such as '*.log' so the shell does not expand them before find sees them; -delete is applied as soon as it is reached" }
+  ],
+  "actions": [
+    {
+      "name": "find_by_name",
+      "label": "Find files by name",
+      "description": "Walk a directory and print the files whose name matches a pattern",
+      "executable": "find",
+      "args": [
+        { "value": "{path}" },
+        { "value": "-maxdepth" },
+        { "value": "{depth}" },
+        { "value": "-type" },
+        { "value": "{kind}" },
+        { "value": "-name" },
+        { "value": "{pattern}" },
+        { "value": "-print" }
+      ],
+      "variables": [
+        { "name": "path", "type": "directory", "label": "Start directory", "default": "." },
+        { "name": "pattern", "type": "text", "label": "Name pattern", "default": "*.log", "required": true },
+        {
+          "name": "kind",
+          "type": "enum",
+          "label": "Entry type",
+          "default": "f",
+          "options": [
+            { "value": "f", "label": "Regular files" },
+            { "value": "d", "label": "Directories" },
+            { "value": "l", "label": "Symbolic links" }
+          ]
+        },
+        { "name": "depth", "type": "number", "label": "Maximum depth", "default": "3", "min": 1, "max": 100, "step": 1 }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 900
+    }
+  ]
+}

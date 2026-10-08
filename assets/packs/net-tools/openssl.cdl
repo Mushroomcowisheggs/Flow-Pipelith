@@ -1,0 +1,184 @@
+{
+  "name": "openssl",
+  "display_name": "OpenSSL",
+  "description": "Cryptography toolkit: digests, symmetric encryption, keys, certificates and TLS connections",
+  "category": "system",
+  "author": "OpenSSL Project",
+  "license": "Apache-2.0",
+  "homepage": "https://www.openssl.org",
+  "tags": ["cryptography", "certificates", "TLS"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["version"],
+      "label": "version",
+      "description": "Print the OpenSSL version, build date and enabled features"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["dgst"],
+      "label": "dgst",
+      "description": "Compute or verify a message digest (checksum) of a file",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to digest; without it the data is read from stdin", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["enc"],
+      "label": "enc",
+      "description": "Encrypt or decrypt a file with a symmetric cipher and a passphrase",
+      "children": [
+        { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Decrypt instead of encrypt" },
+        { "kind": "option", "tokens": ["-aes-256-cbc"], "label": "-aes-256-cbc", "description": "Use AES-256 in CBC mode as the cipher" },
+        { "kind": "option", "tokens": ["-pbkdf2"], "label": "-pbkdf2", "description": "Derive the key with PBKDF2 instead of the old key derivation, which is the safer choice" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["genrsa"],
+      "label": "genrsa",
+      "description": "Generate an RSA private key",
+      "children": [
+        { "kind": "option", "tokens": ["<bits>"], "label": "bits", "description": "Key size in bits, for example 2048 or 4096", "takes": "number" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["req"],
+      "label": "req",
+      "description": "Create a certificate signing request, or a self-signed certificate when -x509 is added",
+      "children": [
+        { "kind": "option", "tokens": ["-newkey", "<spec>"], "label": "-newkey", "description": "Generate a new key together with the request, for example rsa:2048", "takes": "text" },
+        { "kind": "option", "tokens": ["-nodes"], "label": "-nodes", "description": "Write the generated private key without a passphrase" },
+        { "kind": "option", "tokens": ["-subj", "<dn>"], "label": "-subj", "description": "Subject name of the certificate, for example /CN=example.com/O=Example Ltd", "takes": "text" },
+        { "kind": "option", "tokens": ["-x509"], "label": "-x509", "description": "Output a self-signed certificate instead of a request" },
+        { "kind": "option", "tokens": ["-keyout", "<file>"], "label": "-keyout", "description": "Write the newly generated private key to this file", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["x509"],
+      "label": "x509",
+      "description": "Display, convert and sign X.509 certificates",
+      "children": [
+        { "kind": "option", "tokens": ["-req"], "label": "-req", "description": "The input is a certificate request that should be signed" },
+        { "kind": "option", "tokens": ["-text"], "label": "-text", "description": "Print the certificate in readable text form" },
+        { "kind": "option", "tokens": ["-noout"], "label": "-noout", "description": "Do not print the encoded certificate itself" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["s_client"],
+      "label": "s_client",
+      "description": "Connect to a server over TLS and show the handshake and the certificate chain",
+      "children": [
+        { "kind": "option", "tokens": ["-connect", "<host:port>"], "label": "-connect", "description": "Host and port to connect to, for example example.com:443", "takes": "text" },
+        { "kind": "option", "tokens": ["-servername", "<name>"], "label": "-servername", "description": "Send this name in SNI, needed by servers that host several sites on one address", "takes": "text" },
+        { "kind": "option", "tokens": ["-showcerts"], "label": "-showcerts", "description": "Print the whole certificate chain, not only the server certificate" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["s_server"],
+      "label": "s_server",
+      "description": "Listen as a TLS server, useful to test certificates and clients",
+      "children": [
+        { "kind": "option", "tokens": ["-accept", "<port>"], "label": "-accept", "description": "Listen on this TCP port", "takes": "number" },
+        { "kind": "option", "tokens": ["-cert", "<file>"], "label": "-cert", "description": "Certificate to present to clients", "takes": "file" },
+        { "kind": "option", "tokens": ["-key", "<file>"], "label": "-key", "description": "Private key belonging to that certificate", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["rand"],
+      "label": "rand",
+      "description": "Write cryptographically secure random bytes",
+      "children": [
+        { "kind": "option", "tokens": ["<num>"], "label": "num", "description": "How many random bytes to produce", "takes": "number" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["hash"],
+      "label": "hash",
+      "description": "Print the digest of one or more files",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to hash", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "option",
+      "tokens": ["-in", "<file>"],
+      "label": "-in",
+      "description": "Read the input from this file instead of stdin",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-out", "<file>"],
+      "label": "-out",
+      "description": "Write the output to this file instead of stdout; an existing file is overwritten",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-sha256"],
+      "label": "-sha256",
+      "description": "Use SHA-256 as the digest or signature hash"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-days", "<n>"],
+      "label": "-days",
+      "description": "Validity period in days for a certificate created with x509 or req",
+      "takes": "number"
+    },
+    {
+      "kind": "note",
+      "label": "Self-signed certificate",
+      "description": "openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 365 -subj /CN=example.com writes a private key and a matching certificate in one step"
+    },
+    {
+      "kind": "note",
+      "label": "Options belong to their subcommand",
+      "description": "openssl has no global options: -days, -subj and the rest are read by the subcommand in front of them, so pick the subcommand first and its options after it"
+    }
+  ],
+  "actions": [
+    {
+      "name": "self_signed_cert",
+      "label": "Self-signed certificate",
+      "description": "Create a private key and a matching self-signed certificate for one host name",
+      "executable": "openssl",
+      "args": [
+        { "value": "req" },
+        { "value": "-x509" },
+        { "value": "-newkey" },
+        { "value": "rsa:2048" },
+        { "value": "-nodes" },
+        { "value": "-keyout" },
+        { "value": "{key_file}" },
+        { "value": "-out" },
+        { "value": "{cert_file}" },
+        { "value": "-days" },
+        { "value": "{days}" },
+        { "value": "-subj" },
+        { "value": "/CN={common_name}" }
+      ],
+      "variables": [
+        { "name": "common_name", "type": "text", "label": "Common name (host name)", "required": true, "placeholder": "example.com" },
+        { "name": "cert_file", "type": "file", "label": "Certificate file", "save": true, "default": "cert.pem" },
+        { "name": "key_file", "type": "file", "label": "Private key file", "save": true, "default": "key.pem" },
+        { "name": "days", "type": "number", "label": "Valid for this many days", "default": "365", "min": 1, "max": 3650, "step": 1 }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300,
+      "confirm": true
+    }
+  ]
+}

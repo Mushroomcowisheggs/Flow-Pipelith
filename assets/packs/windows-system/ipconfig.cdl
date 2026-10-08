@@ -1,0 +1,26 @@
+{
+  "name": "ipconfig",
+  "display_name": "IP Configuration",
+  "description": "Show and refresh the IP configuration of the network adapters",
+  "category": "network",
+  "tags": ["network", "TCP/IP", "DHCP", "DNS"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/all"], "label": "/all", "description": "Show full details for every adapter, including MAC and DNS servers" },
+    { "kind": "option", "tokens": ["/release"], "label": "/release", "description": "Release the DHCP lease of every adapter" },
+    { "kind": "option", "tokens": ["/renew"], "label": "/renew", "description": "Renew the DHCP lease of every adapter" },
+    { "kind": "option", "tokens": ["/release", "<adapter>"], "label": "/release adapter", "description": "Release the DHCP lease of one named adapter", "takes": "text" },
+    { "kind": "option", "tokens": ["/renew", "<adapter>"], "label": "/renew adapter", "description": "Renew the DHCP lease of one named adapter", "takes": "text" },
+    { "kind": "option", "tokens": ["/flushdns"], "label": "/flushdns", "description": "Empty the DNS resolver cache" },
+    { "kind": "option", "tokens": ["/displaydns"], "label": "/displaydns", "description": "Show the entries held in the DNS resolver cache" },
+    { "kind": "option", "tokens": ["/registerdns"], "label": "/registerdns", "description": "Refresh DHCP leases and re-register DNS names" },
+    { "kind": "option", "tokens": ["/showclassid", "<adapter>"], "label": "/showclassid", "description": "Show the DHCP class IDs of an adapter", "takes": "text" },
+    { "kind": "option", "tokens": ["/setclassid", "<adapter>"], "label": "/setclassid", "description": "Set the DHCP class ID of an adapter", "takes": "text" },
+    { "kind": "note", "label": "Adapter name", "description": "The adapter name is a connection name such as \"Ethernet\" or \"Wi-Fi\"; /all lists the exact names" },
+    { "kind": "note", "label": "DHCP only", "description": "/release and /renew act on adapters that obtain their address from DHCP" },
+    { "kind": "note", "label": "/flushdns", "description": "Clears the whole resolver cache, not just one adapter" },
+    { "kind": "note", "label": "/all first", "description": "Run /all to learn adapter names, MAC addresses and DNS servers before the other switches" }
+  ]
+}

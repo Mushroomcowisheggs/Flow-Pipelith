@@ -1,0 +1,31 @@
+{
+  "name": "unzip",
+  "display_name": "UnZip",
+  "description": "List, test and extract ZIP archives, with control over overwriting, the target directory and which members to take",
+  "version": "6.0",
+  "category": "system",
+  "author": "Info-ZIP",
+  "license": "Info-ZIP",
+  "homepage": "https://infozip.sourceforge.net/UnZip.html",
+  "tags": ["compression", "archive", "zip"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<archive>"], "label": "archive", "description": "The ZIP file to read; the .zip suffix may be left out", "takes": "file" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "List the contents of the archive without extracting anything" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Test every member against its checksum without writing files" },
+    { "kind": "option", "tokens": ["-o"], "label": "-o", "description": "Overwrite existing files without asking; the old file is replaced, not merged" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Never overwrite an existing file: those members are skipped instead of prompting" },
+    { "kind": "option", "tokens": ["-d", "<directory>"], "label": "-d", "description": "Extract into this directory; it is created when missing", "takes": "directory" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Write the extracted data to standard output and create no file on disk" },
+    { "kind": "option", "tokens": ["-j"], "label": "-j", "description": "Junk the paths: write each member into the target directory without its directory part" },
+    { "kind": "option", "tokens": ["-q"], "label": "-q", "description": "Quiet: print only the member names, not the per-file summary lines" },
+    { "kind": "option", "tokens": ["-x", "<pattern>"], "label": "-x", "description": "Exclude the members whose names match this pattern", "takes": "text" },
+    { "kind": "option", "tokens": ["-P", "<password>"], "label": "-P", "description": "Use this password for encrypted members instead of prompting for it", "takes": "text" },
+    { "kind": "option", "tokens": ["<member>"], "label": "member", "description": "Extract only this member; repeat the entry to pick several (wildcards are allowed)", "takes": "text" },
+    { "kind": "note", "label": "ZIP only", "description": "unzip reads ZIP archives only; a 7z or rar file needs 7z or unrar instead, and a tar file needs tar, because those are different formats" },
+    { "kind": "note", "label": "-o overwrites without asking", "description": "unzip -o replaces the files in the target directory unconditionally and there is no undo; -n is the safe choice when the directory already holds data" },
+    { "kind": "note", "label": "Order of the names", "description": "The archive name comes first, then the members to extract, then -x patterns, so an extraction command reads unzip archive.zip member -x skip" }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "name": "npm",
+  "display_name": "npm",
+  "description": "Node package manager: install and update dependencies, run package scripts and publish packages",
+  "category": "development",
+  "author": "npm, Inc. (GitHub)",
+  "license": "Artistic-2.0",
+  "homepage": "https://docs.npmjs.com/cli/v11/commands/npm",
+  "tags": ["node", "javascript", "package manager", "registry"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["install"],
+      "label": "install",
+      "description": "Install the dependencies of package.json, or add the named packages",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "Package to install and add to package.json, e.g. lodash or lodash@4", "takes": "text" },
+        { "kind": "option", "tokens": ["--save-dev"], "label": "--save-dev", "description": "Record the package in devDependencies (short form -D)" },
+        { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Install into the user-wide prefix instead of the project (short form -g)" },
+        { "kind": "option", "tokens": ["--omit=<kind>"], "label": "--omit", "description": "Leave this class of dependencies out of the install", "takes": "enum", "options": ["dev", "optional", "peer"] },
+        { "kind": "option", "tokens": ["--registry=<url>"], "label": "--registry", "description": "Fetch packages from this registry instead of the configured one", "takes": "text" },
+        { "kind": "option", "tokens": ["--workspace=<name>"], "label": "--workspace", "description": "Install into this workspace package instead of the root project", "takes": "text" },
+        { "kind": "option", "tokens": ["--prefix", "<directory>"], "label": "--prefix", "description": "Use this directory as the location of the project", "takes": "directory" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["ci"],
+      "label": "ci",
+      "description": "Clean install straight from the lockfile, for automated builds",
+      "children": [
+        { "kind": "option", "tokens": ["--omit=<kind>"], "label": "--omit", "description": "Leave this class of dependencies out of the install", "takes": "enum", "options": ["dev", "optional", "peer"] },
+        { "kind": "option", "tokens": ["--ignore-scripts"], "label": "--ignore-scripts", "description": "Do not run the install and postinstall scripts of dependencies" },
+        { "kind": "option", "tokens": ["--registry=<url>"], "label": "--registry", "description": "Fetch packages from this registry instead of the configured one", "takes": "text" },
+        { "kind": "option", "tokens": ["--prefix", "<directory>"], "label": "--prefix", "description": "Use this directory as the location of the project", "takes": "directory" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["run"],
+      "label": "run",
+      "description": "Run a script defined in the scripts section of package.json",
+      "children": [
+        { "kind": "option", "tokens": ["<script>"], "label": "script", "description": "Name of the script to run", "takes": "text" },
+        { "kind": "option", "tokens": ["--", "<arguments>"], "label": "--", "description": "Everything after this is appended to the script command, not read by npm", "takes": "text" },
+        { "kind": "option", "tokens": ["--workspace=<name>"], "label": "--workspace", "description": "Run the script in this workspace package", "takes": "text" },
+        { "kind": "option", "tokens": ["--if-present"], "label": "--if-present", "description": "Exit successfully instead of failing when the script is not defined" },
+        { "kind": "option", "tokens": ["--silent"], "label": "--silent", "description": "Print only the output of the script itself (short form -s)" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["exec"],
+      "label": "exec",
+      "description": "Run a command from a local or remote package, with the project binaries on PATH",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "The package or command to run", "takes": "text" },
+        { "kind": "option", "tokens": ["--package=<name>"], "label": "--package", "description": "Install this package and expose its binaries while the command runs (short form -p)", "takes": "text" },
+        { "kind": "option", "tokens": ["--call", "<command>"], "label": "--call", "description": "Run this whole command line with the installed packages on PATH (short form -c)", "takes": "text" },
+        { "kind": "option", "tokens": ["--yes"], "label": "--yes", "description": "Skip the confirmation prompt before installing a missing package" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["publish"],
+      "label": "publish",
+      "description": "Upload the current package to a registry",
+      "children": [
+        { "kind": "option", "tokens": ["--dry-run"], "label": "--dry-run", "description": "Report what would be uploaded without publishing" },
+        { "kind": "option", "tokens": ["--tag", "<tag>"], "label": "--tag", "description": "Publish under this distribution tag instead of latest", "takes": "text" },
+        { "kind": "option", "tokens": ["--access=<level>"], "label": "--access", "description": "Visibility of a scoped package", "takes": "enum", "options": ["public", "restricted"] },
+        { "kind": "option", "tokens": ["--registry=<url>"], "label": "--registry", "description": "Publish to this registry instead of the configured one", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["update"],
+      "label": "update",
+      "description": "Update packages to the newest version allowed by package.json",
+      "children": [
+        { "kind": "option", "tokens": ["<package>"], "label": "package", "description": "Update only this package", "takes": "text" },
+        { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Update globally installed packages" },
+        { "kind": "option", "tokens": ["--save"], "label": "--save", "description": "Also rewrite the version ranges in package.json" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["outdated"],
+      "label": "outdated",
+      "description": "List the installed packages that have newer versions available",
+      "children": [
+        { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "Check globally installed packages" },
+        { "kind": "option", "tokens": ["--json"], "label": "--json", "description": "Print machine-readable JSON" },
+        { "kind": "option", "tokens": ["--long"], "label": "--long", "description": "Include the package type and other details in the output" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["audit"],
+      "label": "audit",
+      "description": "Check the dependency tree against the security advisory database",
+      "children": [
+        { "kind": "option", "tokens": ["--audit-level=<level>"], "label": "--audit-level", "description": "Only fail the command from this severity upwards", "takes": "enum", "options": ["low", "moderate", "high", "critical"] },
+        { "kind": "option", "tokens": ["--fix"], "label": "--fix", "description": "Install the compatible updates that fix the reported vulnerabilities" },
+        { "kind": "option", "tokens": ["--json"], "label": "--json", "description": "Print the report as JSON" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["init"],
+      "label": "init",
+      "description": "Create a package.json, or run a create-* initializer package",
+      "children": [
+        { "kind": "option", "tokens": ["<initializer>"], "label": "initializer", "description": "Initializer to run, e.g. react-app for the create-react-app package", "takes": "text" },
+        { "kind": "option", "tokens": ["--yes"], "label": "--yes", "description": "Accept every default and write package.json immediately (short form -y)" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["list"],
+      "label": "list",
+      "description": "Show the installed packages as a dependency tree",
+      "children": [
+        { "kind": "option", "tokens": ["--depth", "<n>"], "label": "--depth", "description": "How many levels of the tree to show; --depth 0 lists only direct dependencies", "takes": "number" },
+        { "kind": "option", "tokens": ["--global"], "label": "--global", "description": "List globally installed packages" },
+        { "kind": "option", "tokens": ["--json"], "label": "--json", "description": "Print the tree as JSON" }
+      ]
+    },
+    { "kind": "note", "label": "The -- separator", "description": "npm run reads its own options up to --; arguments meant for the script go after it: npm run build -- --watch" },
+    { "kind": "note", "label": "install with and without a package name", "description": "npm install with no arguments installs everything package.json asks for, while npm install <package> adds that package and records it as a dependency" }
+  ],
+  "actions": [
+    {
+      "name": "ci_install",
+      "label": "Clean install from the lockfile",
+      "description": "Reproduce the lockfile exactly, with or without devDependencies",
+      "executable": "npm",
+      "args": [
+        { "value": "ci" },
+        { "value": "--omit=dev", "when": "production_only" }
+      ],
+      "variables": [
+        { "name": "production_only", "type": "boolean", "label": "Skip devDependencies", "default": false }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

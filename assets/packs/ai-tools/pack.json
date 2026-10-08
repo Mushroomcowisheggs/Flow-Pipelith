@@ -1,0 +1,7 @@
+{
+  "id": "ai-tools",
+  "label": "AI & GPU tools",
+  "description": "Local model runners, dataset tooling and GPU inspection",
+  "platforms": ["windows", "linux", "macos"],
+  "origin": "machine"
+}

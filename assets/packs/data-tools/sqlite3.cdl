@@ -1,0 +1,58 @@
+{
+  "name": "sqlite3",
+  "display_name": "SQLite",
+  "description": "Command-line shell for SQLite databases: open a file, run SQL and dot-commands, import and export data",
+  "version": "3.45",
+  "category": "data",
+  "author": "SQLite Consortium",
+  "license": "Public Domain",
+  "homepage": "https://sqlite.org/cli.html",
+  "tags": ["database", "SQL", "sqlite"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "subcommand", "tokens": [".open", "<file>"], "label": ".open", "description": "Open this database file, creating an empty database when the file does not exist", "takes": "file" },
+    { "kind": "subcommand", "tokens": [".tables"], "label": ".tables", "description": "List the tables and views of the open database" },
+    { "kind": "subcommand", "tokens": [".schema"], "label": ".schema", "description": "Show the CREATE statements that build the schema; add a table name to limit the output" },
+    { "kind": "subcommand", "tokens": [".mode", "<mode>"], "label": ".mode", "description": "Choose how query results are formatted", "takes": "enum", "options": ["list", "column", "csv", "json", "insert", "quote", "line", "box", "table", "markdown"] },
+    { "kind": "subcommand", "tokens": [".headers", "<on|off>"], "label": ".headers", "description": "Turn the column-name header row on or off for the modes that support it", "takes": "enum", "options": ["on", "off"] },
+    { "kind": "subcommand", "tokens": [".output", "<file>"], "label": ".output", "description": "Write query results to this file instead of the screen; .output with no file sends them back to the screen", "takes": "file" },
+    { "kind": "subcommand", "tokens": [".read", "<file>"], "label": ".read", "description": "Run the SQL statements and dot-commands stored in this script file", "takes": "file" },
+    { "kind": "subcommand", "tokens": [".import", "<file>"], "label": ".import", "description": "Load a CSV or text file into an existing table: pick the file here, then add the table name, which goes after the file name", "takes": "file", "children": [
+      { "kind": "option", "tokens": ["<table>"], "label": "table name", "description": "Name of the table that receives the rows; it must already exist", "takes": "text" }
+    ] },
+    { "kind": "subcommand", "tokens": [".dump"], "label": ".dump", "description": "Print SQL text that recreates the whole database, table by table" },
+    { "kind": "subcommand", "tokens": [".backup", "<file>"], "label": ".backup", "description": "Copy the open database into this file, replacing it when it already exists", "takes": "file" },
+    { "kind": "option", "tokens": ["<sql>"], "label": "SQL statement", "description": "The SQL to run, for example SELECT * FROM t; it must end with a semicolon", "takes": "text" },
+    { "kind": "option", "tokens": ["-header"], "label": "-header", "description": "Show column names in the output, as if .headers on had been run" },
+    { "kind": "option", "tokens": ["-csv"], "label": "-csv", "description": "Set the output mode to comma-separated values, as if .mode csv had been run" },
+    { "kind": "option", "tokens": ["-json"], "label": "-json", "description": "Set the output mode to JSON, as if .mode json had been run" },
+    { "kind": "option", "tokens": ["-readonly"], "label": "-readonly", "description": "Open the database read-only, so no statement can change the file" },
+    { "kind": "option", "tokens": ["-batch"], "label": "-batch", "description": "Force batch mode: never prompt and never read the interactive history" },
+    { "kind": "note", "label": "Dot-commands and semicolons", "description": "A dot-command is complete on its own line and takes no trailing semicolon, while SQL runs only after the closing semicolon" },
+    { "kind": "note", "label": ".headers depends on the mode", "description": ".headers on adds a header row only in the modes that have one (column, csv, json, box, table, markdown); list and line ignore it" },
+    { "kind": "note", "label": "Opening creates the file", "description": ".open and a file name on the command line create an empty database when the file does not exist; add -readonly when an existing file must never be changed" }
+  ],
+  "actions": [
+    {
+      "name": "query_csv",
+      "label": "Query to CSV",
+      "description": "Run one SQL statement and print the result as CSV with a header row",
+      "executable": "sqlite3",
+      "args": [
+        { "value": "-header" },
+        { "value": "-csv" },
+        { "value": "{database}" },
+        { "value": "{sql}" }
+      ],
+      "variables": [
+        { "name": "database", "type": "file", "label": "Database file", "filters": ["*.db", "*.sqlite", "*.sqlite3"], "required": true },
+        { "name": "sql", "type": "text", "label": "SQL statement", "default": "SELECT name FROM sqlite_master WHERE type = 'table';", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 900
+    }
+  ]
+}

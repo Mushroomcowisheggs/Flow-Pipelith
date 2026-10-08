@@ -1,0 +1,83 @@
+{
+  "name": "diskutil",
+  "display_name": "Disk Utility",
+  "description": "Inspect, mount and verify disks and volumes from the command line",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["disk", "volume", "filesystem", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["list"],
+      "label": "list",
+      "description": "Show the disks and the volumes on them",
+      "children": [
+        { "kind": "option", "tokens": ["-plist"], "label": "-plist", "description": "Print the listing as a property list" },
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "List only the volumes of this disk, for example disk2", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["info"],
+      "label": "info",
+      "description": "Show the details of one disk or volume",
+      "children": [
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "The disk or volume to describe, for example disk2s1", "takes": "text" },
+        { "kind": "option", "tokens": ["-plist"], "label": "-plist", "description": "Print the details as a property list" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["mount"],
+      "label": "mount",
+      "description": "Mount the filesystem of a volume",
+      "children": [
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "The volume to mount, for example disk2s1", "takes": "text" },
+        { "kind": "option", "tokens": ["-readOnly"], "label": "-readOnly", "description": "Mount the volume read-only" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["unmount"],
+      "label": "unmount",
+      "description": "Unmount a volume without ejecting the disk",
+      "children": [
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "The volume to unmount, for example disk2s1", "takes": "text" },
+        { "kind": "option", "tokens": ["force"], "label": "force", "description": "Unmount even when files on the volume are still open" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["verifyVolume"],
+      "label": "verifyVolume",
+      "description": "Check the filesystem of a volume without repairing it",
+      "children": [
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "The volume to check, for example disk2s1", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["repairVolume"],
+      "label": "repairVolume",
+      "description": "Repair the filesystem of a volume",
+      "children": [
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "The volume to repair, for example disk2s1", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["eject"],
+      "label": "eject",
+      "description": "Unmount every volume of a disk and eject it",
+      "children": [
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "The disk to eject, for example disk2", "takes": "text" }
+      ]
+    },
+    { "kind": "note", "label": "Device identifiers", "description": "Identifiers such as disk2 or disk2s1 come from diskutil list: disk2 is the whole disk and disk2s1 is one of its partitions" },
+    { "kind": "note", "label": "Administrator rights", "description": "Verbs that change or repair a disk need administrator rights, and a repair should be run on an unmounted volume" },
+    { "kind": "note", "label": "Order", "description": "The verb comes first and the device identifier last: diskutil verifyVolume disk2s1" }
+  ]
+}

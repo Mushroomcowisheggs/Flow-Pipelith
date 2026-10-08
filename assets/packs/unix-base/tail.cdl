@@ -1,0 +1,21 @@
+{
+  "name": "tail",
+  "display_name": "tail",
+  "description": "Print the last part of files, and follow files that grow",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-n", "<count>"], "label": "-n", "description": "Print this many lines from the end instead of the last 10", "takes": "number" },
+    { "kind": "option", "tokens": ["-n", "+<count>"], "label": "-n +N", "description": "Start at this line and print through to the end of the file", "takes": "number" },
+    { "kind": "option", "tokens": ["-c", "<bytes>"], "label": "-c", "description": "Print this many bytes from the end instead of whole lines", "takes": "number" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Keep the file open and print lines as they are appended" },
+    { "kind": "option", "tokens": ["-F"], "label": "-F", "description": "Follow by name: like -f, but reopen the file when it is rotated or missing" },
+    { "kind": "option", "tokens": ["-q"], "label": "-q", "description": "Never print the file name headers, even with several files" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v (GNU)", "description": "GNU coreutils only: always print a file name header, even with a single file" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to read; several may be given, the default is standard input", "takes": "file" },
+    { "kind": "note", "label": "Default", "description": "Without -n or -c, tail prints the last 10 lines of each input" },
+    { "kind": "note", "label": "Following never ends", "description": "-f and -F keep running until the process is stopped, for example with Ctrl+C, so they do not fit a workflow that must finish" }
+  ]
+}

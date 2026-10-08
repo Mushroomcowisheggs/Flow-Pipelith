@@ -1,0 +1,43 @@
+{
+  "name": "tracert",
+  "display_name": "Tracert",
+  "description": "Trace the route to a host hop by hop by increasing the time-to-live of ICMP probes",
+  "category": "network",
+  "tags": ["network", "route", "latency", "diagnostics"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Do not resolve the address of each hop to a host name" },
+    {
+      "kind": "option",
+      "tokens": ["-h", "<max_hops>"],
+      "label": "-h",
+      "description": "Stop after this many hops",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-w", "<ms>"],
+      "label": "-w",
+      "description": "Wait this many milliseconds for each reply",
+      "takes": "number"
+    },
+    { "kind": "option", "tokens": ["-4"], "label": "-4", "description": "Force IPv4" },
+    { "kind": "option", "tokens": ["-6"], "label": "-6", "description": "Force IPv6" },
+    {
+      "kind": "option",
+      "tokens": ["-j", "<host_list>"],
+      "label": "-j",
+      "description": "Loose source route through the listed intermediate hosts",
+      "takes": "text"
+    },
+    { "kind": "option", "tokens": ["-R"], "label": "-R", "description": "Trace the round-trip path as well" },
+    { "kind": "option", "tokens": ["<target>"], "label": "target", "description": "The host name or IP address to trace", "takes": "text" },
+    { "kind": "note", "label": "Source route limits", "description": "-j accepts at most 9 intermediate hosts and is an IPv4-only option" },
+    { "kind": "note", "label": "Default limit", "description": "Without -h, tracert stops after 30 hops" },
+    { "kind": "note", "label": "Name resolution is slow", "description": "-d skips reverse lookups and makes a trace much faster" },
+    { "kind": "note", "label": "Silent hops", "description": "A hop that prints \"Request timed out\" may still forward the packets; routers often drop probes" },
+    { "kind": "note", "label": "Protocol", "description": "Windows tracert sends ICMP echo requests, so a host that blocks ICMP can be unreachable to it while ping or TCP still work" }
+  ]
+}

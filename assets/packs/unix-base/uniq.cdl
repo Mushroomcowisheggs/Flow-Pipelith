@@ -1,0 +1,20 @@
+{
+  "name": "uniq",
+  "display_name": "uniq",
+  "description": "Report or drop repeated adjacent lines",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to read; only one file is accepted, the default is standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Prefix each line with the number of times it occurred" },
+    { "kind": "option", "tokens": ["-d"], "label": "-d", "description": "Print only the lines that are repeated" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u", "description": "Print only the lines that are not repeated" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Ignore case when comparing lines" },
+    { "kind": "option", "tokens": ["-f", "<n>"], "label": "-f", "description": "Skip this many fields before comparing", "takes": "number" },
+    { "kind": "option", "tokens": ["-s", "<n>"], "label": "-s", "description": "Skip this many characters before comparing", "takes": "number" },
+    { "kind": "note", "label": "Adjacent lines only", "description": "uniq compares neighbours, so sort the input first when duplicates may be scattered through the file" },
+    { "kind": "note", "label": "What is kept", "description": "One line is kept for each group of equal lines; -c shows how many lines the group had" }
+  ]
+}

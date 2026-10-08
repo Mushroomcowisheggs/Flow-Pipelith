@@ -1,0 +1,17 @@
+{
+  "name": "pbcopy",
+  "display_name": "pbcopy",
+  "description": "Copy standard input onto a macOS pasteboard",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["clipboard", "pasteboard", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-pboard", "<board>"], "label": "-pboard", "description": "Write to the named pasteboard instead of the general one", "takes": "enum", "options": ["general", "ruler", "find", "font"] },
+    { "kind": "option", "tokens": ["-Prefer", "<type>"], "label": "-Prefer", "description": "Declare the type of the data being copied", "takes": "enum", "options": ["txt", "rtf", "ps"] },
+    { "kind": "note", "label": "Reads standard input", "description": "pbcopy takes no data arguments: it copies everything written to its standard input, so pipe a command into it" },
+    { "kind": "note", "label": "Scope", "description": "The general pasteboard is the one every application shares; the other pasteboards are the find, font and ruler panels" }
+  ]
+}

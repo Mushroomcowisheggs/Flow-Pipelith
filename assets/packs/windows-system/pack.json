@@ -1,0 +1,7 @@
+{
+  "id": "windows-system",
+  "label": "Windows system tools",
+  "description": "Network diagnosis, scheduled tasks, services and imaging utilities of a Windows system",
+  "platforms": ["windows"],
+  "origin": "os-base"
+}

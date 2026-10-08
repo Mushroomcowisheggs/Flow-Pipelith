@@ -1,0 +1,18 @@
+{
+  "name": "wc",
+  "display_name": "wc",
+  "description": "Count lines, words, characters and bytes",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Count lines" },
+    { "kind": "option", "tokens": ["-w"], "label": "-w", "description": "Count words, separated by whitespace" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Count bytes" },
+    { "kind": "option", "tokens": ["-m"], "label": "-m", "description": "Count characters, which differs from bytes for non-ASCII text" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to count; several may be given, the default is standard input", "takes": "file" },
+    { "kind": "note", "label": "No option means lines, words, bytes", "description": "With no counting option wc prints the three counts in that order" },
+    { "kind": "note", "label": "Totals", "description": "With several files every line is followed by a total line; with standard input the name column is left out" }
+  ]
+}

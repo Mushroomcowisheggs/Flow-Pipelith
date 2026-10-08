@@ -1,0 +1,20 @@
+{
+  "name": "mv",
+  "display_name": "mv",
+  "description": "Move or rename files and directories",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<source>"], "label": "source", "description": "File or directory to move; several may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "New name, or an existing directory that receives the sources inside it", "takes": "directory" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Ask before overwriting an existing destination" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Do not overwrite an existing destination" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Overwrite without asking, removing a destination that is in the way" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u (GNU)", "description": "GNU coreutils only: move only when the source is newer than the destination" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the name of every file that is moved" },
+    { "kind": "note", "label": "Rename or move", "description": "Renaming is a move inside one directory; across filesystems mv copies the data and then deletes the source" },
+    { "kind": "note", "label": "Overwriting", "description": "-i asks before replacing a destination, -n quietly keeps it, and with neither of them an existing destination is replaced" }
+  ]
+}

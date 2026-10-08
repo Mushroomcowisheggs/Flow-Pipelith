@@ -1,0 +1,31 @@
+{
+  "name": "dumpbin",
+  "display_name": "dumpbin",
+  "description": "Microsoft's binary inspector: headers, symbols, imports and disassembly of PE files",
+  "version": "14.4",
+  "category": "development",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "homepage": "https://learn.microsoft.com/cpp/build/reference/dumpbin-reference",
+  "tags": ["msvc", "binary", "inspection"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The object file, static library, import library or executable to inspect", "takes": "file" },
+    { "kind": "option", "tokens": ["/ALL"], "label": "/ALL", "description": "Show everything except the disassembly and the raw data" },
+    { "kind": "option", "tokens": ["/HEADERS"], "label": "/HEADERS", "description": "Show the COFF file header and the optional header" },
+    { "kind": "option", "tokens": ["/SYMBOLS"], "label": "/SYMBOLS", "description": "Show the COFF symbol table and the symbols of each section" },
+    { "kind": "option", "tokens": ["/IMPORTS"], "label": "/IMPORTS", "description": "Show the functions that this file imports from DLLs" },
+    { "kind": "option", "tokens": ["/EXPORTS"], "label": "/EXPORTS", "description": "Show the definitions that this file exports" },
+    { "kind": "option", "tokens": ["/DISASM"], "label": "/DISASM", "description": "Disassemble the code in the file" },
+    { "kind": "option", "tokens": ["/RELOCATIONS"], "label": "/RELOCATIONS", "description": "Show the relocations of each section" },
+    { "kind": "option", "tokens": ["/DIRECTIVES"], "label": "/DIRECTIVES", "description": "Show the compiler directives of each section" },
+    { "kind": "option", "tokens": ["/SUMMARY"], "label": "/SUMMARY", "description": "Show a short summary of the file" },
+    { "kind": "option", "tokens": ["/PDBPATH"], "label": "/PDBPATH", "description": "Report where the matching PDB file would be looked for" },
+    { "kind": "option", "tokens": ["/RAWDATA"], "label": "/RAWDATA", "description": "Show the raw bytes of the sections" },
+    { "kind": "note", "label": "The developer prompt", "description": "dumpbin ships with Visual Studio and is only on PATH inside a developer command prompt; run vcvarsall.bat or use the Developer PowerShell first" },
+    { "kind": "note", "label": "Slashes, not dashes", "description": "Options use a slash: dumpbin /IMPORTS app.exe; the option goes before the file name" },
+    { "kind": "note", "label": "Redirect the long reports", "description": "/ALL and /DISASM on a large binary produce far more text than the output panel shows; write the report to a file and open that instead" }
+  ]
+}

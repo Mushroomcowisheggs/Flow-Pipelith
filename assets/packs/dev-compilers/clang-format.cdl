@@ -1,0 +1,26 @@
+{
+  "name": "clang-format",
+  "display_name": "clang-format",
+  "description": "LLVM source formatter: rewrites C, C++ and other source files in a chosen style",
+  "category": "development",
+  "author": "LLVM Project",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "homepage": "https://clang.llvm.org/docs/ClangFormat.html",
+  "tags": ["formatter", "style", "C++"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The source file to format; the result goes to standard output unless -i is given", "takes": "file" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Rewrite the file in place instead of printing the result" },
+    { "kind": "option", "tokens": ["--style=<style>"], "label": "--style", "description": "Format with one of the predefined styles instead of the project style file", "takes": "enum", "options": ["LLVM", "Google", "Chromium", "Mozilla", "WebKit"] },
+    { "kind": "option", "tokens": ["--fallback-style=<style>"], "label": "--fallback-style", "description": "Style to use when no style file is found; the value none makes the run fail instead", "takes": "enum", "options": ["LLVM", "Google", "Chromium", "Mozilla", "WebKit", "none"] },
+    { "kind": "option", "tokens": ["-lines=<range>"], "label": "-lines", "description": "Format only this line range, written as start:end, for example 10:20", "takes": "text" },
+    { "kind": "option", "tokens": ["--dry-run"], "label": "--dry-run", "description": "Report the problems without writing any file" },
+    { "kind": "option", "tokens": ["--verbose"], "label": "--verbose", "description": "Print the configuration and the files being processed" },
+    { "kind": "option", "tokens": ["-assume-filename=<file>"], "label": "-assume-filename", "description": "Treat the input from standard input as if it came from this file, for style and language lookup", "takes": "file" },
+    { "kind": "note", "label": "Nothing is written without -i", "description": "By default clang-format prints the formatted text to standard output; only -i changes the file on disk" },
+    { "kind": "note", "label": "Where the style comes from", "description": "Without --style the default is file: the .clang-format found next to the file or in a parent directory, then --fallback-style" },
+    { "kind": "note", "label": "Standard input", "description": "With no file argument clang-format reads from standard input, which is how a pipeline formats text it just produced" }
+  ]
+}

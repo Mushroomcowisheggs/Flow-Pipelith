@@ -1,0 +1,19 @@
+{
+  "name": "mdls",
+  "display_name": "Metadata List",
+  "description": "Print the Spotlight metadata attributes of a file",
+  "category": "data",
+  "author": "Apple",
+  "tags": ["metadata", "spotlight", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file whose metadata attributes are printed", "takes": "file" },
+    { "kind": "option", "tokens": ["-name", "<attribute>"], "label": "-name", "description": "Print only this attribute, for example kMDItemFSSize", "takes": "text" },
+    { "kind": "option", "tokens": ["-raw"], "label": "-raw", "description": "Print bare values without the attribute names" },
+    { "kind": "option", "tokens": ["-nullMarker", "<string>"], "label": "-nullMarker", "description": "Print this text for attributes that have no value", "takes": "text" },
+    { "kind": "note", "label": "Only indexed attributes", "description": "mdls lists what Spotlight stored for the file; attributes that were never indexed print as (null)" },
+    { "kind": "note", "label": "Piping a single value", "description": "Combine -name with -raw to get one bare value that can be piped into another command" }
+  ]
+}

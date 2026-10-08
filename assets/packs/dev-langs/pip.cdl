@@ -1,0 +1,111 @@
+{
+  "name": "pip",
+  "display_name": "pip",
+  "description": "Python package manager: install, uninstall, export dependency lists",
+  "version": "24",
+  "category": "development",
+  "author": "Python Packaging Authority",
+  "license": "MIT",
+  "homepage": "https://pip.pypa.io",
+  "tags": ["package management", "Python"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "actions": [
+    {
+      "name": "install",
+      "label": "Install package",
+      "executable": "python",
+      "args": [
+        { "value": "-m" },
+        { "value": "pip" },
+        { "value": "install" },
+        { "value": "{package}" },
+        { "value": "=={version}", "when": "pin_version" },
+        { "value": "--upgrade", "when": "upgrade" },
+        { "value": "--user", "when": "user_install" }
+      ],
+      "variables": [
+        { "name": "package", "type": "text", "label": "Package name", "required": true, "placeholder": "e.g. numpy" },
+        { "name": "version", "type": "text", "label": "Specific version", "default": "1.0.0" },
+        { "name": "pin_version", "type": "boolean", "label": "Pin version", "default": false },
+        { "name": "upgrade", "type": "boolean", "label": "Upgrade", "default": false },
+        { "name": "user_install", "type": "boolean", "label": "Install to the user directory", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 1800
+    },
+    {
+      "name": "install_requirements",
+      "label": "Install from requirements",
+      "description": "Install dependencies in bulk from requirements.txt",
+      "executable": "python",
+      "args": [
+        { "value": "-m" },
+        { "value": "pip" },
+        { "value": "install" },
+        { "value": "-r" },
+        { "value": "{requirements}" }
+      ],
+      "variables": [
+        { "name": "requirements", "type": "file", "label": "Requirements file", "filters": ["*.txt"], "required": true, "default": "requirements.txt" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600,
+      "confirm": true
+    },
+    {
+      "name": "freeze",
+      "label": "Export dependency list",
+      "executable": "python",
+      "args": [
+        { "value": "-m" },
+        { "value": "pip" },
+        { "value": "freeze" }
+      ],
+      "variables": [],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "list",
+      "label": "List installed packages",
+      "executable": "python",
+      "args": [
+        { "value": "-m" },
+        { "value": "pip" },
+        { "value": "list" },
+        { "value": "--outdated", "when": "outdated" }
+      ],
+      "variables": [
+        { "name": "outdated", "type": "boolean", "label": "Only show packages with updates available", "default": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    },
+    {
+      "name": "uninstall",
+      "label": "Uninstall package",
+      "executable": "python",
+      "args": [
+        { "value": "-m" },
+        { "value": "pip" },
+        { "value": "uninstall" },
+        { "value": "-y" },
+        { "value": "{package}" }
+      ],
+      "variables": [
+        { "name": "package", "type": "text", "label": "Package name", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600,
+      "confirm": true,
+      "danger": true
+    }
+  ]
+}

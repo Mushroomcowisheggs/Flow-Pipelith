@@ -1,0 +1,133 @@
+{
+  "name": "ollama",
+  "display_name": "Ollama",
+  "description": "Run and manage local large language models: pull, run, inspect and serve",
+  "version": "0.5",
+  "category": "science",
+  "author": "Ollama",
+  "license": "MIT",
+  "homepage": "https://ollama.com",
+  "tags": ["LLM", "local AI", "models"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["run"],
+      "label": "run",
+      "description": "Run a model once and print the answer; the model is loaded on demand",
+      "children": [
+        { "kind": "option", "tokens": ["--format", "<format>"], "label": "--format", "description": "Answer encoding; json constrains the model to valid JSON", "takes": "enum", "options": ["json", "text"] },
+        { "kind": "option", "tokens": ["--keep-alive", "<duration>"], "label": "--keep-alive", "description": "How long the model stays loaded after the request, e.g. 5m or 0", "takes": "text" },
+        { "kind": "option", "tokens": ["--verbose"], "label": "--verbose", "description": "Print timing and token statistics for the answer" },
+        { "kind": "option", "tokens": ["<prompt>"], "label": "prompt", "description": "The prompt to send to the model", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["pull"],
+      "label": "pull",
+      "description": "Download a model from the registry into the local model store",
+      "children": [
+        { "kind": "option", "tokens": ["<model>"], "label": "model", "description": "Model name with an optional tag, e.g. llama3.2:3b", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["list"],
+      "label": "list",
+      "description": "List the models installed locally with their sizes"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["ps"],
+      "label": "ps",
+      "description": "List the models currently loaded and how long they stay loaded"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["stop"],
+      "label": "stop",
+      "description": "Unload a running model and free its memory",
+      "children": [
+        { "kind": "option", "tokens": ["<model>"], "label": "model", "description": "The loaded model to unload", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["rm"],
+      "label": "rm",
+      "description": "Delete a model and its files from the local store",
+      "children": [
+        { "kind": "option", "tokens": ["<model>"], "label": "model", "description": "The model to delete", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["show"],
+      "label": "show",
+      "description": "Show a model's metadata: template, parameters, license and Modelfile",
+      "children": [
+        { "kind": "option", "tokens": ["<model>"], "label": "model", "description": "The model to inspect", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["serve"],
+      "label": "serve",
+      "description": "Start the background server that answers on port 11434"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["create"],
+      "label": "create",
+      "description": "Build a new model from a Modelfile",
+      "children": [
+        { "kind": "option", "tokens": ["<model>"], "label": "model", "description": "Name to give the derived model", "takes": "text" },
+        { "kind": "option", "tokens": ["-f", "<modelfile>"], "label": "-f", "description": "Path to the Modelfile to build from", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["cp"],
+      "label": "cp",
+      "description": "Copy a model under another name inside the local store",
+      "children": [
+        { "kind": "option", "tokens": ["<source>"], "label": "source", "description": "Existing model name", "takes": "text" },
+        { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "New model name", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["push"],
+      "label": "push",
+      "description": "Upload a locally created model to a registry",
+      "children": [
+        { "kind": "option", "tokens": ["<model>"], "label": "model", "description": "The model name to upload", "takes": "text" }
+      ]
+    },
+    { "kind": "note", "label": "Where models live", "description": "Downloaded model files live under the directory named by the OLLAMA_MODELS environment variable, which defaults to the user profile, not the project directory" },
+    { "kind": "note", "label": "run keeps the model loaded", "description": "ollama run leaves the model resident for a few minutes after it answers; pass --keep-alive 0 to unload it immediately when the command finishes" },
+    { "kind": "note", "label": "The prompt is a positional argument", "description": "ollama run MODEL PROMPT: the model name comes first, the prompt after it; omit the prompt to get an interactive session instead" }
+  ],
+  "actions": [
+    {
+      "name": "pull_model",
+      "label": "Pull model",
+      "description": "Download a model from the registry and report the transfer progress",
+      "executable": "ollama",
+      "args": [
+        { "value": "pull" },
+        { "value": "{model}" }
+      ],
+      "variables": [
+        { "name": "model", "type": "text", "label": "Model name", "required": true, "placeholder": "llama3.2:3b" }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

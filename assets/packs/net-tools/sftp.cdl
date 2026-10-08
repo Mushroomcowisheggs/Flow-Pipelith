@@ -1,0 +1,104 @@
+{
+  "name": "sftp",
+  "display_name": "SFTP",
+  "description": "Interactive and batch file transfer over SSH, with get, put, ls and mkdir commands",
+  "category": "network",
+  "author": "OpenSSH Project",
+  "license": "BSD-2-Clause",
+  "homepage": "https://www.openssh.com",
+  "tags": ["transfer", "remote", "ftp"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "option",
+      "tokens": ["-P", "<port>"],
+      "label": "-P",
+      "description": "Connect to this SSH port on the remote host (capital P, as in scp; ssh spells this -p)",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-i", "<file>"],
+      "label": "-i",
+      "description": "Private key file to authenticate with",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-b", "<batchfile>"],
+      "label": "-b",
+      "description": "Read the transfer commands from this file instead of the terminal, then exit",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-r"],
+      "label": "-r",
+      "description": "In batch mode, copy entire directories recursively"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-C"],
+      "label": "-C",
+      "description": "Enable compression of the transferred data"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-q"],
+      "label": "-q",
+      "description": "Quiet mode: no progress bar"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["get"],
+      "label": "get",
+      "description": "Download a file or directory from the remote host",
+      "children": [
+        { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Copy a directory and everything below it" },
+        { "kind": "option", "tokens": ["<remote-path>"], "label": "remote-path", "description": "File or directory on the remote host", "takes": "text" },
+        { "kind": "option", "tokens": ["<local-path>"], "label": "local-path", "description": "Where to write it locally; the current directory by default", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["put"],
+      "label": "put",
+      "description": "Upload a file or directory to the remote host",
+      "children": [
+        { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Copy a directory and everything below it" },
+        { "kind": "option", "tokens": ["<local-path>"], "label": "local-path", "description": "File or directory on this machine", "takes": "file" },
+        { "kind": "option", "tokens": ["<remote-path>"], "label": "remote-path", "description": "Where to write it on the remote host", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["ls"],
+      "label": "ls",
+      "description": "List a directory on the remote host",
+      "children": [
+        { "kind": "option", "tokens": ["<remote-path>"], "label": "remote-path", "description": "Directory to list; the current remote directory when left empty", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["mkdir"],
+      "label": "mkdir",
+      "description": "Create a directory on the remote host",
+      "children": [
+        { "kind": "option", "tokens": ["<remote-path>"], "label": "remote-path", "description": "Directory to create on the remote host", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "note",
+      "label": "Interactive session",
+      "description": "Without -b sftp opens a prompt (sftp>) and get, put, ls and mkdir are typed there as commands; the picker inserts them into the free command"
+    },
+    {
+      "kind": "note",
+      "label": "Batch mode stops on failure",
+      "description": "With -b the listed commands run one after another and sftp exits at the end, which is the form to use in a script; a failing command aborts the batch unless its line starts with a dash"
+    }
+  ]
+}

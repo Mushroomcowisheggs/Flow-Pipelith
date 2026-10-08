@@ -1,0 +1,7 @@
+{
+  "id": "dev-jvm",
+  "label": "Java / JVM tools",
+  "description": "The JDK command-line tools: compile, package, run and inspect",
+  "platforms": ["windows", "linux", "macos"],
+  "origin": "curated"
+}

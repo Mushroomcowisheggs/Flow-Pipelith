@@ -1,0 +1,7 @@
+{
+  "id": "media-tools",
+  "label": "Media tools",
+  "description": "Audio and video conversion and inspection (ffmpeg, ffprobe)",
+  "platforms": ["windows", "macos", "linux"],
+  "origin": "curated"
+}

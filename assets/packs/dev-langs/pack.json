@@ -1,0 +1,7 @@
+{
+  "id": "dev-langs",
+  "label": "Language runtimes",
+  "description": "Interpreters and runtimes with their package managers (python, pip, node)",
+  "platforms": ["windows", "macos", "linux"],
+  "origin": "curated"
+}

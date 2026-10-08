@@ -1,0 +1,76 @@
+{
+  "name": "gdb",
+  "display_name": "GDB",
+  "description": "GNU debugger: runs a program under a debugger, sets breakpoints and inspects state",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/gdb/",
+  "tags": ["debugger", "inspection"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "pipe", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-batch"], "label": "-batch", "description": "Run the commands and exit instead of entering the interactive prompt" },
+    { "kind": "option", "tokens": ["-ex", "<command>"], "label": "-ex", "description": "Run one command, in the order given; repeat -ex for every command", "takes": "text" },
+    { "kind": "option", "tokens": ["-x", "<file>"], "label": "-x", "description": "Run the commands in this file", "takes": "file" },
+    { "kind": "option", "tokens": ["--args"], "label": "--args", "description": "Everything after this is the program to debug and its arguments" },
+    { "kind": "option", "tokens": ["-p", "<pid>"], "label": "-p", "description": "Attach to the running process with this process id", "takes": "number" },
+    { "kind": "option", "tokens": ["-c", "<file>"], "label": "-c", "description": "Inspect this core dump instead of starting a program", "takes": "file" },
+    { "kind": "option", "tokens": ["-d", "<directory>"], "label": "-d", "description": "Add this directory to the source search path", "takes": "directory" },
+    { "kind": "subcommand", "tokens": ["run"], "label": "run", "description": "Start the program under the debugger" },
+    { "kind": "subcommand", "tokens": ["break", "<location>"], "label": "break", "description": "Set a breakpoint on a function, a file:line pair or an address", "takes": "text" },
+    { "kind": "subcommand", "tokens": ["tbreak", "<location>"], "label": "tbreak", "description": "Set a breakpoint that is removed the first time it is hit", "takes": "text" },
+    { "kind": "subcommand", "tokens": ["backtrace"], "label": "backtrace", "description": "Print the call stack of the current frame; bt is the short form" },
+    { "kind": "subcommand", "tokens": ["print", "<expression>"], "label": "print", "description": "Evaluate an expression and print its value", "takes": "text" },
+    { "kind": "subcommand", "tokens": ["next"], "label": "next", "description": "Run to the next source line, stepping over calls" },
+    { "kind": "subcommand", "tokens": ["step"], "label": "step", "description": "Run to the next source line, stepping into calls" },
+    { "kind": "subcommand", "tokens": ["finish"], "label": "finish", "description": "Run until the current function returns" },
+    { "kind": "subcommand", "tokens": ["continue"], "label": "continue", "description": "Resume the program until the next breakpoint" },
+    {
+      "kind": "subcommand",
+      "tokens": ["info"],
+      "label": "info",
+      "description": "Show the state of the program being debugged",
+      "children": [
+        { "kind": "option", "tokens": ["locals"], "label": "locals", "description": "Local variables of the current frame" },
+        { "kind": "option", "tokens": ["args"], "label": "args", "description": "Arguments of the current frame" },
+        { "kind": "option", "tokens": ["breakpoints"], "label": "breakpoints", "description": "The breakpoints and their hit counts" },
+        { "kind": "option", "tokens": ["registers"], "label": "registers", "description": "The machine registers" }
+      ]
+    },
+    { "kind": "subcommand", "tokens": ["quit"], "label": "quit", "description": "Leave the debugger" },
+    { "kind": "note", "label": "Batch mode", "description": "gdb -batch -ex run -ex bt ./prog runs the program, prints a backtrace and exits without a prompt" },
+    { "kind": "note", "label": "Program and its arguments", "description": "Use gdb --args ./prog arg1 arg2 to load a program with arguments, or the run command with its own arguments" }
+  ],
+  "actions": [
+    {
+      "name": "batch_backtrace",
+      "label": "Run and show backtrace",
+      "description": "Run the program without a prompt, print a backtrace and exit",
+      "executable": "gdb",
+      "args": [
+        { "value": "-batch" },
+        { "value": "-ex" },
+        { "value": "run" },
+        { "value": "-ex" },
+        { "value": "bt" },
+        { "value": "-ex" },
+        { "value": "info locals", "when": "with_locals" },
+        { "value": "--args" },
+        { "value": "{program}" },
+        { "value": "{arguments}", "when": "has_arguments" }
+      ],
+      "variables": [
+        { "name": "program", "type": "file", "label": "Program to debug", "required": true },
+        { "name": "arguments", "type": "text", "label": "Program arguments", "default": "" },
+        { "name": "has_arguments", "type": "boolean", "label": "Pass arguments to the program", "default": false },
+        { "name": "with_locals", "type": "boolean", "label": "Also print the local variables", "default": false }
+      ],
+      "cwd": "{__cwd}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    }
+  ]
+}

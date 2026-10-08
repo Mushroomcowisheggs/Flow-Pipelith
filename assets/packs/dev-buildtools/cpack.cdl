@@ -1,0 +1,28 @@
+{
+  "name": "cpack",
+  "display_name": "CPack",
+  "description": "CMake's packaging driver: build installers and archives from a build tree",
+  "version": "4.1",
+  "category": "development",
+  "author": "Kitware",
+  "license": "BSD-3-Clause",
+  "homepage": "https://cmake.org",
+  "tags": ["build", "package", "cmake"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-G", "<generator>"], "label": "-G", "description": "Package with this generator instead of the default one", "takes": "enum", "options": ["7Z", "DEB", "EXTERNAL", "IFW", "NSIS", "NuGet", "RPM", "STGZ", "TBZ2", "TGZ", "TXZ", "TZ", "WIX", "ZIP"] },
+    { "kind": "option", "tokens": ["-C", "<config>"], "label": "-C", "description": "Package the build of this configuration", "takes": "enum", "options": ["Debug", "Release", "RelWithDebInfo", "MinSizeRel"] },
+    { "kind": "option", "tokens": ["-B", "<directory>"], "label": "-B", "description": "Write the package files into this directory", "takes": "directory" },
+    { "kind": "option", "tokens": ["--config", "<file>"], "label": "--config", "description": "Read this CPack configuration file instead of CPackConfig.cmake", "takes": "file" },
+    { "kind": "option", "tokens": ["-R", "<version>"], "label": "-R", "description": "Override the package version", "takes": "text" },
+    { "kind": "option", "tokens": ["-D", "<var=value>"], "label": "-D", "description": "Set one CPack variable for this run, for example CPACK_PACKAGE_FILE_NAME", "takes": "text" },
+    { "kind": "option", "tokens": ["--verbose"], "label": "--verbose", "description": "Print the packaging steps in detail" },
+    { "kind": "option", "tokens": ["--debug"], "label": "--debug", "description": "Print the debug output of the packaging run" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the cpack version" },
+    { "kind": "note", "label": "It needs a package", "description": "cpack only packages what the project's install() rules define: configure and build the project first, including the package target, so that CPackConfig.cmake exists" },
+    { "kind": "note", "label": "Where to run it", "description": "Run cpack inside the build directory that holds CPackConfig.cmake; -B only chooses where the finished package is written" },
+    { "kind": "note", "label": "Generator availability", "description": "A generator must be present on the machine: NSIS and WIX on Windows, DEB and RPM on Linux; TGZ, ZIP and 7Z work anywhere" }
+  ]
+}

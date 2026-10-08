@@ -1,0 +1,17 @@
+{
+  "name": "pbpaste",
+  "display_name": "pbpaste",
+  "description": "Write the contents of a macOS pasteboard to standard output",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["clipboard", "pasteboard", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "pipe", "stderr": "capture" },
+  "permissions": ["process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-pboard", "<board>"], "label": "-pboard", "description": "Read from the named pasteboard instead of the general one", "takes": "enum", "options": ["general", "ruler", "find", "font"] },
+    { "kind": "option", "tokens": ["-Prefer", "<type>"], "label": "-Prefer", "description": "Ask for the pasteboard data in this type", "takes": "enum", "options": ["txt", "rtf", "ps"] },
+    { "kind": "note", "label": "Writes standard output", "description": "pbpaste prints the pasteboard to standard output, so it can be piped into another command or redirected to a file" },
+    { "kind": "note", "label": "Round trip", "description": "pbpaste piped back into pbcopy puts the same text on the pasteboard again" }
+  ]
+}

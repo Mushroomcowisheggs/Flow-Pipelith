@@ -1,0 +1,29 @@
+{
+  "name": "ffprobe",
+  "display_name": "FFprobe",
+  "description": "Inspect media files: show the container, streams, codecs, chapters and selected fields as text or JSON",
+  "version": "8.1",
+  "category": "media",
+  "author": "FFmpeg Team",
+  "license": "LGPL-2.1",
+  "homepage": "https://ffmpeg.org/ffprobe.html",
+  "tags": ["video", "audio", "inspection", "metadata"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-i", "<file>"], "label": "-i", "description": "The input file to analyse; it may also be given as a bare name without -i", "takes": "file" },
+    { "kind": "option", "tokens": ["-show_format"], "label": "-show_format", "description": "Print the container information: format name, duration, size, bit rate and tags" },
+    { "kind": "option", "tokens": ["-show_streams"], "label": "-show_streams", "description": "Print one section per stream: codec, resolution, sample rate, frame rate and language" },
+    { "kind": "option", "tokens": ["-show_chapters"], "label": "-show_chapters", "description": "Print the chapters stored in the container, with their start and end times" },
+    { "kind": "option", "tokens": ["-select_streams", "<spec>"], "label": "-select_streams", "description": "Analyse only the streams matching this specifier, for example v:0 for the first video stream or a for all audio", "takes": "text" },
+    { "kind": "option", "tokens": ["-of", "<format>"], "label": "-of", "description": "Choose the writer that formats the report", "takes": "enum", "options": ["default", "compact", "csv", "flat", "ini", "json", "xml"] },
+    { "kind": "option", "tokens": ["-print_format", "json"], "label": "-print_format json", "description": "The long spelling of -of json: a JSON report that is easy to read in a pipeline" },
+    { "kind": "option", "tokens": ["-show_entries", "<section>"], "label": "-show_entries", "description": "Print only the listed fields, for example stream=codec_name,width or format=duration", "takes": "text" },
+    { "kind": "option", "tokens": ["-read_intervals", "<spec>"], "label": "-read_intervals", "description": "Read only parts of the input, for example 10%+30 for thirty seconds starting at the tenth percent", "takes": "text" },
+    { "kind": "option", "tokens": ["-v", "<level>"], "label": "-v", "description": "Set how much diagnostic text ffprobe writes to standard error", "takes": "enum", "options": ["quiet", "error", "warning", "info", "verbose", "debug"] },
+    { "kind": "option", "tokens": ["-hide_banner"], "label": "-hide_banner", "description": "Suppress the build and library version banner" },
+    { "kind": "note", "label": "Two spellings, one option", "description": "-of and -print_format are the same option, so write -of json or -print_format json and never both" },
+    { "kind": "note", "label": "Report on standard output", "description": "The report goes to standard output while the banner and warnings go to standard error, so -v quiet is the clean way to receive nothing but the report" }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "unix-text",
+  "label": "Unix text tools",
+  "description": "Search, transform and compare text at the command line",
+  "platforms": ["linux", "macos"],
+  "origin": "os-base"
+}

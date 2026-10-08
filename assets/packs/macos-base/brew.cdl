@@ -1,0 +1,106 @@
+{
+  "name": "brew",
+  "display_name": "Homebrew",
+  "description": "Install and manage command line packages and graphical applications",
+  "category": "development",
+  "author": "Homebrew",
+  "license": "BSD-2-Clause",
+  "homepage": "https://brew.sh",
+  "tags": ["package manager", "install", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["install"],
+      "label": "install",
+      "description": "Install a formula or cask",
+      "children": [
+        { "kind": "option", "tokens": ["<formula>"], "label": "formula", "description": "The package to install, for example wget", "takes": "text" },
+        { "kind": "option", "tokens": ["--cask"], "label": "--cask", "description": "Install a cask, which is a graphical application" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["update"],
+      "label": "update",
+      "description": "Fetch the newest version of Homebrew and of the package index"
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["upgrade"],
+      "label": "upgrade",
+      "description": "Install newer versions of the packages that are already installed",
+      "children": [
+        { "kind": "option", "tokens": ["<formula>"], "label": "formula", "description": "Upgrade only this package", "takes": "text" },
+        { "kind": "option", "tokens": ["--cask"], "label": "--cask", "description": "Upgrade casks instead of formulae" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["list"],
+      "label": "list",
+      "description": "List the installed packages",
+      "children": [
+        { "kind": "option", "tokens": ["--versions"], "label": "--versions", "description": "Show the installed version of each package" },
+        { "kind": "option", "tokens": ["--cask"], "label": "--cask", "description": "List the installed casks" },
+        { "kind": "option", "tokens": ["<formula>"], "label": "formula", "description": "List the files that belong to this package", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["search"],
+      "label": "search",
+      "description": "Search the package index",
+      "children": [
+        { "kind": "option", "tokens": ["<text>"], "label": "text", "description": "The text to search for, for example json", "takes": "text" },
+        { "kind": "option", "tokens": ["--cask"], "label": "--cask", "description": "Search casks instead of formulae" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["info"],
+      "label": "info",
+      "description": "Show the description, version and dependencies of a package",
+      "children": [
+        { "kind": "option", "tokens": ["<formula>"], "label": "formula", "description": "The package to describe", "takes": "text" },
+        { "kind": "option", "tokens": ["--cask"], "label": "--cask", "description": "Describe a cask instead of a formula" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["uninstall"],
+      "label": "uninstall",
+      "description": "Remove an installed package",
+      "children": [
+        { "kind": "option", "tokens": ["<formula>"], "label": "formula", "description": "The package to remove", "takes": "text" },
+        { "kind": "option", "tokens": ["--cask"], "label": "--cask", "description": "Remove a cask instead of a formula" }
+      ]
+    },
+    { "kind": "subcommand", "tokens": ["doctor"], "label": "doctor", "description": "Check the Homebrew installation for common problems" },
+    { "kind": "note", "label": "Formulae and casks", "description": "Formulae are command line packages and casks are graphical applications; both are installed with brew install" },
+    { "kind": "note", "label": "update and upgrade", "description": "brew update refreshes the package index, brew upgrade installs newer versions of what is already installed; update alone changes nothing" },
+    { "kind": "note", "label": "Install location", "description": "Homebrew installs under /opt/homebrew on Apple silicon Macs and under /usr/local on Intel Macs" }
+  ],
+  "actions": [
+    {
+      "name": "install_package",
+      "label": "Install a package",
+      "description": "Install a formula, or a cask when the checkbox is set",
+      "executable": "brew",
+      "args": [
+        { "value": "install" },
+        { "value": "--cask", "when": "cask" },
+        { "value": "{formula}" }
+      ],
+      "variables": [
+        { "name": "formula", "type": "text", "label": "Package name", "required": true, "placeholder": "wget" },
+        { "name": "cask", "type": "boolean", "label": "Install a cask (graphical application)", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

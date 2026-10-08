@@ -1,0 +1,80 @@
+{
+  "name": "hdiutil",
+  "display_name": "Disk Image Utility",
+  "description": "Create, mount, convert and verify disk images",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["disk image", "dmg", "mount", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["attach"],
+      "label": "attach",
+      "description": "Mount a disk image and report the device node it was given",
+      "children": [
+        { "kind": "option", "tokens": ["<image>"], "label": "image", "description": "The disk image to attach, for example installer.dmg", "takes": "file" },
+        { "kind": "option", "tokens": ["-mountpoint", "<directory>"], "label": "-mountpoint", "description": "Mount the volume at this directory instead of under /Volumes", "takes": "directory" },
+        { "kind": "option", "tokens": ["-readonly"], "label": "-readonly", "description": "Attach the image read-only" },
+        { "kind": "option", "tokens": ["-nobrowse"], "label": "-nobrowse", "description": "Mount the volume without showing it in Finder" },
+        { "kind": "option", "tokens": ["-noverify"], "label": "-noverify", "description": "Skip the checksum verification of the image" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["detach"],
+      "label": "detach",
+      "description": "Unmount a disk image that was attached",
+      "children": [
+        { "kind": "option", "tokens": ["<device>"], "label": "device", "description": "The device node attach reported, for example /dev/disk4", "takes": "text" },
+        { "kind": "option", "tokens": ["-force"], "label": "-force", "description": "Detach even when the volume is still busy" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["create"],
+      "label": "create",
+      "description": "Create a new empty disk image",
+      "children": [
+        { "kind": "option", "tokens": ["-size", "<size>"], "label": "-size", "description": "The size of the image, for example 100m or 2g", "takes": "text" },
+        { "kind": "option", "tokens": ["-fs", "<filesystem>"], "label": "-fs", "description": "The filesystem the new image is formatted with", "takes": "enum", "options": ["HFS+", "APFS", "MS-DOS"] },
+        { "kind": "option", "tokens": ["-volname", "<name>"], "label": "-volname", "description": "The name the mounted volume shows", "takes": "text" },
+        { "kind": "option", "tokens": ["<output>"], "label": "output", "description": "The disk image file to write, for example backup.dmg", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["convert"],
+      "label": "convert",
+      "description": "Rewrite a disk image in another format",
+      "children": [
+        { "kind": "option", "tokens": ["<image>"], "label": "image", "description": "The disk image to convert", "takes": "file" },
+        { "kind": "option", "tokens": ["-format", "<format>"], "label": "-format", "description": "The format of the converted image", "takes": "enum", "options": ["UDZO", "UDRW", "UDBZ", "ULFO"] },
+        { "kind": "option", "tokens": ["-o", "<output>"], "label": "-o", "description": "The file to write the converted image to", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["verify"],
+      "label": "verify",
+      "description": "Check the checksum of a disk image",
+      "children": [
+        { "kind": "option", "tokens": ["<image>"], "label": "image", "description": "The disk image to verify", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["imageinfo"],
+      "label": "imageinfo",
+      "description": "Show what a disk image contains without attaching it",
+      "children": [
+        { "kind": "option", "tokens": ["<image>"], "label": "image", "description": "The disk image to inspect", "takes": "file" }
+      ]
+    },
+    { "kind": "note", "label": "attach and detach come in pairs", "description": "attach prints a device node such as /dev/disk4; keep it and give it to detach to unmount the image again" },
+    { "kind": "note", "label": "Sizes", "description": "Size values accept a suffix: b for bytes, k, m, g and t for the larger units" },
+    { "kind": "note", "label": "Compressing for distribution", "description": "convert with -format UDZO compresses an image into the read-only format usually downloaded as a dmg" }
+  ]
+}

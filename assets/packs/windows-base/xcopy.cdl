@@ -1,0 +1,31 @@
+{
+  "name": "xcopy",
+  "display_name": "Xcopy",
+  "description": "Copy files and directory trees, the classic Windows way",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["copy", "files", "tree"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<source>"], "label": "source", "description": "The file or directory to copy from", "takes": "directory" },
+    { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "The file or directory to copy to", "takes": "directory" },
+    { "kind": "option", "tokens": ["/E"], "label": "/E", "description": "Copy every subdirectory, including the empty ones" },
+    { "kind": "option", "tokens": ["/S"], "label": "/S", "description": "Copy subdirectories but skip the empty ones" },
+    { "kind": "option", "tokens": ["/I"], "label": "/I", "description": "Assume the destination is a directory when several files are copied" },
+    { "kind": "option", "tokens": ["/Y"], "label": "/Y", "description": "Overwrite an existing destination file without prompting" },
+    { "kind": "option", "tokens": ["/-Y"], "label": "/-Y", "description": "Prompt before overwriting an existing destination file" },
+    { "kind": "option", "tokens": ["/EXCLUDE:<file>"], "label": "/EXCLUDE", "description": "Skip the files or directories listed in this text file, one pattern per line", "takes": "file" },
+    { "kind": "option", "tokens": ["/D:<date>"], "label": "/D", "description": "Copy only sources changed on or after this date, written MM-DD-YYYY", "takes": "text" },
+    { "kind": "option", "tokens": ["/H"], "label": "/H", "description": "Copy hidden and system files as well" },
+    { "kind": "option", "tokens": ["/K"], "label": "/K", "description": "Keep the read-only attribute, which xcopy clears by default" },
+    { "kind": "option", "tokens": ["/R"], "label": "/R", "description": "Overwrite read-only destination files" },
+    { "kind": "option", "tokens": ["/L"], "label": "/L", "description": "List the files that would be copied without copying them" },
+    { "kind": "option", "tokens": ["/F"], "label": "/F", "description": "Print the full source and destination path of every file copied" },
+    { "kind": "note", "label": "Empty directories need /E", "description": "xcopy does not copy empty directories without /E; /S copies the tree but drops the empty directories" },
+    { "kind": "note", "label": "File or directory destination", "description": "When the destination does not exist, xcopy asks whether it is a file or a directory; /I answers directory for you" }
+  ]
+}

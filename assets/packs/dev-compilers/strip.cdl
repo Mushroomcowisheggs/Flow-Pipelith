@@ -1,0 +1,31 @@
+{
+  "name": "strip",
+  "display_name": "GNU strip",
+  "description": "GNU binutils: removes symbols and debug information from object files",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/binutils/",
+  "tags": ["symbols", "binutils", "size"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The object file or executable to strip", "takes": "file" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Remove all symbols" },
+    { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Remove only the debugging symbols; -S means the same" },
+    { "kind": "option", "tokens": ["--strip-unneeded"], "label": "--strip-unneeded", "description": "Remove the symbols that are not needed for relocation processing" },
+    { "kind": "option", "tokens": ["-x"], "label": "-x", "description": "Discard all local symbols" },
+    { "kind": "option", "tokens": ["-X"], "label": "-X", "description": "Discard compiler-generated local symbols" },
+    { "kind": "option", "tokens": ["-K", "<symbol>"], "label": "-K", "description": "Keep this symbol even though it would be stripped", "takes": "text" },
+    { "kind": "option", "tokens": ["-N", "<symbol>"], "label": "-N", "description": "Remove this symbol as well", "takes": "text" },
+    { "kind": "option", "tokens": ["-R", "<section>"], "label": "-R", "description": "Remove this section from the output", "takes": "text" },
+    { "kind": "option", "tokens": ["-o", "<file>"], "label": "-o", "description": "Write the stripped copy to this file and leave the input untouched", "takes": "file" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Preserve the timestamps of the file" },
+    { "kind": "option", "tokens": ["--keep-file-symbols"], "label": "--keep-file-symbols", "description": "Keep the symbols that name source files, which are otherwise removed" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the version and report the files being processed" },
+    { "kind": "note", "label": "It rewrites the file", "description": "strip modifies the named file in place; pass -o to write a stripped copy and keep the original" },
+    { "kind": "note", "label": "Debug information is gone", "description": "Stripping discards the debug information for good, so keep an unstripped copy if you may need to debug the binary later" },
+    { "kind": "note", "label": "Shared libraries", "description": "Stripping a shared library removes the regular symbol table but keeps the dynamic symbols the loader needs" }
+  ]
+}

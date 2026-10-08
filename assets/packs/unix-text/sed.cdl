@@ -1,0 +1,51 @@
+{
+  "name": "sed",
+  "display_name": "sed",
+  "description": "Edit a stream of text line by line: substitute, delete, insert and print",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["s/<pattern>/<replacement>/g"], "label": "s/// substitute", "description": "Replace the pattern with the replacement text on each line", "takes": "text" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to process; omitted or - reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Edit the file in place instead of writing the result to standard output" },
+    { "kind": "option", "tokens": ["-E"], "label": "-E", "description": "Use extended regular expressions, as in grep -E" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Suppress the automatic printing of every line" },
+    { "kind": "option", "tokens": ["-e", "<script>"], "label": "-e", "description": "Add one more editing command; repeat the flag for several commands", "takes": "text" },
+    { "kind": "option", "tokens": ["-f", "<file>"], "label": "-f", "description": "Read the editing commands from this file", "takes": "file" },
+    { "kind": "option", "tokens": ["<start>,<end>p"], "label": "range p", "description": "Print only the lines from start to end, used together with -n", "takes": "text" },
+    { "kind": "option", "tokens": ["<line>d"], "label": "d delete", "description": "Delete the addressed lines from the stream", "takes": "text" },
+    { "kind": "option", "tokens": ["<line>q"], "label": "q quit", "description": "Stop reading input after the addressed line" },
+    { "kind": "option", "tokens": ["<line>a\\<text>"], "label": "a append", "description": "Append a line of text after the addressed line", "takes": "text" },
+    { "kind": "option", "tokens": ["<line>i\\<text>"], "label": "i insert", "description": "Insert a line of text before the addressed line", "takes": "text" },
+    { "kind": "option", "tokens": ["<line>c\\<text>"], "label": "c change", "description": "Replace the addressed lines with the given text", "takes": "text" },
+    { "kind": "option", "tokens": ["y/<set>/<set>/"], "label": "y transliterate", "description": "Replace each character of the first set with the matching character of the second", "takes": "text" },
+    { "kind": "note", "label": "In-place editing differs by system", "description": "GNU sed accepts -i and -i.bak; the macOS sed requires the backup suffix to be attached, so -i.bak is the portable form" },
+    { "kind": "note", "label": "Addresses", "description": "A command may be prefixed with a line number, $ for the last line, or /pattern/ to act on matching lines only" }
+  ],
+  "actions": [
+    {
+      "name": "substitute",
+      "label": "Replace text",
+      "description": "Replace a pattern everywhere in a file, with an optional backup copy",
+      "executable": "sed",
+      "args": [
+        { "value": "-i.bak", "when": "keep_backup" },
+        { "value": "-E", "when": "extended" },
+        { "value": "s/{pattern}/{replacement}/g" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "File to edit", "required": true },
+        { "name": "pattern", "type": "text", "label": "Pattern to find", "required": true },
+        { "name": "replacement", "type": "text", "label": "Replacement text", "required": true },
+        { "name": "extended", "type": "boolean", "label": "Extended regular expressions (-E)", "default": true },
+        { "name": "keep_backup", "type": "boolean", "label": "Keep a .bak copy of the original", "default": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

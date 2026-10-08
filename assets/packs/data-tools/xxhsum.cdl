@@ -1,0 +1,27 @@
+{
+  "name": "xxhsum",
+  "display_name": "xxhsum",
+  "description": "Compute and verify xxHash checksums of files or standard input, with XXH32, XXH64 and XXH3 widths",
+  "version": "0.8",
+  "category": "data",
+  "author": "Yann Collet",
+  "license": "BSD-2-Clause",
+  "homepage": "https://xxhash.com/",
+  "tags": ["checksum", "hash", "xxhash"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<hash>"], "label": "hash width", "description": "Select the algorithm: -H0 is XXH32 (32 bit), -H1 is XXH64 (64 bit, the default), -H2 is XXH3 64 bit and -H3 is XXH3 128 bit", "takes": "enum", "options": ["-H0", "-H1", "-H2", "-H3"] },
+    { "kind": "option", "tokens": ["-c", "<file>"], "label": "-c", "description": "Read the checksum list in this file and verify every entry against the file it names", "takes": "file" },
+    { "kind": "option", "tokens": ["-b"], "label": "-b", "description": "Benchmark the selected algorithm instead of hashing a file" },
+    { "kind": "option", "tokens": ["-i", "<n>"], "label": "-i", "description": "Run this many iterations in benchmark mode", "takes": "number" },
+    { "kind": "option", "tokens": ["-q"], "label": "-q", "description": "Quiet: do not print OK for every file that verified correctly" },
+    { "kind": "option", "tokens": ["--tag"], "label": "--tag", "description": "Print BSD-style checksum lines, with the algorithm name next to the digest and the file name" },
+    { "kind": "option", "tokens": ["--little-endian"], "label": "--little-endian", "description": "Use the little-endian byte order convention; it applies to XXH32 and XXH64 only" },
+    { "kind": "option", "tokens": ["--big-endian"], "label": "--big-endian", "description": "Use the big-endian byte order convention; it applies to XXH32 and XXH64 only" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to hash; with no file xxhsum hashes standard input", "takes": "file" },
+    { "kind": "note", "label": "The width must match", "description": "A plain checksum line does not record which algorithm produced it, so a check run must use the same -H width as the run that generated the list; --tag writes the name into the line and avoids the mismatch" },
+    { "kind": "note", "label": "Line format", "description": "Each result is printed as the hex digest, two spaces and the file name, which is exactly the format -c reads back; the default algorithm is XXH64 (-H1)" }
+  ]
+}

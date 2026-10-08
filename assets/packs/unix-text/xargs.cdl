@@ -1,0 +1,25 @@
+{
+  "name": "xargs",
+  "display_name": "xargs",
+  "description": "Build and run command lines from the items read on standard input",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<command>"], "label": "command", "description": "The command to run; the input items are appended as its arguments", "takes": "text" },
+    { "kind": "option", "tokens": ["-n", "<count>"], "label": "-n", "description": "Pass at most this many items to each command invocation", "takes": "number" },
+    { "kind": "option", "tokens": ["-I", "<replacement>"], "label": "-I", "description": "Replace this string in the command with each input line, one invocation per line", "takes": "text" },
+    { "kind": "option", "tokens": ["-0"], "label": "-0", "description": "Read items separated by NUL instead of whitespace, as produced by find -print0" },
+    { "kind": "option", "tokens": ["-d", "<delimiter>"], "label": "-d", "description": "Read items separated by this character", "takes": "text" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Print each command and ask for confirmation before running it" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Print each command to standard error before running it" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Run nothing at all when the input is empty" },
+    { "kind": "option", "tokens": ["-P", "<count>"], "label": "-P", "description": "Run up to this many commands in parallel", "takes": "number" },
+    { "kind": "option", "tokens": ["-L", "<count>"], "label": "-L", "description": "Use at most this many non-blank input lines per command", "takes": "number" },
+    { "kind": "option", "tokens": ["-s", "<size>"], "label": "-s", "description": "Limit each command line to this many bytes", "takes": "number" },
+    { "kind": "option", "tokens": ["-E", "<eof>"], "label": "-E", "description": "Stop reading when this string is read as an item", "takes": "text" },
+    { "kind": "note", "label": "NUL-separated input", "description": "Pipe find -print0 into xargs -0 whenever file names may contain spaces or newlines" },
+    { "kind": "note", "label": "Default command", "description": "With no command given, xargs runs echo, so it only prints the items it read" }
+  ]
+}

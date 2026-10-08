@@ -1,0 +1,23 @@
+{
+  "name": "gcc-ranlib",
+  "display_name": "gcc-ranlib",
+  "description": "ranlib wrapper that loads the gcc plugin when it writes an archive index",
+  "version": "14.2",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://gcc.gnu.org/onlinedocs/gcc/Arithmetic.html",
+  "tags": ["gcc", "archive", "lto"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<archive>"], "label": "archive", "description": "The archive whose index or symbol table should be written", "takes": "file" },
+    { "kind": "option", "tokens": ["-D"], "label": "-D", "description": "Use the deterministic mode: zero the timestamps and ids of the members" },
+    { "kind": "option", "tokens": ["-U"], "label": "-U", "description": "Use the non-deterministic mode: keep the real timestamps and ids" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the version and a line per archive processed" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the ranlib version" },
+    { "kind": "note", "label": "Why it exists", "description": "gcc-ranlib is ranlib with the gcc LTO plugin loaded automatically, so the index of an archive holding LTO objects is built with the right plugin" },
+    { "kind": "note", "label": "It takes ranlib arguments", "description": "The whole ranlib command line is accepted unchanged; an archive usually needs an index only after ar added or replaced members" }
+  ]
+}

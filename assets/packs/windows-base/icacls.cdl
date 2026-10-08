@@ -1,0 +1,31 @@
+{
+  "name": "icacls",
+  "display_name": "Icacls",
+  "description": "Show or change the permissions, the access control lists, of files and directories",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["permissions", "acl", "security"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "target", "description": "The file or directory whose permissions are shown or changed", "takes": "file" },
+    { "kind": "option", "tokens": ["/grant"], "label": "/grant", "description": "Grant permissions to a user or group, for example Users:(RX)", "takes": "text" },
+    { "kind": "option", "tokens": ["/grant:r"], "label": "/grant:r", "description": "Replace the permissions the user holds explicitly with this grant", "takes": "text" },
+    { "kind": "option", "tokens": ["/deny"], "label": "/deny", "description": "Deny permissions to a user or group, for example Everyone:(W)", "takes": "text" },
+    { "kind": "option", "tokens": ["/remove"], "label": "/remove", "description": "Remove the user's entries from the list instead of adding any", "takes": "text" },
+    { "kind": "option", "tokens": ["/setowner"], "label": "/setowner", "description": "Change the owner of the matching files to this account", "takes": "text" },
+    { "kind": "option", "tokens": ["/inheritancelevel:<level>"], "label": "/inheritancelevel", "description": "Change how inherited entries are handled for this target", "takes": "enum", "options": ["e", "d", "r"] },
+    { "kind": "option", "tokens": ["/reset"], "label": "/reset", "description": "Replace the permissions with the ones inherited from the parent" },
+    { "kind": "option", "tokens": ["/save"], "label": "/save", "description": "Write the permissions of the matching files to this file", "takes": "file" },
+    { "kind": "option", "tokens": ["/restore"], "label": "/restore", "description": "Restore the permissions previously written by /save", "takes": "file" },
+    { "kind": "option", "tokens": ["/T"], "label": "/T", "description": "Apply the change to the matching files and to every subdirectory" },
+    { "kind": "option", "tokens": ["/C"], "label": "/C", "description": "Continue past file errors and report them at the end" },
+    { "kind": "option", "tokens": ["/L"], "label": "/L", "description": "Act on a symbolic link itself rather than on its target" },
+    { "kind": "option", "tokens": ["/Q"], "label": "/Q", "description": "Suppress the success messages" },
+    { "kind": "note", "label": "Reading the permission letters", "description": "The simple rights are N none, F full, M modify, RX read and execute, R read only, W write only and D delete, written in parentheses after the account as in Users:(RX)" },
+    { "kind": "note", "label": "The usual repair", "description": "icacls <path> /grant Users:(RX) /T gives a whole tree a read-and-execute grant, and /inheritancelevel:e restores inheritance after it was broken" }
+  ]
+}

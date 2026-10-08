@@ -1,0 +1,28 @@
+{
+  "name": "jupyter-lab",
+  "display_name": "JupyterLab",
+  "description": "Interactive notebook server: launch the web UI for notebooks, consoles and terminals",
+  "version": "4.2",
+  "category": "science",
+  "author": "Project Jupyter",
+  "license": "BSD-3-Clause",
+  "homepage": "https://jupyter.org",
+  "tags": ["notebooks", "Python", "server"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["--port", "<port>"], "label": "--port", "description": "Port for the web server, e.g. 8888", "takes": "number" },
+    { "kind": "option", "tokens": ["--no-browser"], "label": "--no-browser", "description": "Start the server without opening a browser window" },
+    { "kind": "option", "tokens": ["--ip", "<address>"], "label": "--ip", "description": "Address to listen on; 0.0.0.0 exposes the server to the network", "takes": "text" },
+    { "kind": "option", "tokens": ["--notebook-dir", "<directory>"], "label": "--notebook-dir", "description": "Directory the file browser opens at and cannot leave", "takes": "directory" },
+    { "kind": "option", "tokens": ["--allow-root"], "label": "--allow-root", "description": "Permit running the server as the root user" },
+    { "kind": "option", "tokens": ["--ServerApp.token=<token>"], "label": "--ServerApp.token", "description": "Fix the access token instead of generating one, or set it empty to disable the check", "takes": "text" },
+    { "kind": "option", "tokens": ["--generate-config"], "label": "--generate-config", "description": "Write the default jupyter_lab_config.py file and exit" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the JupyterLab version and exit" },
+    { "kind": "option", "tokens": ["--debug"], "label": "--debug", "description": "Log at debug level while the server runs" },
+    { "kind": "note", "label": "The server keeps running", "description": "jupyter-lab starts a long-lived server: the command does not return until the server is stopped, so give it a generous timeout or run it in the background" },
+    { "kind": "note", "label": "The token is printed once", "description": "On startup the server prints a URL containing the access token; the URL is the only way into the browser UI" },
+    { "kind": "note", "label": "Configuration is layered", "description": "Options given on the command line override jupyter_lab_config.py, which is found via --config or in the Jupyter config directory" }
+  ]
+}

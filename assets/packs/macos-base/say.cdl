@@ -1,0 +1,42 @@
+{
+  "name": "say",
+  "display_name": "Say",
+  "description": "Speak text aloud with the macOS speech synthesizer, or write it to an audio file",
+  "category": "media",
+  "author": "Apple",
+  "tags": ["speech", "audio", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process", "filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<text>"], "label": "text", "description": "The words to speak", "takes": "text" },
+    { "kind": "option", "tokens": ["-v", "<voice>"], "label": "-v", "description": "Speak with this voice instead of the system default", "takes": "text" },
+    { "kind": "option", "tokens": ["-r", "<words per minute>"], "label": "-r", "description": "Speaking rate in words per minute", "takes": "number" },
+    { "kind": "option", "tokens": ["-o", "<file>"], "label": "-o", "description": "Write the spoken audio to this AIFF file instead of playing it", "takes": "file" },
+    { "kind": "option", "tokens": ["-f", "<file>"], "label": "-f", "description": "Speak or convert the text contained in this file", "takes": "file" },
+    { "kind": "note", "label": "Listing voices", "description": "A voice name of a question mark makes say print the installed voices and their languages" },
+    { "kind": "note", "label": "Text to audio file", "description": "Combining -f with -o converts a text file into spoken audio without playing it" },
+    { "kind": "note", "label": "Sentence by sentence", "description": "say reads its arguments as one message; a pause can be added with the [[slnc 500]] command inside the text" }
+  ],
+  "actions": [
+    {
+      "name": "speak",
+      "label": "Speak text",
+      "description": "Speak a message aloud, optionally with a chosen voice",
+      "executable": "say",
+      "args": [
+        { "value": "-v", "when": "custom_voice" },
+        { "value": "{voice}", "when": "custom_voice" },
+        { "value": "{message}" }
+      ],
+      "variables": [
+        { "name": "message", "type": "text", "label": "Text to speak", "required": true, "placeholder": "Build finished" },
+        { "name": "voice", "type": "text", "label": "Voice", "default": "Samantha" },
+        { "name": "custom_voice", "type": "boolean", "label": "Use a specific voice", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

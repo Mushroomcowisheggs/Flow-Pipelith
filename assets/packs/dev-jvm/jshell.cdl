@@ -1,0 +1,28 @@
+{
+  "name": "jshell",
+  "display_name": "JShell",
+  "description": "Interactive Java REPL for trying out code without compiling a project",
+  "version": "21",
+  "cdl_version": "0.2",
+  "category": "development",
+  "author": "Eclipse Adoptium",
+  "license": "GPL-2.0-with-classpath-exception",
+  "homepage": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/jshell.html",
+  "tags": ["jvm", "jdk", "repl", "scratchpad"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["--class-path", "<path>"], "label": "--class-path", "description": "Where to find classes and JARs for the snippets to use", "takes": "text" },
+    { "kind": "option", "tokens": ["--startup", "<file>"], "label": "--startup", "description": "Run the snippets in this file before the session starts", "takes": "file" },
+    { "kind": "option", "tokens": ["--execution", "<mode>"], "label": "--execution", "description": "Where snippets run: inside this process or in a separate remote VM", "takes": "enum", "options": ["local", "remote"] },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Silent feedback: print only the value of each snippet" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Verbose feedback: print a header and the result of every snippet" },
+    { "kind": "option", "tokens": ["--add-modules", "<modules>"], "label": "--add-modules", "description": "Resolve these modules, for example java.sql", "takes": "text" },
+    { "kind": "option", "tokens": ["-R"], "label": "-R", "description": "Pass the next argument as a runtime flag to the VM running the snippets, for example -R -Xmx512m", "takes": "text" },
+    { "kind": "option", "tokens": ["--reset"], "label": "--reset", "description": "Drop everything defined so far and start from a clean session" },
+    { "kind": "option", "tokens": ["<file>"], "label": "Snippet file", "description": "Load this file of snippets at startup and report each snippet that succeeds", "takes": "file" },
+    { "kind": "note", "label": "Needs a JDK", "description": "jshell ships with the JDK only: a Java runtime installation alone has no jshell command" },
+    { "kind": "note", "label": "Leaving the session", "description": "Within the session /exit leaves jshell, /help lists its own commands such as /list, /vars and /open, and /save writes the session to a file" }
+  ]
+}

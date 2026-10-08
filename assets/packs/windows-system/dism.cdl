@@ -1,0 +1,61 @@
+{
+  "name": "dism",
+  "display_name": "DISM",
+  "description": "Service a Windows image: inspect, enable and repair optional features, packages and components",
+  "category": "system",
+  "tags": ["system", "imaging", "features", "repair"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/Online"], "label": "/Online", "description": "Act on the running operating system" },
+    { "kind": "option", "tokens": ["/Image:<path>"], "label": "/Image", "description": "Act on an offline image mounted at this path", "takes": "directory" },
+    { "kind": "option", "tokens": ["/Get-Features"], "label": "/Get-Features", "description": "List the optional features of the image and their state" },
+    { "kind": "option", "tokens": ["/Get-Packages"], "label": "/Get-Packages", "description": "List the packages installed in the image" },
+    { "kind": "option", "tokens": ["/Get-ImageInfo", "/ImageFile:<path>"], "label": "/Get-ImageInfo", "description": "List the images inside this .wim or .esd file", "takes": "file" },
+    { "kind": "option", "tokens": ["/Get-Capabilities"], "label": "/Get-Capabilities", "description": "List the optional capabilities of the image" },
+    {
+      "kind": "option",
+      "tokens": ["/Enable-Feature", "/FeatureName:<name>"],
+      "label": "/Enable-Feature",
+      "description": "Turn on an optional feature",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["/Disable-Feature", "/FeatureName:<name>"],
+      "label": "/Disable-Feature",
+      "description": "Turn off an optional feature",
+      "takes": "text"
+    },
+    { "kind": "option", "tokens": ["/All"], "label": "/All", "description": "Apply the feature operation to the parent features as well" },
+    { "kind": "option", "tokens": ["/Add-Package", "/PackagePath:<path>"], "label": "/Add-Package", "description": "Install a .cab or .msu package into the image", "takes": "file" },
+    { "kind": "option", "tokens": ["/Remove-Package", "/PackageName:<name>"], "label": "/Remove-Package", "description": "Remove a package from the image", "takes": "text" },
+    {
+      "kind": "option",
+      "tokens": ["/Cleanup-Image", "/RestoreHealth"],
+      "label": "/Cleanup-Image /RestoreHealth",
+      "description": "Repair the component store from Windows Update or a source"
+    },
+    {
+      "kind": "option",
+      "tokens": ["/Cleanup-Image", "/StartComponentCleanup"],
+      "label": "/Cleanup-Image /StartComponentCleanup",
+      "description": "Remove superseded components to shrink the component store"
+    },
+    {
+      "kind": "option",
+      "tokens": ["/Cleanup-Image", "/ScanHealth"],
+      "label": "/Cleanup-Image /ScanHealth",
+      "description": "Scan the component store for corruption without repairing it"
+    },
+    { "kind": "option", "tokens": ["/ScratchDir:<path>"], "label": "/ScratchDir", "description": "Directory used for temporary files during the operation", "takes": "directory" },
+    { "kind": "option", "tokens": ["/LogPath:<path>"], "label": "/LogPath", "description": "Write the log to this file instead of the default location", "takes": "file" },
+    { "kind": "note", "label": "Elevation", "description": "DISM needs an elevated prompt, including for read-only operations such as /Get-Features" },
+    { "kind": "note", "label": "Online or image", "description": "Every operation needs either /Online or /Image:<path>; they are mutually exclusive" },
+    { "kind": "note", "label": "Option order", "description": "The operation comes first, then its arguments: dism /Online /Enable-Feature /FeatureName:NetFx3 /All" },
+    { "kind": "note", "label": "Offline or file", "description": "/Image takes a mounted image directory, while /Get-ImageInfo takes a .wim or .esd file through /ImageFile" },
+    { "kind": "note", "label": "RestoreHealth source", "description": "/RestoreHealth may need a source for the repair files, for example /Source:<path> /LimitAccess" },
+    { "kind": "note", "label": "Time and disk", "description": "/Cleanup-Image can run for a long time and needs free space on the scratch directory" }
+  ]
+}

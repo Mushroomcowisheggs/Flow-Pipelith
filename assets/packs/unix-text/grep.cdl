@@ -1,0 +1,60 @@
+{
+  "name": "grep",
+  "display_name": "grep",
+  "description": "Print the lines of the input that match a pattern",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<pattern>"], "label": "pattern", "description": "The pattern to look for in each line", "takes": "text" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to search; omitted or - reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Case: ignore case distinctions" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Invert the match and print the lines that do not match" },
+    { "kind": "option", "tokens": ["-w"], "label": "-w", "description": "Match whole words only" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Prefix each printed line with its line number" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Print only the number of matching lines per input" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Print only the names of files that contain a match" },
+    { "kind": "option", "tokens": ["-E"], "label": "-E", "description": "Interpret the pattern as an extended regular expression" },
+    { "kind": "option", "tokens": ["-F"], "label": "-F", "description": "Treat the pattern as a plain string, not a regular expression" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Search the files under a directory recursively" },
+    { "kind": "option", "tokens": ["--include=<glob>"], "label": "--include", "description": "In a recursive search, consider only files matching this name pattern", "takes": "text" },
+    { "kind": "option", "tokens": ["--exclude-dir=<glob>"], "label": "--exclude-dir", "description": "In a recursive search, skip directories matching this name pattern", "takes": "text" },
+    { "kind": "option", "tokens": ["-A", "<count>"], "label": "-A", "description": "Also print this many lines after each matching line", "takes": "number" },
+    { "kind": "option", "tokens": ["-B", "<count>"], "label": "-B", "description": "Also print this many lines before each matching line", "takes": "number" },
+    { "kind": "option", "tokens": ["-C", "<count>"], "label": "-C", "description": "Also print this many lines of context on both sides", "takes": "number" },
+    { "kind": "option", "tokens": ["--color=auto"], "label": "--color", "description": "Highlight the matching part of each line when writing to a terminal" },
+    { "kind": "option", "tokens": ["-f", "<file>"], "label": "-f", "description": "Read the patterns from this file, one per line", "takes": "file" },
+    { "kind": "note", "label": "No-match exit code", "description": "grep exits with 1 when nothing matched and 2 on an error, so a pipeline stage that finds nothing may be reported as a failure" },
+    { "kind": "note", "label": "Basic vs extended patterns", "description": "Without -E the characters + ? { } | ( ) are literal; use -E to write alternation and repetition" }
+  ],
+  "actions": [
+    {
+      "name": "search_tree",
+      "label": "Recursive search",
+      "description": "Search every file under a directory and keep the line numbers",
+      "executable": "grep",
+      "args": [
+        { "value": "-r" },
+        { "value": "-n" },
+        { "value": "-i", "when": "ignore_case" },
+        { "value": "-F", "when": "literal" },
+        { "value": "--include" },
+        { "value": "{glob}", "when": "filter_names" },
+        { "value": "{pattern}" },
+        { "value": "{path}" }
+      ],
+      "variables": [
+        { "name": "pattern", "type": "text", "label": "Pattern", "required": true },
+        { "name": "path", "type": "directory", "label": "Directory to search", "default": "." },
+        { "name": "ignore_case", "type": "boolean", "label": "Ignore case (-i)", "default": true },
+        { "name": "literal", "type": "boolean", "label": "Plain string, not a regex (-F)", "default": false },
+        { "name": "filter_names", "type": "boolean", "label": "Only files matching a name pattern", "default": false },
+        { "name": "glob", "type": "text", "label": "File name pattern", "default": "*.txt" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    }
+  ]
+}

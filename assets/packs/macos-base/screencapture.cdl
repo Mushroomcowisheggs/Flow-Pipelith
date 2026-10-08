@@ -1,0 +1,45 @@
+{
+  "name": "screencapture",
+  "display_name": "Screen Capture",
+  "description": "Take a picture of the screen, a window or a selected area",
+  "category": "media",
+  "author": "Apple",
+  "tags": ["screenshot", "image", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The image file to write; the default is a Screen Shot file on the Desktop", "takes": "file" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Copy the capture to the clipboard instead of writing a file" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Capture interactively: the user selects the area, window or screen" },
+    { "kind": "option", "tokens": ["-w"], "label": "-w", "description": "Capture the window that the user clicks" },
+    { "kind": "option", "tokens": ["-x"], "label": "-x", "description": "Do not play the camera shutter sound" },
+    { "kind": "option", "tokens": ["-t", "<format>"], "label": "-t", "description": "The image file format", "takes": "enum", "options": ["png", "pdf", "jpg", "tiff"] },
+    { "kind": "option", "tokens": ["-T", "<seconds>"], "label": "-T", "description": "Wait this many seconds before capturing", "takes": "number" },
+    { "kind": "option", "tokens": ["-R", "<rectangle>"], "label": "-R", "description": "Capture the rectangle x,y,width,height in screen coordinates", "takes": "text" },
+    { "kind": "note", "label": "A file is written unless -c is given", "description": "Without -c the capture is written to the file argument, or to a Screen Shot file on the Desktop when no file is given" },
+    { "kind": "note", "label": "Selection modes", "description": "Use -i to select interactively, -w for a clicked window, or -R for a fixed rectangle; they are alternatives to each other" },
+    { "kind": "note", "label": "Screen Recording permission", "description": "Recent macOS versions ask for Screen Recording permission the first time a capture is taken" }
+  ],
+  "actions": [
+    {
+      "name": "timed_capture",
+      "label": "Capture after a delay",
+      "description": "Wait a few seconds and then write a silent capture to a file",
+      "executable": "screencapture",
+      "args": [
+        { "value": "-x" },
+        { "value": "-T" },
+        { "value": "{delay}" },
+        { "value": "{target}" }
+      ],
+      "variables": [
+        { "name": "target", "type": "file", "label": "Image file", "required": true, "save": true, "default": "capture.png" },
+        { "name": "delay", "type": "number", "label": "Delay in seconds", "default": "3", "min": 0, "max": 600, "step": 1 }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "tasklist",
+  "display_name": "Tasklist",
+  "description": "List the processes running on this machine",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["process", "monitor"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["/FI"], "label": "/FI", "description": "Only show processes matching this filter, for example IMAGENAME eq notepad.exe", "takes": "text" },
+    { "kind": "option", "tokens": ["/FO"], "label": "/FO", "description": "Set the output format", "takes": "enum", "options": ["TABLE", "LIST", "CSV"] },
+    { "kind": "option", "tokens": ["/NH"], "label": "/NH", "description": "Hide the column headers" },
+    { "kind": "option", "tokens": ["/SVC"], "label": "/SVC", "description": "Show the services hosted in each process" },
+    { "kind": "option", "tokens": ["/V"], "label": "/V", "description": "Show verbose task information" },
+    { "kind": "option", "tokens": ["/M"], "label": "/M", "description": "List the DLL modules each process has loaded" },
+    { "kind": "note", "label": "Filter syntax", "description": "A filter is a quoted string such as IMAGENAME eq name.exe built from an operator (eq, ne, gt, lt, ge, le) and a value; combine several with /FI" }
+  ]
+}

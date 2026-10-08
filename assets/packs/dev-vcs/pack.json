@@ -1,0 +1,7 @@
+{
+  "id": "dev-vcs",
+  "label": "Version control",
+  "description": "Source control clients (git)",
+  "platforms": ["windows", "macos", "linux"],
+  "origin": "curated"
+}

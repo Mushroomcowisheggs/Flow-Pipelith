@@ -1,0 +1,7 @@
+{
+  "id": "net-tools",
+  "label": "Network tools",
+  "description": "Downloads, transfers and remote access (curl, ssh, scp)",
+  "platforms": ["windows", "macos", "linux"],
+  "origin": "curated"
+}

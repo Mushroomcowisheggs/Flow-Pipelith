@@ -1,0 +1,47 @@
+{
+  "name": "cp",
+  "display_name": "cp",
+  "description": "Copy files and directories",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<source>"], "label": "source", "description": "File or directory to copy; several may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "Where to copy to; a directory receives the sources inside it", "takes": "directory" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Copy directories and their contents recursively" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Archive mode: recursive, and preserves mode, ownership, timestamps and links" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Preserve mode, ownership and timestamps" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Ask before overwriting an existing destination" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Do not overwrite an existing destination" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Remove a destination that cannot be opened, and never ask" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u (GNU)", "description": "GNU coreutils only: copy only when the source is newer than the destination" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the name of every file that is copied" },
+    { "kind": "option", "tokens": ["-L"], "label": "-L", "description": "Follow symbolic links and copy what they point to" },
+    { "kind": "option", "tokens": ["-P"], "label": "-P", "description": "Copy symbolic links as links instead of following them" },
+    { "kind": "note", "label": "Directory sources need -r", "description": "Without -r (or -a) cp refuses to copy a directory and reports an error for it" },
+    { "kind": "note", "label": "Overwriting", "description": "-i asks before replacing a destination, -n quietly keeps it, and with neither of them an existing destination is replaced" }
+  ],
+  "actions": [
+    {
+      "name": "copy_tree",
+      "label": "Copy a directory tree",
+      "description": "Copy a directory and everything under it, keeping attributes",
+      "executable": "cp",
+      "args": [
+        { "value": "-a" },
+        { "value": "-v", "when": "verbose" },
+        { "value": "{source}" },
+        { "value": "{target}" }
+      ],
+      "variables": [
+        { "name": "source", "type": "directory", "label": "Source directory", "required": true },
+        { "name": "target", "type": "directory", "label": "Target directory", "required": true },
+        { "name": "verbose", "type": "boolean", "label": "Print each copied file (-v)", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

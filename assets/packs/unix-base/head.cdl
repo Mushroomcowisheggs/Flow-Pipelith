@@ -1,0 +1,18 @@
+{
+  "name": "head",
+  "display_name": "head",
+  "description": "Print the first part of files",
+  "category": "system",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-n", "<count>"], "label": "-n", "description": "Print this many lines instead of the first 10", "takes": "number" },
+    { "kind": "option", "tokens": ["-c", "<bytes>"], "label": "-c", "description": "Print this many bytes instead of whole lines", "takes": "number" },
+    { "kind": "option", "tokens": ["-q"], "label": "-q (GNU)", "description": "GNU coreutils only: never print the file name headers, even with several files" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v (GNU)", "description": "GNU coreutils only: always print a file name header, even with a single file" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to read; several may be given, the default is standard input", "takes": "file" },
+    { "kind": "note", "label": "Default", "description": "Without -n or -c, head prints the first 10 lines of each input" },
+    { "kind": "note", "label": "Several files", "description": "With more than one file head prints a ==> name <== header before each block; the GNU options -q and -v suppress or force that header" }
+  ]
+}

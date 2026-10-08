@@ -1,0 +1,33 @@
+{
+  "name": "tar",
+  "display_name": "tar",
+  "description": "Create, list and extract tar archives, optionally compressed with gzip, bzip2, xz or zstd, and stream them through pipes",
+  "version": "1.35",
+  "category": "system",
+  "author": "GNU Tar / libarchive",
+  "license": "GPL-3.0",
+  "homepage": "https://www.gnu.org/software/tar/",
+  "tags": ["archive", "compression", "backup"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Create a new archive from the names that follow" },
+    { "kind": "option", "tokens": ["-x"], "label": "-x", "description": "Extract the members of the archive into the current directory" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "List the members of the archive without extracting them" },
+    { "kind": "option", "tokens": ["-f", "<file>"], "label": "-f", "description": "Read or write this archive file; it must be the last letter of the mode and its own argument follows directly", "takes": "file" },
+    { "kind": "option", "tokens": ["-z"], "label": "-z", "description": "Filter the archive through gzip (.tar.gz, .tgz)" },
+    { "kind": "option", "tokens": ["-j"], "label": "-j", "description": "Filter the archive through bzip2 (.tar.bz2)" },
+    { "kind": "option", "tokens": ["-J"], "label": "-J", "description": "Filter the archive through xz (.tar.xz)" },
+    { "kind": "option", "tokens": ["--zstd"], "label": "--zstd", "description": "Filter the archive through zstd (.tar.zst)" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Verbose: print every file name while it is processed" },
+    { "kind": "option", "tokens": ["-C", "<directory>"], "label": "-C", "description": "Change to this directory before processing the names that follow it", "takes": "directory" },
+    { "kind": "option", "tokens": ["--exclude=<pattern>"], "label": "--exclude", "description": "Skip the files whose names match this pattern", "takes": "text" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Preserve the permission bits of the extracted files (the default when running as root)" },
+    { "kind": "option", "tokens": ["--strip-components=<n>"], "label": "--strip-components", "description": "Drop this many leading directory levels from the extracted member names", "takes": "number" },
+    { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "A file or directory to archive with -c, or a member to extract with -x; type the path and repeat the entry for more", "takes": "text" },
+    { "kind": "note", "label": "A dash is a stream", "description": "tar -cf - dir writes the archive to standard output and tar -xf - reads it from standard input, which is how tar takes part in a pipeline; the compression filters work the same way" },
+    { "kind": "note", "label": "-f comes with its file name", "description": "-f takes the archive name as its own argument, so it must be written as -f archive.tar (or joined as -cf archive.tar) and never as a bare -f" },
+    { "kind": "note", "label": "Extraction overwrites", "description": "tar -x replaces files of the same name in the target directory and restores the stored permissions, so extract into an empty directory unless overwriting is intended" }
+  ]
+}

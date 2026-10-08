@@ -1,0 +1,24 @@
+{
+  "name": "arp",
+  "display_name": "ARP",
+  "description": "Show and modify the IP-to-MAC address translation tables of the interfaces",
+  "category": "network",
+  "tags": ["network", "ARP", "MAC", "diagnostics"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Show the current ARP entries for every interface" },
+    { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Same as -a: show the current ARP entries" },
+    { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Show entries in verbose mode" },
+    { "kind": "option", "tokens": ["-N", "<interface>"], "label": "-N", "description": "Show the ARP entries of one interface, given its IP address", "takes": "text" },
+    { "kind": "option", "tokens": ["-a", "<inet_addr>"], "label": "-a address", "description": "Show the ARP entries for one interface address", "takes": "text" },
+    { "kind": "option", "tokens": ["-d", "<inet_addr>"], "label": "-d", "description": "Delete the entry for this address", "takes": "text" },
+    { "kind": "option", "tokens": ["-s", "<inet_addr>"], "label": "-s", "description": "Add a static entry for this address", "takes": "text" },
+    { "kind": "option", "tokens": ["<mac>"], "label": "mac", "description": "The MAC address to bind to the static entry", "takes": "text" },
+    { "kind": "note", "label": "Elevation", "description": "-d and -s need an elevated prompt; -a and -g only read the table" },
+    { "kind": "note", "label": "Static entries", "description": "A static entry added with -s is not permanent: it is dropped when the interface is restarted" },
+    { "kind": "note", "label": "Which interface", "description": "Without an address argument -a prints the entries of all interfaces, grouped by interface address" },
+    { "kind": "note", "label": "MAC notation", "description": "MAC addresses may be written with dashes, for example 00-aa-bb-cc-dd-ee" }
+  ]
+}

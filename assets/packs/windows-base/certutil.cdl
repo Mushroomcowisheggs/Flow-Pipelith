@@ -1,0 +1,113 @@
+{
+  "name": "certutil",
+  "display_name": "Certutil",
+  "description": "Manage certificates and certificate stores, and hash, encode or decode files",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["certificates", "hash", "base64"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["-hashfile"],
+      "label": "-hashfile",
+      "description": "Compute and display the hash of a file",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to hash", "takes": "file" },
+        { "kind": "option", "tokens": ["<algorithm>"], "label": "algorithm", "description": "The hash algorithm to use", "takes": "enum", "options": ["MD5", "SHA1", "SHA256", "SHA384", "SHA512"] }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-dump"],
+      "label": "-dump",
+      "description": "Dump the contents of a certificate, a certificate store or a file",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The certificate or file to dump", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-encode"],
+      "label": "-encode",
+      "description": "Base64-encode a file",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to encode", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-decode"],
+      "label": "-decode",
+      "description": "Decode a Base64-encoded file",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The encoded file to decode", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-store"],
+      "label": "-store",
+      "description": "Display the certificates held in a store",
+      "children": [
+        { "kind": "option", "tokens": ["<store>"], "label": "store", "description": "The store name, for example My, Root or CA", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-addstore"],
+      "label": "-addstore",
+      "description": "Add a certificate to a store",
+      "children": [
+        { "kind": "option", "tokens": ["<store>"], "label": "store", "description": "The store to add to, for example Root or CA", "takes": "text" },
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The certificate file to add", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-delstore"],
+      "label": "-delstore",
+      "description": "Delete a certificate from a store",
+      "children": [
+        { "kind": "option", "tokens": ["<store>"], "label": "store", "description": "The store to delete from", "takes": "text" },
+        { "kind": "option", "tokens": ["<certid>"], "label": "certificate", "description": "The serial number, thumbprint or index of the certificate", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-verify"],
+      "label": "-verify",
+      "description": "Verify a certificate against its chain",
+      "children": [
+        { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The certificate file to verify", "takes": "file" }
+      ]
+    },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Force an overwrite of an existing output file" },
+    { "kind": "option", "tokens": ["-silent"], "label": "-silent", "description": "Report crypto API failures without extra status messages" },
+    { "kind": "note", "label": "Hashing a file", "description": "certutil -hashfile <file> SHA256 prints the SHA-256 checksum of a file, which is the usual way to verify a download on Windows" },
+    { "kind": "note", "label": "Stores need elevation", "description": "Adding to or deleting from the machine stores (Root, CA) requires an elevated command prompt; -store only reads" }
+  ],
+  "actions": [
+    {
+      "name": "hash_file",
+      "label": "Hash a file (SHA-256)",
+      "description": "Print the SHA-256 checksum of a file",
+      "executable": "certutil",
+      "args": [
+        { "value": "-hashfile" },
+        { "value": "{file}" },
+        { "value": "SHA256" }
+      ],
+      "variables": [
+        { "name": "file", "type": "file", "label": "File to hash", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    }
+  ]
+}

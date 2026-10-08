@@ -1,0 +1,44 @@
+{
+  "name": "open",
+  "display_name": "Open",
+  "description": "Open files, folders and URLs with their default or a chosen application",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["finder", "launch", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<path>"], "label": "path", "description": "A file, folder or URL to open; several may be given", "takes": "file" },
+    { "kind": "option", "tokens": ["-a", "<application>"], "label": "-a", "description": "Open with this application instead of the default one", "takes": "text" },
+    { "kind": "option", "tokens": ["-b", "<bundle id>"], "label": "-b", "description": "Open with the application that has this bundle identifier", "takes": "text" },
+    { "kind": "option", "tokens": ["-e"], "label": "-e", "description": "Open the file with TextEdit" },
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Open the file with the default text editor" },
+    { "kind": "option", "tokens": ["-R"], "label": "-R", "description": "Reveal the file in Finder instead of opening it" },
+    { "kind": "option", "tokens": ["-g"], "label": "-g", "description": "Open in the background without bringing the application forward" },
+    { "kind": "option", "tokens": ["-W"], "label": "-W", "description": "Wait until the opened application exits before returning" },
+    { "kind": "note", "label": "-a versus -b", "description": "-a takes an application name as shown in /Applications, -b takes its bundle identifier such as com.apple.TextEdit" },
+    { "kind": "note", "label": "--args", "description": "Everything after --args is passed on to the application being launched" },
+    { "kind": "note", "label": "URLs", "description": "A URL argument is opened by whichever application handles that scheme, usually the default browser" }
+  ],
+  "actions": [
+    {
+      "name": "open_with",
+      "label": "Open with application",
+      "description": "Open a file or folder with a named application",
+      "executable": "open",
+      "args": [
+        { "value": "-a" },
+        { "value": "{application}" },
+        { "value": "{target}" }
+      ],
+      "variables": [
+        { "name": "target", "type": "file", "label": "File or folder", "required": true },
+        { "name": "application", "type": "text", "label": "Application name", "default": "TextEdit", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 60
+    }
+  ]
+}

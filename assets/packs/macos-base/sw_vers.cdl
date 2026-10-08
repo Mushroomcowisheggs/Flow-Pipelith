@@ -1,0 +1,19 @@
+{
+  "name": "sw_vers",
+  "display_name": "Software Version",
+  "description": "Print the macOS product name, version and build",
+  "category": "system",
+  "author": "Apple",
+  "tags": ["version", "system information", "macos"],
+  "platforms": ["macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-productName"], "label": "-productName", "description": "Print the product name, which is macOS" },
+    { "kind": "option", "tokens": ["-productVersion"], "label": "-productVersion", "description": "Print the marketing version, for example 14.5" },
+    { "kind": "option", "tokens": ["-buildVersion"], "label": "-buildVersion", "description": "Print the build identifier of this exact release" },
+    { "kind": "option", "tokens": ["-productVersionExtra"], "label": "-productVersionExtra", "description": "Print the Rapid Security Response suffix, on macOS 13 and later" },
+    { "kind": "note", "label": "No option", "description": "Without an option sw_vers prints the product name, product version and build version as a list of three lines" },
+    { "kind": "note", "label": "Version versus build", "description": "The product version is the marketing version such as 14.5; the build version identifies the exact release such as 23F79" }
+  ]
+}

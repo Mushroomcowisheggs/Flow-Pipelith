@@ -1,0 +1,74 @@
+{
+  "name": "keytool",
+  "display_name": "Keytool",
+  "description": "Manage keys, certificates and keystores for Java applications",
+  "version": "21",
+  "cdl_version": "0.2",
+  "category": "development",
+  "author": "Eclipse Adoptium",
+  "license": "GPL-2.0-with-classpath-exception",
+  "homepage": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/keytool.html",
+  "tags": ["jvm", "jdk", "certificates", "keystore", "security"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["-genkeypair"],
+      "label": "-genkeypair",
+      "description": "Generate a key pair and store it with a self-signed certificate",
+      "children": [
+        { "kind": "option", "tokens": ["-alias", "<name>"], "label": "-alias", "description": "Name of the entry in the keystore", "takes": "text" },
+        { "kind": "option", "tokens": ["-keyalg", "<algorithm>"], "label": "-keyalg", "description": "Key algorithm, for example RSA, EC or Ed25519", "takes": "text" },
+        { "kind": "option", "tokens": ["-keysize", "<bits>"], "label": "-keysize", "description": "Key size in bits, for example 2048 or 4096", "takes": "number" },
+        { "kind": "option", "tokens": ["-validity", "<days>"], "label": "-validity", "description": "How many days the entry stays valid", "takes": "number" },
+        { "kind": "option", "tokens": ["-dname", "<name>"], "label": "-dname", "description": "Distinguished name, for example CN=Example, OU=Dev, O=Acme, C=US", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-list"],
+      "label": "-list",
+      "description": "Print the contents of a keystore",
+      "children": [
+        { "kind": "option", "tokens": ["-alias", "<name>"], "label": "-alias", "description": "Show only this entry", "takes": "text" },
+        { "kind": "option", "tokens": ["-v"], "label": "-v", "description": "Print the full certificate chain in readable form" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-exportcert"],
+      "label": "-exportcert",
+      "description": "Write a certificate from the keystore to a file",
+      "children": [
+        { "kind": "option", "tokens": ["-alias", "<name>"], "label": "-alias", "description": "The entry holding the certificate", "takes": "text" },
+        { "kind": "option", "tokens": ["-file", "<file>"], "label": "-file", "description": "Where to write the certificate", "takes": "file" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-importcert"],
+      "label": "-importcert",
+      "description": "Read a certificate or a certificate chain into the keystore",
+      "children": [
+        { "kind": "option", "tokens": ["-file", "<file>"], "label": "-file", "description": "The certificate to read", "takes": "file" },
+        { "kind": "option", "tokens": ["-alias", "<name>"], "label": "-alias", "description": "Name to store the certificate under", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["-delete"],
+      "label": "-delete",
+      "description": "Remove one entry from the keystore",
+      "children": [
+        { "kind": "option", "tokens": ["-alias", "<name>"], "label": "-alias", "description": "The entry to remove", "takes": "text" }
+      ]
+    },
+    { "kind": "option", "tokens": ["-keystore", "<file>"], "label": "-keystore", "description": "The keystore file to work on; a JKS file is assumed unless it does not exist", "takes": "file" },
+    { "kind": "option", "tokens": ["-storepass"], "label": "-storepass", "description": "Keystore password; without it keytool prompts, which is the safer choice", "takes": "text" },
+    { "kind": "option", "tokens": ["-storetype", "<type>"], "label": "-storetype", "description": "Keystore format, for example PKCS12 or JKS", "takes": "text" },
+    { "kind": "note", "label": "Passwords on the command line", "description": "-storepass and -keypass appear in the process list and in shell history; leave them out and let keytool prompt, or use -storepass:env or -storepass:file" },
+    { "kind": "note", "label": "One command per run", "description": "keytool performs exactly one command per invocation: -genkeypair, -list, -exportcert, -importcert and -delete are alternatives, not steps of one run" }
+  ]
+}

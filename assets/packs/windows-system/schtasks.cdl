@@ -1,0 +1,73 @@
+{
+  "name": "schtasks",
+  "display_name": "Schtasks",
+  "description": "Create, query, run and delete scheduled tasks through the Task Scheduler service",
+  "category": "system",
+  "tags": ["system", "scheduler", "automation", "tasks"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["/Create"],
+      "label": "/Create",
+      "description": "Create a new scheduled task",
+      "children": [
+        { "kind": "option", "tokens": ["/TN", "<name>"], "label": "/TN", "description": "Task name, optionally in a folder path", "takes": "text" },
+        { "kind": "option", "tokens": ["/TR", "<command>"], "label": "/TR", "description": "The program and arguments the task runs", "takes": "text" },
+        {
+          "kind": "option",
+          "tokens": ["/SC", "<schedule>"],
+          "label": "/SC",
+          "description": "The schedule type that triggers the task",
+          "takes": "enum",
+          "options": ["MINUTE", "HOURLY", "DAILY", "WEEKLY", "MONTHLY", "ONCE", "ONSTART", "ONLOGON", "ONIDLE", "ONEVENT"]
+        },
+        { "kind": "option", "tokens": ["/RU", "<user>"], "label": "/RU", "description": "Run the task as this account", "takes": "text" },
+        { "kind": "option", "tokens": ["/RL", "<level>"], "label": "/RL", "description": "Run level of the task", "takes": "enum", "options": ["LIMITED", "HIGHEST"] },
+        { "kind": "option", "tokens": ["/F"], "label": "/F", "description": "Overwrite the task if it already exists" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["/Query"],
+      "label": "/Query",
+      "description": "List the scheduled tasks",
+      "children": [
+        { "kind": "option", "tokens": ["/TN", "<name>"], "label": "/TN", "description": "Show only this task", "takes": "text" },
+        {
+          "kind": "option",
+          "tokens": ["/FO", "<format>"],
+          "label": "/FO",
+          "description": "Choose the output format",
+          "takes": "enum",
+          "options": ["TABLE", "LIST", "CSV"]
+        },
+        { "kind": "option", "tokens": ["/V"], "label": "/V", "description": "Show verbose details" },
+        { "kind": "option", "tokens": ["/NH"], "label": "/NH", "description": "Hide the column headers" }
+      ]
+    },
+    { "kind": "subcommand", "tokens": ["/Run"], "label": "/Run", "description": "Start a task immediately" },
+    { "kind": "subcommand", "tokens": ["/End"], "label": "/End", "description": "Stop a running task" },
+    { "kind": "subcommand", "tokens": ["/Delete"], "label": "/Delete", "description": "Delete a task" },
+    {
+      "kind": "subcommand",
+      "tokens": ["/Change"],
+      "label": "/Change",
+      "description": "Modify the properties of an existing task",
+      "children": [
+        { "kind": "option", "tokens": ["/TN", "<name>"], "label": "/TN", "description": "The task to change", "takes": "text" },
+        { "kind": "option", "tokens": ["/TR", "<command>"], "label": "/TR", "description": "Replace the program the task runs", "takes": "text" },
+        { "kind": "option", "tokens": ["/ENABLE"], "label": "/ENABLE", "description": "Enable the task" },
+        { "kind": "option", "tokens": ["/DISABLE"], "label": "/DISABLE", "description": "Disable the task" }
+      ]
+    },
+    { "kind": "option", "tokens": ["/TN", "<name>"], "label": "/TN", "description": "Name of the task a subcommand acts on", "takes": "text" },
+    { "kind": "note", "label": "Account the task runs as", "description": "Without /RU the task runs as the current user; tasks for other accounts, for SYSTEM, or with a stored password need an elevated prompt and /RP" },
+    { "kind": "note", "label": "Elevation", "description": "/Create, /Change and /Delete need an elevated prompt for tasks outside the current user's own folder" },
+    { "kind": "note", "label": "Task name paths", "description": "A task name may contain a folder path such as \\MyTasks\\Backup, so quote it in a shell" },
+    { "kind": "note", "label": "Command quoting", "description": "/TR takes the program plus its arguments in one value, for example /TR \"cmd /c backup.cmd\"" },
+    { "kind": "note", "label": "Trigger options", "description": "The exact-time options such as /ST, /MO or /D go together with the /SC value picked for the task" }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "nl",
+  "display_name": "nl",
+  "description": "Number the lines of a file or stream and print them with the numbers",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to number; omitted or - reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-b", "<style>"], "label": "-b", "description": "Number only the lines this style selects", "takes": "enum", "options": ["a", "t", "n", "pREGEX"] },
+    { "kind": "option", "tokens": ["-i", "<increment>"], "label": "-i", "description": "Increase the line number by this step", "takes": "number" },
+    { "kind": "option", "tokens": ["-w", "<width>"], "label": "-w", "description": "Pad the line numbers to this many columns", "takes": "number" },
+    { "kind": "option", "tokens": ["-s", "<separator>"], "label": "-s", "description": "Put this string between the number and the line", "takes": "text" },
+    { "kind": "option", "tokens": ["-n", "<format>"], "label": "-n", "description": "Choose how the numbers are formatted", "takes": "enum", "options": ["ln", "rn", "rz"] },
+    { "kind": "option", "tokens": ["-v", "<start>"], "label": "-v", "description": "Start numbering at this value instead of 1", "takes": "number" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Do not reset the numbering at a logical page break" },
+    { "kind": "option", "tokens": ["-l", "<count>"], "label": "-l", "description": "Count this many blank lines as one for the numbering of sections", "takes": "number" },
+    { "kind": "option", "tokens": ["-d", "<delimiter>"], "label": "-d", "description": "Use this two-character sequence as the section delimiter instead of backslash-colon", "takes": "text" },
+    { "kind": "option", "tokens": ["-f", "<style>"], "label": "-f", "description": "Number the footer lines with this style", "takes": "enum", "options": ["a", "n"] },
+    { "kind": "option", "tokens": ["-h", "<style>"], "label": "-h", "description": "Number the header lines with this style", "takes": "enum", "options": ["a", "n"] },
+    { "kind": "note", "label": "Default numbering", "description": "By default only non-blank lines are numbered; add -b a to number every line" },
+    { "kind": "note", "label": "Numbering versus file text", "description": "nl never rewrites the file, it only prints the numbered text; for a plain number on every line without options, cat -n is enough" }
+  ]
+}

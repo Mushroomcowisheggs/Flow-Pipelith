@@ -1,0 +1,55 @@
+{
+  "name": "diff",
+  "display_name": "diff",
+  "description": "Compare two files line by line and report the differences",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file1>"], "label": "first file", "description": "The original file to compare", "takes": "file" },
+    { "kind": "option", "tokens": ["<file2>"], "label": "second file", "description": "The changed file to compare against; - reads standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u", "description": "Unified format with context, the form used by patches" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Copied context format, the older context output" },
+    { "kind": "option", "tokens": ["-q"], "label": "-q", "description": "Report only whether the files differ, without the differences" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Report when the files are identical instead of staying silent" },
+    { "kind": "option", "tokens": ["-i"], "label": "-i", "description": "Ignore differences in letter case" },
+    { "kind": "option", "tokens": ["-w"], "label": "-w", "description": "Ignore all white space" },
+    { "kind": "option", "tokens": ["-b"], "label": "-b", "description": "Ignore changes in the amount of white space" },
+    { "kind": "option", "tokens": ["-B"], "label": "-B", "description": "Ignore changes whose lines are all blank" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Compare directories recursively" },
+    { "kind": "option", "tokens": ["-N"], "label": "-N", "description": "Treat a missing file as empty, useful with -r to show added files" },
+    { "kind": "option", "tokens": ["-x", "<pattern>"], "label": "-x", "description": "In a directory comparison, skip files matching this pattern", "takes": "text" },
+    { "kind": "option", "tokens": ["-U", "<lines>"], "label": "-U", "description": "With -u, show this many lines of context", "takes": "number" },
+    { "kind": "option", "tokens": ["--label=<name>"], "label": "--label", "description": "Use this name in the file header instead of the real file name", "takes": "text" },
+    { "kind": "note", "label": "Exit code reports a difference", "description": "diff exits with 0 when the files are identical, 1 when they differ and 2 on trouble, so 1 is not an execution failure" },
+    { "kind": "note", "label": "Side by side", "description": "The -y option prints the two files in parallel columns; add --suppress-common-lines to keep only the differing lines" }
+  ],
+  "actions": [
+    {
+      "name": "unified",
+      "label": "Unified diff",
+      "description": "Compare two files in unified format with the chosen context width",
+      "executable": "diff",
+      "args": [
+        { "value": "-u" },
+        { "value": "-U" },
+        { "value": "{context}" },
+        { "value": "-i", "when": "ignore_case" },
+        { "value": "-w", "when": "ignore_space" },
+        { "value": "{file1}" },
+        { "value": "{file2}" }
+      ],
+      "variables": [
+        { "name": "file1", "type": "file", "label": "Original file", "required": true },
+        { "name": "file2", "type": "file", "label": "Changed file", "required": true },
+        { "name": "context", "type": "number", "label": "Context lines", "default": "3", "min": 0, "max": 20, "step": 1 },
+        { "name": "ignore_case", "type": "boolean", "label": "Ignore case (-i)", "default": false },
+        { "name": "ignore_space", "type": "boolean", "label": "Ignore white space (-w)", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

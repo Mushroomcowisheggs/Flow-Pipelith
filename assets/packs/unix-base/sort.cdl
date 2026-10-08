@@ -1,0 +1,46 @@
+{
+  "name": "sort",
+  "display_name": "sort",
+  "description": "Sort the lines of text files",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "File to sort; several may be given, the default is standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["-n"], "label": "-n", "description": "Compare according to the numeric value of the whole line" },
+    { "kind": "option", "tokens": ["-h"], "label": "-h", "description": "Compare human-readable numbers such as 1K, 2M, 3G" },
+    { "kind": "option", "tokens": ["-M"], "label": "-M", "description": "Compare the first three letters as a month name" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Reverse the result of the comparison" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u", "description": "Keep only the first line of each group of equal lines" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Fold lower case to upper case when comparing" },
+    { "kind": "option", "tokens": ["-b"], "label": "-b", "description": "Ignore leading blanks when comparing" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Stable sort: never compare anything beyond the key" },
+    { "kind": "option", "tokens": ["-k", "<field>"], "label": "-k", "description": "Sort on this key field, written as start[,end]", "takes": "text" },
+    { "kind": "option", "tokens": ["-t", "<separator>"], "label": "-t", "description": "Use this character as the field separator instead of a run of blanks", "takes": "text" },
+    { "kind": "option", "tokens": ["-o", "<file>"], "label": "-o", "description": "Write the result to this file instead of standard output", "takes": "file" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Check whether the input is already sorted and report the first line that is not" },
+    { "kind": "note", "label": "Locale decides the order", "description": "Sorting follows the locale collation, which ignores punctuation and case; set LC_ALL=C for a plain byte-by-byte order" },
+    { "kind": "note", "label": "Key syntax", "description": "-k takes FieldStart[,FieldEnd], both counting from 1, and a letter may follow for the key's own comparison, for example -k 2,2n" }
+  ],
+  "actions": [
+    {
+      "name": "sort_by_number",
+      "label": "Sort numerically",
+      "description": "Sort the lines of a file by their numeric value",
+      "executable": "sort",
+      "args": [
+        { "value": "-n" },
+        { "value": "-r", "when": "descending" },
+        { "value": "{file}" }
+      ],
+      "variables": [
+        { "name": "file", "type": "file", "label": "File to sort", "required": true },
+        { "name": "descending", "type": "boolean", "label": "Largest first (-r)", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "paste",
+  "display_name": "paste",
+  "description": "Merge lines of several files side by side, or one file into a single line",
+  "category": "data",
+  "platforms": ["linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<file1>"], "label": "first file", "description": "First file whose lines are placed in the leftmost column", "takes": "file" },
+    { "kind": "option", "tokens": ["<file2>"], "label": "second file", "description": "Next file, placed in the column to its right", "takes": "file" },
+    { "kind": "option", "tokens": ["-d", "<list>"], "label": "-d", "description": "Separate the columns with these characters, used in turn", "takes": "text" },
+    { "kind": "option", "tokens": ["-s"], "label": "-s", "description": "Join all lines of each file into one line instead of one line per row" },
+    { "kind": "option", "tokens": ["-z"], "label": "-z", "description": "Treat NUL, not newline, as the line separator" },
+    { "kind": "note", "label": "Column separator", "description": "Columns are joined by a tab unless -d gives another character; -d '\\0' joins with no separator at all" },
+    { "kind": "note", "label": "File order is column order", "description": "Lines are taken from each input in the order the files are listed, so paste a b puts the first line of a next to the first line of b" }
+  ]
+}

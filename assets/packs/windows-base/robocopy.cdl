@@ -1,0 +1,56 @@
+{
+  "name": "robocopy",
+  "display_name": "Robocopy",
+  "description": "Robust file copy: copy or mirror directory trees with retries, filters and logging",
+  "version": "10.0",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["copy", "backup", "mirror", "files"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<source>"], "label": "source", "description": "The directory to copy from", "takes": "directory" },
+    { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "The directory to copy to", "takes": "directory" },
+    { "kind": "option", "tokens": ["/E"], "label": "/E", "description": "Copy the whole tree, including the empty subdirectories that plain /S skips" },
+    { "kind": "option", "tokens": ["/MIR"], "label": "/MIR", "description": "Mirror the tree: /E plus /PURGE, so files missing from the source are deleted in the destination" },
+    { "kind": "option", "tokens": ["/MOV"], "label": "/MOV", "description": "Move files instead of copying them: delete each one from the source after it is copied" },
+    { "kind": "option", "tokens": ["/Z"], "label": "/Z", "description": "Copy in restartable mode, so an interrupted copy can resume" },
+    { "kind": "option", "tokens": ["/R:<n>"], "label": "/R", "description": "Retry a failed copy this many times; the default is one million", "takes": "number" },
+    { "kind": "option", "tokens": ["/W:<n>"], "label": "/W", "description": "Wait this many seconds between retries; the default is 30", "takes": "number" },
+    { "kind": "option", "tokens": ["/LOG:<file>"], "label": "/LOG", "description": "Write the status output to this log file, overwriting it", "takes": "file" },
+    { "kind": "option", "tokens": ["/XD"], "label": "/XD", "description": "Exclude directories that match this name or path", "takes": "directory" },
+    { "kind": "option", "tokens": ["/XF"], "label": "/XF", "description": "Exclude files that match this name or path", "takes": "file" },
+    { "kind": "option", "tokens": ["/MT:<n>"], "label": "/MT", "description": "Copy with this many threads, between 1 and 128", "takes": "number" },
+    { "kind": "option", "tokens": ["/L"], "label": "/L", "description": "List only: report what would happen without copying, deleting or changing anything" },
+    { "kind": "option", "tokens": ["/NP"], "label": "/NP", "description": "Do not show the percentage progress, which keeps a log file readable" },
+    { "kind": "note", "label": "Exit codes are a bitmask", "description": "0 means nothing was copied, 1 to 7 are all success (files copied, extra entries, mismatches), and only 8 or more report a real failure; most build scripts treat anything under 8 as a pass" },
+    { "kind": "note", "label": "Source and destination come first", "description": "Both directories are positional and precede every option, and /MIR deletes destination content, so add /L first to preview it" }
+  ],
+  "actions": [
+    {
+      "name": "mirror",
+      "label": "Mirror a directory",
+      "description": "Make the destination an exact copy of the source, deleting destination files that are gone from the source",
+      "executable": "robocopy",
+      "args": [
+        { "value": "{source}" },
+        { "value": "{destination}" },
+        { "value": "/MIR" },
+        { "value": "/NP" },
+        { "value": "/R:2" },
+        { "value": "/W:2" }
+      ],
+      "variables": [
+        { "name": "source", "type": "directory", "label": "Source directory", "required": true },
+        { "name": "destination", "type": "directory", "label": "Destination directory", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 86400,
+      "confirm": true,
+      "danger": true
+    }
+  ]
+}

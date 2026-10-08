@@ -1,0 +1,33 @@
+{
+  "name": "ffplay",
+  "display_name": "FFplay",
+  "description": "Minimal media player built on FFmpeg: preview a file, seek, mute a track and apply filters while it plays",
+  "version": "8.1",
+  "category": "media",
+  "author": "FFmpeg Team",
+  "license": "LGPL-2.1",
+  "homepage": "https://ffmpeg.org/ffplay.html",
+  "tags": ["video", "audio", "player", "preview"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-i", "<file>"], "label": "-i", "description": "The media file to play; it may also be given as a bare name without -i", "takes": "file" },
+    { "kind": "option", "tokens": ["-ss", "<time>"], "label": "-ss", "description": "Seek to this position before playing, in seconds or as HH:MM:SS", "takes": "text" },
+    { "kind": "option", "tokens": ["-t", "<duration>"], "label": "-t", "description": "Stop after playing this much of the input", "takes": "text" },
+    { "kind": "option", "tokens": ["-vf", "<filter>"], "label": "-vf", "description": "Apply a video filter to the picture being played, for example scale=1280:-1", "takes": "text" },
+    { "kind": "option", "tokens": ["-af", "<filter>"], "label": "-af", "description": "Apply an audio filter to the sound being played, for example volume=0.5", "takes": "text" },
+    { "kind": "option", "tokens": ["-fs"], "label": "-fs", "description": "Start in full screen" },
+    { "kind": "option", "tokens": ["-an"], "label": "-an", "description": "Disable audio and play the video without sound" },
+    { "kind": "option", "tokens": ["-vn"], "label": "-vn", "description": "Disable video and play only the sound" },
+    { "kind": "option", "tokens": ["-nodisp"], "label": "-nodisp", "description": "Disable the window and play the audio only, which also works on a machine with no display" },
+    { "kind": "option", "tokens": ["-loop", "<n>"], "label": "-loop", "description": "Play the input this many times; 0 means loop forever and 1 is the default", "takes": "number" },
+    { "kind": "option", "tokens": ["-autoexit"], "label": "-autoexit", "description": "Close the player when the input ends instead of waiting for a key" },
+    { "kind": "option", "tokens": ["-volume", "<n>"], "label": "-volume", "description": "Set the starting volume, from 0 to 100", "takes": "number" },
+    { "kind": "option", "tokens": ["-x", "<width>"], "label": "-x", "description": "Force the window width in pixels", "takes": "number" },
+    { "kind": "option", "tokens": ["-y", "<height>"], "label": "-y", "description": "Force the window height in pixels", "takes": "number" },
+    { "kind": "option", "tokens": ["-window_title", "<text>"], "label": "-window_title", "description": "Set the window title shown by the window manager", "takes": "text" },
+    { "kind": "note", "label": "A player, not a converter", "description": "ffplay shows and plays the input and writes no output file; use ffmpeg to convert or save and ffprobe to only read information about a file" },
+    { "kind": "note", "label": "A display is required", "description": "ffplay opens a window, so it fails on a headless machine or over a plain terminal; add -nodisp to play only the audio, or -autoexit so an unattended run ends by itself" }
+  ]
+}

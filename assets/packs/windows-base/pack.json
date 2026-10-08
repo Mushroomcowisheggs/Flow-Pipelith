@@ -1,0 +1,7 @@
+{
+  "id": "windows-base",
+  "label": "Windows base tools",
+  "description": "The command-line utilities a Windows system provides out of the box",
+  "platforms": ["windows"],
+  "origin": "os-base"
+}

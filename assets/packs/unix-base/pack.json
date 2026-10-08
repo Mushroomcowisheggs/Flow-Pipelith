@@ -1,0 +1,7 @@
+{
+  "id": "unix-base",
+  "label": "Unix base tools",
+  "description": "The default file and text utilities of a Linux/macOS system",
+  "platforms": ["linux", "macos"],
+  "origin": "os-base"
+}

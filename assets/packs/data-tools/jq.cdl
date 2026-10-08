@@ -1,0 +1,99 @@
+{
+  "name": "jq",
+  "display_name": "jq",
+  "description": "Command-line JSON processor: format, extract fields, filter and count",
+  "version": "1.7",
+  "category": "data",
+  "author": "Stephen Dolan",
+  "license": "MIT",
+  "homepage": "https://jqlang.github.io/jq/",
+  "tags": ["JSON", "data processing", "text"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "actions": [
+    {
+      "name": "pretty",
+      "label": "Format JSON",
+      "description": "Reformat minified JSON into a readable layout",
+      "executable": "jq",
+      "args": [
+        { "value": "--indent" },
+        { "value": "{indent}" },
+        { "value": "{filter}" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "JSON file", "filters": ["*.json", "*.jsonl"], "required": true },
+        { "name": "filter", "type": "text", "label": "Filter expression", "default": "." },
+        { "name": "indent", "type": "number", "label": "Indent width (spaces)", "default": "2", "min": 0, "max": 9, "step": 1 }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "extract",
+      "label": "Extract fields",
+      "description": "Select the fields you need with an expression",
+      "executable": "jq",
+      "args": [
+        { "value": "-r", "when": "raw" },
+        { "value": "-c", "when": "compact" },
+        { "value": "{filter}" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "JSON file", "filters": ["*.json"], "required": true },
+        { "name": "filter", "type": "text", "label": "Extraction expression", "default": ".items[] | .name", "required": true },
+        { "name": "raw", "type": "boolean", "label": "Output raw strings (-r)", "default": true },
+        { "name": "compact", "type": "boolean", "label": "Compact output (-c)", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "keys",
+      "label": "List all keys",
+      "executable": "jq",
+      "args": [
+        { "value": "-r" },
+        { "value": "paths(scalars) | join(\".\")" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "JSON file", "filters": ["*.json"], "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    },
+    {
+      "name": "count",
+      "label": "Count entries",
+      "executable": "jq",
+      "args": [
+        { "value": "{filter}" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "JSON file", "filters": ["*.json"], "required": true },
+        {
+          "name": "filter",
+          "type": "enum",
+          "label": "Count mode",
+          "default": "length",
+          "options": [
+            { "value": "length", "label": "Top-level length" },
+            { "value": "[.[]] | length", "label": "Number of all children" },
+            { "value": "keys | length", "label": "Number of keys" }
+          ]
+        }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "macos-base",
+  "label": "macOS base tools",
+  "description": "The utilities a macOS system provides out of the box",
+  "platforms": ["macos"],
+  "origin": "os-base"
+}

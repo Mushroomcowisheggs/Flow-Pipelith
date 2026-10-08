@@ -1,0 +1,72 @@
+{
+  "name": "zip",
+  "display_name": "ZIP Archive",
+  "description": "Archive and extract: pack directories, extract files, list contents",
+  "version": "3.0",
+  "category": "system",
+  "author": "Info-ZIP / 7-Zip",
+  "license": "BSD-3-Clause",
+  "tags": ["compression", "archive", "files"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "actions": [
+    {
+      "name": "compress",
+      "label": "Compress to ZIP",
+      "description": "Pack a directory or file into a .zip",
+      "executable": "tar",
+      "args": [
+        { "value": "-a" },
+        { "value": "-c" },
+        { "value": "-f" },
+        { "value": "{output}" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "directory", "label": "Directory to compress", "required": true, "default": "." },
+        { "name": "output", "type": "file", "label": "Output ZIP", "save": true, "default": "archive.zip", "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    },
+    {
+      "name": "extract",
+      "label": "Extract",
+      "description": "Extract a .zip into a target directory",
+      "executable": "tar",
+      "args": [
+        { "value": "-x" },
+        { "value": "-f" },
+        { "value": "{input}" },
+        { "value": "-C" },
+        { "value": "{output}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "ZIP file", "filters": ["*.zip"], "required": true },
+        { "name": "output", "type": "directory", "label": "Extract to", "required": true, "default": "." }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 1800,
+      "confirm": true
+    },
+    {
+      "name": "list",
+      "label": "List contents",
+      "executable": "tar",
+      "args": [
+        { "value": "-t" },
+        { "value": "-f" },
+        { "value": "{input}" }
+      ],
+      "variables": [
+        { "name": "input", "type": "file", "label": "ZIP file", "filters": ["*.zip", "*.tar", "*.gz"], "required": true }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 300
+    }
+  ]
+}

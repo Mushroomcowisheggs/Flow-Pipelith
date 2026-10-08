@@ -1,0 +1,30 @@
+{
+  "name": "route",
+  "display_name": "Route",
+  "description": "Display and modify the IP routing table",
+  "category": "network",
+  "tags": ["network", "routing", "TCP/IP"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    { "kind": "subcommand", "tokens": ["print"], "label": "print", "description": "Show the routing table" },
+    { "kind": "subcommand", "tokens": ["add"], "label": "add", "description": "Add a route to the table" },
+    { "kind": "subcommand", "tokens": ["delete"], "label": "delete", "description": "Remove a route from the table" },
+    { "kind": "subcommand", "tokens": ["change"], "label": "change", "description": "Change the gateway or metric of an existing route" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Make an added route persistent across reboots" },
+    { "kind": "option", "tokens": ["-4"], "label": "-4", "description": "Act on the IPv4 routing table" },
+    { "kind": "option", "tokens": ["-6"], "label": "-6", "description": "Act on the IPv6 routing table" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Clear the table of all gateway routes before an add or change" },
+    { "kind": "option", "tokens": ["<destination>"], "label": "destination", "description": "The destination network or host address", "takes": "text" },
+    { "kind": "option", "tokens": ["mask", "<netmask>"], "label": "mask", "description": "The netmask of the destination", "takes": "text" },
+    { "kind": "option", "tokens": ["<gateway>"], "label": "gateway", "description": "The next hop address for the route", "takes": "text" },
+    { "kind": "option", "tokens": ["metric", "<n>"], "label": "metric", "description": "Set the route metric", "takes": "number" },
+    { "kind": "option", "tokens": ["if", "<n>"], "label": "if", "description": "Use the interface with this index", "takes": "number" },
+    { "kind": "note", "label": "mask is a keyword", "description": "Windows route writes the prefix as destination mask netmask, not as a /prefix length" },
+    { "kind": "note", "label": "Order", "description": "route add destination mask netmask gateway metric n if n; print takes no destination" },
+    { "kind": "note", "label": "Elevation", "description": "add, delete and change need an elevated prompt; print does not" },
+    { "kind": "note", "label": "Interface index", "description": "The interface index is listed by route print in the interface list at the top of its output" },
+    { "kind": "note", "label": "Persistent routes", "description": "-p adds the route permanently; without it the route disappears at the next reboot" }
+  ]
+}

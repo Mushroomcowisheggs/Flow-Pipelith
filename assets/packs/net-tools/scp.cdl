@@ -1,0 +1,127 @@
+{
+  "name": "scp",
+  "display_name": "SCP (secure copy)",
+  "description": "Copy files and directories between this machine and a remote host over SSH",
+  "category": "network",
+  "author": "OpenSSH Project",
+  "license": "BSD-2-Clause",
+  "homepage": "https://www.openssh.com",
+  "tags": ["copy", "transfer", "remote"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "option",
+      "tokens": ["-r"],
+      "label": "-r",
+      "description": "Copy directories recursively; without it a directory is refused"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-P", "<port>"],
+      "label": "-P",
+      "description": "Connect to this SSH port on the remote host (capital P; ssh spells the same thing -p)",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-p"],
+      "label": "-p",
+      "description": "Preserve modification times, access times and file modes (lowercase p means preserve here, not port)"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-i", "<file>"],
+      "label": "-i",
+      "description": "Private key file to authenticate with",
+      "takes": "file"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-C"],
+      "label": "-C",
+      "description": "Compress the data while it is transferred"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-l", "<limit>"],
+      "label": "-l",
+      "description": "Limit the used bandwidth to this many Kbit/s",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-J", "<jump-host>"],
+      "label": "-J",
+      "description": "Connect through this jump host instead of reaching the target directly",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-3"],
+      "label": "-3",
+      "description": "Copy between two remote hosts, with the data passing through this machine"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-q"],
+      "label": "-q",
+      "description": "Quiet mode: no progress bar and no transfer statistics"
+    },
+    {
+      "kind": "option",
+      "tokens": ["<source>"],
+      "label": "source",
+      "description": "What to copy: a local path, or user@host:/path for a file on the remote side",
+      "takes": "text"
+    },
+    {
+      "kind": "option",
+      "tokens": ["<target>"],
+      "label": "target",
+      "description": "Where it goes: a local path, or user@host:/path for a directory on the remote side",
+      "takes": "text"
+    },
+    {
+      "kind": "note",
+      "label": "The port flag differs from ssh",
+      "description": "scp takes the port as -P, while lowercase -p asks scp to preserve times and modes; ssh uses -p for the port and -P does not exist there"
+    },
+    {
+      "kind": "note",
+      "label": "A colon marks the remote side",
+      "description": "Write a remote path as user@host:/path/to/file; a path without a colon is local. Both arguments decide the direction, so source and target must not be swapped"
+    },
+    {
+      "kind": "note",
+      "label": "The target is overwritten",
+      "description": "scp writes over the target file without asking, and -r writes into the remote directory tree; there is no dry run, so check source and target before running it"
+    }
+  ],
+  "actions": [
+    {
+      "name": "copy_to_remote",
+      "label": "Copy to remote host",
+      "description": "Copy a local file or directory to a remote machine over SSH",
+      "executable": "scp",
+      "args": [
+        { "value": "-r", "when": "recursive" },
+        { "value": "-P" },
+        { "value": "{port}" },
+        { "value": "{source}" },
+        { "value": "{target}" }
+      ],
+      "variables": [
+        { "name": "source", "type": "file", "label": "Local file or directory", "required": true },
+        { "name": "target", "type": "text", "label": "Remote destination", "required": true, "placeholder": "user@example.com:/srv/app/" },
+        { "name": "port", "type": "number", "label": "SSH port", "default": "22", "min": 1, "max": 65535, "step": 1 },
+        { "name": "recursive", "type": "boolean", "label": "Copy a directory recursively", "default": false }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 7200,
+      "confirm": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "name": "winget",
+  "display_name": "WinGet",
+  "description": "Install, search, upgrade and remove Windows applications from configured sources",
+  "category": "system",
+  "tags": ["system", "packages", "installer", "updates"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["install"],
+      "label": "install",
+      "description": "Install an application",
+      "children": [
+        { "kind": "option", "tokens": ["--id", "<id>"], "label": "--id", "description": "Match the package by its exact identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--exact"], "label": "--exact", "description": "Require an exact match of the search text" },
+        { "kind": "option", "tokens": ["--silent"], "label": "--silent", "description": "Install without the interactive installer UI" },
+        { "kind": "option", "tokens": ["--accept-source-agreements"], "label": "--accept-source-agreements", "description": "Accept the source agreements without asking" },
+        { "kind": "option", "tokens": ["--accept-package-agreements"], "label": "--accept-package-agreements", "description": "Accept the package agreements without asking" },
+        { "kind": "option", "tokens": ["--version", "<version>"], "label": "--version", "description": "Install this version of the package", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["search"],
+      "label": "search",
+      "description": "Search the configured sources for an application",
+      "children": [
+        { "kind": "option", "tokens": ["--id", "<id>"], "label": "--id", "description": "Match the package by its exact identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--exact"], "label": "--exact", "description": "Require an exact match of the search text" },
+        { "kind": "option", "tokens": ["--source", "<name>"], "label": "--source", "description": "Search only this source", "takes": "text" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["list"],
+      "label": "list",
+      "description": "List the installed applications",
+      "children": [
+        { "kind": "option", "tokens": ["--source", "<name>"], "label": "--source", "description": "List only packages from this source", "takes": "text" },
+        { "kind": "option", "tokens": ["--upgrade-available"], "label": "--upgrade-available", "description": "List only packages that have a newer version (newer Windows builds)" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["upgrade"],
+      "label": "upgrade",
+      "description": "Upgrade installed applications to a newer version",
+      "children": [
+        { "kind": "option", "tokens": ["--id", "<id>"], "label": "--id", "description": "Match the package by its exact identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--all"], "label": "--all", "description": "Upgrade every package that has an update" },
+        { "kind": "option", "tokens": ["--silent"], "label": "--silent", "description": "Upgrade without the interactive installer UI" },
+        { "kind": "option", "tokens": ["--include-unknown"], "label": "--include-unknown", "description": "Also upgrade packages whose installed version cannot be read" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["uninstall"],
+      "label": "uninstall",
+      "description": "Remove an installed application",
+      "children": [
+        { "kind": "option", "tokens": ["--id", "<id>"], "label": "--id", "description": "Match the package by its exact identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--exact"], "label": "--exact", "description": "Require an exact match of the search text" },
+        { "kind": "option", "tokens": ["--silent"], "label": "--silent", "description": "Uninstall without the interactive uninstaller UI" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["show"],
+      "label": "show",
+      "description": "Show the details of one package",
+      "children": [
+        { "kind": "option", "tokens": ["--id", "<id>"], "label": "--id", "description": "Match the package by its exact identifier", "takes": "text" },
+        { "kind": "option", "tokens": ["--versions"], "label": "--versions", "description": "Show all versions available for the package" }
+      ]
+    },
+    {
+      "kind": "subcommand",
+      "tokens": ["source"],
+      "label": "source",
+      "description": "Manage the sources packages are installed from",
+      "children": [
+        { "kind": "option", "tokens": ["list"], "label": "list", "description": "List the configured sources" },
+        { "kind": "option", "tokens": ["update"], "label": "update", "description": "Refresh the source indexes" },
+        { "kind": "option", "tokens": ["reset"], "label": "reset", "description": "Reset the sources to their defaults" }
+      ]
+    },
+    { "kind": "option", "tokens": ["-h"], "label": "-h", "description": "Short form of --help for a subcommand" },
+    { "kind": "option", "tokens": ["<query>"], "label": "query", "description": "The search text or package name", "takes": "text" },
+    { "kind": "note", "label": "Order of options", "description": "winget options come after the subcommand: winget install --id Git.Git --exact" },
+    { "kind": "note", "label": "--id beats a name", "description": "--id with the exact package identifier avoids installing the wrong application when names are similar" },
+    { "kind": "note", "label": "First run agreements", "description": "A first install can stop on the source agreement prompt; --accept-source-agreements and --accept-package-agreements answer it in advance" },
+    { "kind": "note", "label": "Elevation", "description": "winget itself runs unelevated; an installer that needs administrator rights raises its own prompt" },
+    { "kind": "note", "label": "Sources", "description": "The default source is winget (the community repository); source list shows what is configured" }
+  ]
+}

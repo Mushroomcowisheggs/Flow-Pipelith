@@ -1,0 +1,7 @@
+{
+  "id": "dev-langs-extra",
+  "label": "Language runtimes (extra)",
+  "description": "Runtimes and package managers: .NET, Dart, PHP, R, bun and the node package managers",
+  "platforms": ["windows", "linux", "macos"],
+  "origin": "curated"
+}

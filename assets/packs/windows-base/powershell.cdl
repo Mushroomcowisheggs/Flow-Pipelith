@@ -1,0 +1,126 @@
+{
+  "name": "powershell",
+  "display_name": "Windows PowerShell",
+  "description": "Windows PowerShell: run cmdlets, inline script blocks and script files",
+  "version": "5.1",
+  "category": "system",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["shell", "scripting", "automation"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process", "network"],
+  "vocabulary": [
+    {
+      "kind": "subcommand",
+      "tokens": ["-Command"],
+      "label": "-Command",
+      "description": "Run the given command, cmdlet or script block and then exit",
+      "children": [
+        { "kind": "option", "tokens": ["<command>"], "label": "command text", "description": "An inline command or script block", "takes": "text" },
+        {
+          "kind": "subcommand",
+          "tokens": ["Get-ChildItem"],
+          "label": "Get-ChildItem",
+          "description": "List the items in a container",
+          "children": [
+            { "kind": "option", "tokens": ["-Path", "<directory>"], "label": "-Path", "description": "The container to list", "takes": "directory" },
+            { "kind": "option", "tokens": ["-Recurse"], "label": "-Recurse", "description": "Include every subcontainer" },
+            { "kind": "option", "tokens": ["-Filter", "<pattern>"], "label": "-Filter", "description": "Only items matching this provider filter", "takes": "text" },
+            { "kind": "option", "tokens": ["-File"], "label": "-File", "description": "Return files only, not directories" },
+            { "kind": "option", "tokens": ["-Force"], "label": "-Force", "description": "Include hidden and system items" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["Get-Content"],
+          "label": "Get-Content",
+          "description": "Read the contents of a file",
+          "children": [
+            { "kind": "option", "tokens": ["-Path", "<file>"], "label": "-Path", "description": "The file to read", "takes": "file" },
+            { "kind": "option", "tokens": ["-Tail", "<n>"], "label": "-Tail", "description": "Return only the last n lines", "takes": "number" },
+            { "kind": "option", "tokens": ["-Wait"], "label": "-Wait", "description": "Keep the file open and print lines as they are appended" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["Copy-Item"],
+          "label": "Copy-Item",
+          "description": "Copy a file or a whole directory tree",
+          "children": [
+            { "kind": "option", "tokens": ["-Path", "<source>"], "label": "-Path", "description": "What to copy", "takes": "file" },
+            { "kind": "option", "tokens": ["-Destination", "<destination>"], "label": "-Destination", "description": "Where to copy it", "takes": "directory" },
+            { "kind": "option", "tokens": ["-Recurse"], "label": "-Recurse", "description": "Copy subdirectories as well" },
+            { "kind": "option", "tokens": ["-Force"], "label": "-Force", "description": "Overwrite read-only or hidden destination items" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["Remove-Item"],
+          "label": "Remove-Item",
+          "description": "Delete files or directories",
+          "children": [
+            { "kind": "option", "tokens": ["-Path", "<path>"], "label": "-Path", "description": "What to delete", "takes": "file" },
+            { "kind": "option", "tokens": ["-Recurse"], "label": "-Recurse", "description": "Delete the contents of a directory as well" },
+            { "kind": "option", "tokens": ["-Force"], "label": "-Force", "description": "Delete hidden and read-only items too" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["Get-Process"],
+          "label": "Get-Process",
+          "description": "List the running processes",
+          "children": [
+            { "kind": "option", "tokens": ["-Name", "<name>"], "label": "-Name", "description": "Only processes with this process name", "takes": "text" }
+          ]
+        },
+        {
+          "kind": "subcommand",
+          "tokens": ["Select-String"],
+          "label": "Select-String",
+          "description": "Search files or input for a text pattern",
+          "children": [
+            { "kind": "option", "tokens": ["-Pattern", "<pattern>"], "label": "-Pattern", "description": "The regular expression to look for", "takes": "text" },
+            { "kind": "option", "tokens": ["-Path", "<file>"], "label": "-Path", "description": "The file to search", "takes": "file" }
+          ]
+        }
+      ]
+    },
+    { "kind": "option", "tokens": ["-File", "<script>"], "label": "-File", "description": "Run the given script file and exit", "takes": "file" },
+    { "kind": "option", "tokens": ["-NoProfile"], "label": "-NoProfile", "description": "Do not load the user profile scripts" },
+    { "kind": "option", "tokens": ["-NonInteractive"], "label": "-NonInteractive", "description": "Do not present an interactive prompt to the user" },
+    { "kind": "option", "tokens": ["-NoLogo"], "label": "-NoLogo", "description": "Hide the startup copyright banner" },
+    { "kind": "option", "tokens": ["-NoExit"], "label": "-NoExit", "description": "Do not exit after running the startup commands" },
+    { "kind": "option", "tokens": ["-ExecutionPolicy", "<policy>"], "label": "-ExecutionPolicy", "description": "Set the execution policy for this session only", "takes": "enum", "options": ["Bypass", "Unrestricted", "RemoteSigned", "AllSigned", "Restricted", "Undefined"] },
+    { "kind": "option", "tokens": ["-WindowStyle", "<style>"], "label": "-WindowStyle", "description": "Set the window style of the session", "takes": "enum", "options": ["Normal", "Hidden", "Minimized", "Maximized"] },
+    { "kind": "option", "tokens": ["-OutputFormat", "<format>"], "label": "-OutputFormat", "description": "Set how the output of this run is serialized", "takes": "enum", "options": ["Text", "XML"] },
+    { "kind": "option", "tokens": ["-InputFormat", "<format>"], "label": "-InputFormat", "description": "Describe the format of the data sent to the standard input", "takes": "enum", "options": ["Text", "XML"] },
+    { "kind": "option", "tokens": ["-Version", "<version>"], "label": "-Version", "description": "Start the specified version of PowerShell", "takes": "text" },
+    { "kind": "option", "tokens": ["-EncodedCommand", "<base64>"], "label": "-EncodedCommand", "description": "Run a Base64-encoded UTF-16LE command string", "takes": "text" },
+    { "kind": "note", "label": "powershell.exe and pwsh", "description": "Windows PowerShell 5.1 is powershell.exe; PowerShell 6 and later install beside it as pwsh and take the same parameters" },
+    { "kind": "note", "label": "Getting a script past the policy", "description": "-ExecutionPolicy Bypass applies to this one run and lets a script the machine policy would otherwise block execute" }
+  ],
+  "actions": [
+    {
+      "name": "run_script",
+      "label": "Run script file",
+      "description": "Run a .ps1 script with the profile disabled and the execution policy bypassed for this run",
+      "executable": "powershell",
+      "args": [
+        { "value": "-NoProfile" },
+        { "value": "-ExecutionPolicy" },
+        { "value": "Bypass" },
+        { "value": "-File" },
+        { "value": "{script}" }
+      ],
+      "variables": [
+        { "name": "script", "type": "file", "label": "Script file", "filters": ["*.ps1"], "required": true },
+        { "name": "dir", "type": "directory", "label": "Working directory", "default": "." }
+      ],
+      "cwd": "{dir}",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

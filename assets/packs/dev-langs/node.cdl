@@ -1,0 +1,59 @@
+{
+  "name": "node",
+  "display_name": "Node.js",
+  "description": "JavaScript runtime: run scripts, evaluate one-liners, show the version",
+  "version": "22",
+  "category": "development",
+  "author": "OpenJS Foundation",
+  "license": "MIT",
+  "homepage": "https://nodejs.org",
+  "tags": ["JavaScript", "scripting"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "actions": [
+    {
+      "name": "run_script",
+      "label": "Run script",
+      "executable": "node",
+      "args": [
+        { "value": "{script}" },
+        { "value": "{args}", "when": "has_args" }
+      ],
+      "variables": [
+        { "name": "script", "type": "file", "label": "Script file", "filters": ["*.js", "*.mjs", "*.cjs"], "required": true },
+        { "name": "args", "type": "text", "label": "Command-line arguments", "default": "" },
+        { "name": "has_args", "type": "boolean", "label": "Pass arguments", "default": false }
+      ],
+      "stdin": "pipe",
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    },
+    {
+      "name": "eval",
+      "label": "Run one-liner",
+      "executable": "node",
+      "args": [
+        { "value": "-e" },
+        { "value": "{code}" }
+      ],
+      "variables": [
+        { "name": "code", "type": "text", "label": "Code", "multiline": true, "required": true, "default": "console.log('hello')" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 600
+    },
+    {
+      "name": "version",
+      "label": "Show version",
+      "executable": "node",
+      "args": [{ "value": "--version" }],
+      "variables": [],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 30
+    }
+  ]
+}

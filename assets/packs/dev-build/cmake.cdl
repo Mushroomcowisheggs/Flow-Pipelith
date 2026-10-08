@@ -1,0 +1,133 @@
+{
+  "name": "cmake",
+  "display_name": "CMake",
+  "description": "Cross-platform build system generator: configure, build, install and test",
+  "version": "4.1",
+  "category": "development",
+  "author": "Kitware",
+  "license": "BSD-3-Clause",
+  "homepage": "https://cmake.org",
+  "tags": ["build", "C++", "cross-platform"],
+  "platforms": ["windows", "macos", "linux"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "dependencies": [
+    { "name": "cmake", "version": ">=3.20" }
+  ],
+  "actions": [
+    {
+      "name": "configure",
+      "label": "Configure project",
+      "description": "Read CMakeLists.txt and generate build files",
+      "executable": "cmake",
+      "args": [
+        { "value": "-S" },
+        { "value": "{source}" },
+        { "value": "-B" },
+        { "value": "{build}" },
+        { "value": "-G" },
+        { "value": "{generator}" },
+        { "value": "-DCMAKE_BUILD_TYPE={build_type}" }
+      ],
+      "variables": [
+        { "name": "source", "type": "directory", "label": "Source directory", "required": true, "default": "." },
+        { "name": "build", "type": "directory", "label": "Build directory", "required": true, "default": "build" },
+        {
+          "name": "generator",
+          "type": "enum",
+          "label": "Build system",
+          "default": "Ninja",
+          "options": [
+            { "value": "Ninja", "label": "Ninja (fastest)" },
+            { "value": "Unix Makefiles", "label": "Unix Makefiles" },
+            { "value": "MinGW Makefiles", "label": "MinGW Makefiles" },
+            { "value": "Visual Studio 17 2022", "label": "Visual Studio 2022" }
+          ]
+        },
+        {
+          "name": "build_type",
+          "type": "enum",
+          "label": "Build type",
+          "default": "Release",
+          "options": [
+            { "value": "Debug", "label": "Debug (with debug info)" },
+            { "value": "Release", "label": "Release (optimized)" },
+            { "value": "RelWithDebInfo", "label": "RelWithDebInfo" },
+            { "value": "MinSizeRel", "label": "MinSizeRel (smallest size)" }
+          ]
+        }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 900
+    },
+    {
+      "name": "build",
+      "label": "Build",
+      "description": "Compile the configured project",
+      "executable": "cmake",
+      "args": [
+        { "value": "--build" },
+        { "value": "{build}" },
+        { "value": "--parallel" },
+        { "value": "{jobs}" },
+        { "value": "--config" },
+        { "value": "{config}" }
+      ],
+      "variables": [
+        { "name": "build", "type": "directory", "label": "Build directory", "required": true, "default": "build" },
+        { "name": "jobs", "type": "number", "label": "Parallel jobs", "default": "8", "min": 1, "max": 128, "step": 1 },
+        {
+          "name": "config",
+          "type": "enum",
+          "label": "Configuration",
+          "default": "Release",
+          "options": [
+            { "value": "Debug", "label": "Debug" },
+            { "value": "Release", "label": "Release" }
+          ]
+        }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600,
+      "confirm": true
+    },
+    {
+      "name": "install",
+      "label": "Install",
+      "executable": "cmake",
+      "args": [
+        { "value": "--install" },
+        { "value": "{build}" },
+        { "value": "--prefix" },
+        { "value": "{prefix}" }
+      ],
+      "variables": [
+        { "name": "build", "type": "directory", "label": "Build directory", "required": true, "default": "build" },
+        { "name": "prefix", "type": "directory", "label": "Install prefix", "required": true, "default": "install" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 1800,
+      "confirm": true,
+      "danger": true
+    },
+    {
+      "name": "test",
+      "label": "Run tests",
+      "executable": "ctest",
+      "args": [
+        { "value": "--test-dir" },
+        { "value": "{build}" },
+        { "value": "--output-on-failure" }
+      ],
+      "variables": [
+        { "name": "build", "type": "directory", "label": "Build directory", "required": true, "default": "build" }
+      ],
+      "stdout": "capture",
+      "stderr": "capture",
+      "timeout": 3600
+    }
+  ]
+}

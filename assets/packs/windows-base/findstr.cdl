@@ -1,0 +1,31 @@
+{
+  "name": "findstr",
+  "display_name": "Findstr",
+  "description": "Search for text patterns in files or in piped input",
+  "version": "10.0",
+  "category": "data",
+  "author": "Microsoft",
+  "license": "Proprietary",
+  "tags": ["search", "text", "regex"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "pipe", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<pattern>"], "label": "search string", "description": "The text to look for in every line", "takes": "text" },
+    { "kind": "option", "tokens": ["<file>"], "label": "file", "description": "The file to search; without one findstr reads the standard input", "takes": "file" },
+    { "kind": "option", "tokens": ["/I"], "label": "/I", "description": "Ignore the case of the searched text" },
+    { "kind": "option", "tokens": ["/S"], "label": "/S", "description": "Search the current directory and all subdirectories" },
+    { "kind": "option", "tokens": ["/R"], "label": "/R", "description": "Treat the search string as a regular expression, which is the default" },
+    { "kind": "option", "tokens": ["/C:<string>"], "label": "/C", "description": "Use this exact text as one literal search string", "takes": "text" },
+    { "kind": "option", "tokens": ["/V"], "label": "/V", "description": "Print only the lines that do not contain a match" },
+    { "kind": "option", "tokens": ["/N"], "label": "/N", "description": "Print the line number of every matching line" },
+    { "kind": "option", "tokens": ["/M"], "label": "/M", "description": "Print only the name of a file that contains a match" },
+    { "kind": "option", "tokens": ["/F:<file>"], "label": "/F", "description": "Read the list of files to search from this file", "takes": "file" },
+    { "kind": "option", "tokens": ["/G:<file>"], "label": "/G", "description": "Read the search strings from this file, one per line", "takes": "file" },
+    { "kind": "option", "tokens": ["/B"], "label": "/B", "description": "Match the pattern only at the beginning of a line" },
+    { "kind": "option", "tokens": ["/E"], "label": "/E", "description": "Match the pattern only at the end of a line" },
+    { "kind": "option", "tokens": ["/X"], "label": "/X", "description": "Print only the lines that match the pattern exactly" },
+    { "kind": "option", "tokens": ["/P"], "label": "/P", "description": "Skip files that contain non-printable characters" },
+    { "kind": "note", "label": "findstr is not grep", "description": "Options come before the search string and the files; use /R for a regular expression, /S to recurse, /I to ignore case, and /C: for a literal string that contains spaces or metacharacters" }
+  ]
+}

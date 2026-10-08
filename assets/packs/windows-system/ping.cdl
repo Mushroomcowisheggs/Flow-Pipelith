@@ -1,0 +1,50 @@
+{
+  "name": "ping",
+  "display_name": "Ping",
+  "description": "Test reachability of a host and measure round-trip time with ICMP echo requests",
+  "category": "network",
+  "tags": ["network", "latency", "reachability", "diagnostics"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-t"], "label": "-t", "description": "Ping until interrupted instead of stopping after four replies" },
+    {
+      "kind": "option",
+      "tokens": ["-n", "<count>"],
+      "label": "-n",
+      "description": "Send this many echo requests",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-l", "<size>"],
+      "label": "-l",
+      "description": "Send payloads of this size in bytes",
+      "takes": "number"
+    },
+    {
+      "kind": "option",
+      "tokens": ["-w", "<ms>"],
+      "label": "-w",
+      "description": "Wait this many milliseconds for each reply",
+      "takes": "number"
+    },
+    { "kind": "option", "tokens": ["-4"], "label": "-4", "description": "Force IPv4" },
+    { "kind": "option", "tokens": ["-6"], "label": "-6", "description": "Force IPv6" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Resolve addresses to host names" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Set the do-not-fragment flag in the request" },
+    {
+      "kind": "option",
+      "tokens": ["-i", "<ttl>"],
+      "label": "-i",
+      "description": "Send the request with this time-to-live",
+      "takes": "number"
+    },
+    { "kind": "option", "tokens": ["<target>"], "label": "target", "description": "The host name or IP address to ping", "takes": "text" },
+    { "kind": "note", "label": "Stopping -t", "description": "-t runs until interrupted; stop it with Ctrl+C" },
+    { "kind": "note", "label": "Customary order", "description": "Options are usually written before the target, and ping -n 5 example.com is the common form" },
+    { "kind": "note", "label": "Default count", "description": "Without -n, ping sends four requests and stops" },
+    { "kind": "note", "label": "Destination unreachable", "description": "A reply of \"Destination host unreachable\" usually comes from a router, not from the target" }
+  ]
+}

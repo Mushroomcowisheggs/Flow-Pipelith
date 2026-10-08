@@ -1,0 +1,33 @@
+{
+  "name": "wsl",
+  "display_name": "WSL",
+  "description": "Run Linux distributions and commands through the Windows Subsystem for Linux",
+  "category": "system",
+  "tags": ["system", "linux", "virtualization"],
+  "platforms": ["windows"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "network", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "List the installed distributions" },
+    { "kind": "option", "tokens": ["-l", "-v"], "label": "-l -v", "description": "List the installed distributions with their WSL version and state" },
+    { "kind": "option", "tokens": ["-l", "-q"], "label": "-l -q", "description": "List only the distribution names" },
+    { "kind": "option", "tokens": ["--list", "--online"], "label": "--list --online", "description": "List the distributions available to install" },
+    { "kind": "option", "tokens": ["-d", "<distro>"], "label": "-d", "description": "Run in the named distribution", "takes": "text" },
+    { "kind": "option", "tokens": ["-e", "<command>"], "label": "-e", "description": "Run one command without the distribution's login shell", "takes": "text" },
+    { "kind": "option", "tokens": ["-u", "<user>"], "label": "-u", "description": "Run as this Linux user", "takes": "text" },
+    { "kind": "option", "tokens": ["--shutdown"], "label": "--shutdown", "description": "Stop all distributions and the WSL virtual machine" },
+    { "kind": "option", "tokens": ["--install"], "label": "--install", "description": "Install WSL and a distribution" },
+    { "kind": "option", "tokens": ["--install", "-d", "<distro>"], "label": "--install -d", "description": "Install one named distribution", "takes": "text" },
+    { "kind": "option", "tokens": ["--set-default", "<distro>"], "label": "--set-default", "description": "Make this distribution the default", "takes": "text" },
+    { "kind": "option", "tokens": ["--set-default-version", "<version>"], "label": "--set-default-version", "description": "Set the WSL version used by new distributions", "takes": "enum", "options": ["1", "2"] },
+    { "kind": "option", "tokens": ["--status"], "label": "--status", "description": "Show whether WSL is installed and which version is default" },
+    { "kind": "option", "tokens": ["--terminate", "<distro>"], "label": "--terminate", "description": "Stop the named distribution", "takes": "text" },
+    { "kind": "option", "tokens": ["--export", "<distro>"], "label": "--export", "description": "Export the named distribution to a tar file", "takes": "text" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the WSL version information" },
+    { "kind": "note", "label": "Elevation", "description": "--install needs an elevated prompt" },
+    { "kind": "note", "label": "--shutdown is heavy", "description": "It stops every distribution at once; --terminate stops only the one that is named" },
+    { "kind": "note", "label": "Command quoting", "description": "-e takes the command and its arguments in one value, for example -e \"uname -a\"" },
+    { "kind": "note", "label": "Default user", "description": "Without -u the command runs as the distribution's default user" },
+    { "kind": "note", "label": "When WSL is absent", "description": "On a machine where WSL is not enabled, --install needs a reboot before the distributions work" }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "gcov",
+  "display_name": "gcov",
+  "description": "Coverage report from the .gcno and .gcda files a gcc --coverage build leaves behind",
+  "version": "14.2",
+  "category": "development",
+  "author": "GNU Project",
+  "license": "GPL-3.0",
+  "homepage": "https://gcc.gnu.org/onlinedocs/gcc/Gcov.html",
+  "tags": ["build", "coverage", "testing"],
+  "platforms": ["windows", "linux", "macos"],
+  "pipes": { "stdin": "none", "stdout": "capture", "stderr": "capture" },
+  "permissions": ["filesystem", "process"],
+  "vocabulary": [
+    { "kind": "option", "tokens": ["<source>"], "label": "source file", "description": "The source file to report on; gcov looks for its notes and data next to the object file", "takes": "file" },
+    { "kind": "option", "tokens": ["-o", "<directory>"], "label": "-o", "description": "Look for the .gcno and .gcda files in this directory", "takes": "directory" },
+    { "kind": "option", "tokens": ["-b"], "label": "-b", "description": "Add branch probabilities to the report" },
+    { "kind": "option", "tokens": ["-c"], "label": "-c", "description": "Show branch counts as absolute numbers instead of percentages" },
+    { "kind": "option", "tokens": ["-r"], "label": "-r", "description": "Write the report for headers only, without the source file itself" },
+    { "kind": "option", "tokens": ["-a"], "label": "-a", "description": "Write the individual branch counts to the annotated source" },
+    { "kind": "option", "tokens": ["-p"], "label": "-p", "description": "Keep the full path in the reported file names" },
+    { "kind": "option", "tokens": ["-l"], "label": "-l", "description": "Prefix each line with its line number, for machine reading" },
+    { "kind": "option", "tokens": ["-f"], "label": "-f", "description": "Print a summary of each function separately" },
+    { "kind": "option", "tokens": ["-m"], "label": "-m", "description": "Show the source text in demangled form with a short header per function" },
+    { "kind": "option", "tokens": ["-j", "<file>"], "label": "-j", "description": "Write the JSON report to this file (use - for stdout)", "takes": "file" },
+    { "kind": "option", "tokens": ["-u"], "label": "-u", "description": "Write the JSON report instead of the annotated source and text summary" },
+    { "kind": "option", "tokens": ["--version"], "label": "--version", "description": "Print the gcov version" },
+    { "kind": "note", "label": "The coverage files", "description": "gcov needs the .gcno notes written at compile time and the .gcda data written when the program runs; both come from building and linking with -fprofile-arcs -ftest-coverage (or --coverage) and running the program at least once" },
+    { "kind": "note", "label": "Where it writes", "description": "The report goes next to the source file as <source>.gcov, decorated with the execution counts and a summary at the end" },
+    { "kind": "note", "label": "Keep the sources", "description": "gcov re-reads the source file to annotate it, so the source must still be where it was at compile time, at the same relative path from the object files" }
+  ]
+}
